@@ -45,9 +45,11 @@ pip3 install -r requirements.txt
 #### 启动脚本
 
 如果运行没有问题就执行下面的命令
+运行此脚本如果没有异常报错就是成功
 
+```text
 ```pycon
-python3 main.py
+python3 ql_cs.py
 ```
 
 #### 添加守护进程
@@ -55,7 +57,7 @@ python3 main.py
 如果你想要守护进程，可以执行下面的命令
 
 ```pycon
-python3 ql_cs.py
+python3 ql_kill.py
 ```
 
 ### conn.yml配置详情
