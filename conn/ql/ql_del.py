@@ -1,0 +1,54 @@
+from conn.gheaders.conn import read_yaml
+from conn.gheaders.log import log_ip
+from conn.ql.ql_write import yml_file
+
+
+def descend():
+    """
+    用于读取青龙配置文件的末尾，并添加到conn.yml指定行
+    :return:
+    """
+    try:
+        yml = read_yaml()
+        file = open(yml['qlpath'], 'r', encoding="utf-8")
+        lines = file.readlines()
+        str1 = 'delql: ' + str(len(lines))
+        yml_file(str1, 15)
+        file.close()
+    except Exception as e:
+        log_ip("descend,异常信息：" + str(e))
+
+
+def del_file():
+    """
+    删除添加的行,但是保留sun行，获取到的是文件的行数，删除行后面的内容
+    :return:
+    """
+    try:
+        yml = read_yaml()
+        file = open(yml['qlpath'], encoding="utf-8")
+        lines = file.readlines()
+        del lines[yml['delql']::]  # 删除最后一行
+        # lines.append("\n")
+        file.close()
+
+        file_new = open(yml['qlpath'], 'w', encoding="utf-8")
+        file_new.writelines(lines)  # 将删除行后的数据写入文件
+        file_new.close()
+    except Exception as e:
+        log_ip("del_file,异常信息：" + str(e))
+
+
+def ql_write(str12):
+    """
+    写入青龙任务列表，把内容添加到文件最后一行
+    :param str12: 传入内容
+    :return:
+    """
+    try:
+        yml = read_yaml()
+        file = open(yml['qlpath'], 'a', encoding="utf-8")
+        file.write(str12)
+        file.close()
+    except Exception as e:
+        log_ip("ql_write,异常信息：" + str(e))

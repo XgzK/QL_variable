@@ -1,0 +1,7 @@
+# pip3 install -r requirements.txt
+
+# 其他库
+requests >= 2.24.0
+pyyaml >= 5.3.1
+Flask-APScheduler >= 1.12.4
+logging >= 0.4.9.6

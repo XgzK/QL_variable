@@ -1,0 +1,17 @@
+# 下面和青龙有关 系统设置-->应用设置-->新建应用-->权限选择所有
+Client ID: ''
+Client Secret: ''
+# 青龙类似于cookie，登录后自动获取，不用管,不能移动行，必需在第五行
+Authorization: 'Bearer 41a2006c-39ab-421b-af4c-ca7b1e8df58e'
+# 设置自己青龙的IP:端口
+ip: 'http://127.0.0.1:5700'
+# 青龙任务参数的存放网址，九月份会到期，需要更新，建议失效后反馈
+url: 'http://xr.xgz.buzz:5000/qlcs'
+# 青龙的任务存储地址，这个可以不用管
+qljson: './conn/data/ql.json'
+# 青龙配置文件，改成自己的配置文件
+qlpath: '/root/ql/config/config.sh'
+# 获取的内容添加的开始行，建议最后一行，要不然后面内容都会删除，不能移动行必须第15行
+delql: 12
+# 日志文件
+log: './ql.log'
