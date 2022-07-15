@@ -14,7 +14,7 @@ def process_kill(process_name):
     :param process_name:ps -ef|grep firefox|awk '{print $2}'|xargs kill -9
     :return:
     """
-    # ps -ef|grep ql_variable.py |grep -v grep|awk '{print $2}'|xargs kill -9
+    # ps -ef|grep ql_cs.py |grep -v grep|awk '{print $2}'|xargs kill -9
     os.system("ps -ef|grep %s |grep -v grep|awk '{print $2}'|xargs kill -9" % process_name)
     # 重启进程 nohup python3 ip_broker.py & > ip_brok.log 2>&1
     os.system("nohup python3 %s &" % process_name)
