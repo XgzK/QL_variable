@@ -62,23 +62,22 @@ pip3 install -r requirements.txt
 如果运行没有问题就执行下面的命令
 运行此脚本如果没有异常报错就是成功
 
-```text
-```pycon
-python3 ql_cs.py
+```shell
+python3 ql_addvalue.py
 ```
 
 #### 添加守护进程
 
 如果你想要守护进程，可以执行下面的命令
 
-```pycon
+```shell
 python3 ql_kill.py
 ```
 
 结束脚本运行
 
 ```shell
-ps -ef|grep ql_cs.py |grep -v grep|awk '{print $2}'|xargs kill -9
+ps -ef|grep ql_addvalue.py |grep -v grep|awk '{print $2}'|xargs kill -9
 ```
 
 ### conn.yml配置详情
@@ -94,6 +93,42 @@ ps -ef|grep ql_cs.py |grep -v grep|awk '{print $2}'|xargs kill -9
 第15行 不修改，此行不能移动或者更改，否则会删除错误你们青龙配置文件
 第17行 日志输出路径
 第19行 判断是否有异常不用管
+```
+
+## 在青龙容器运行脚本
+
+## [找 自动添加参数](https://www.youtube.com/playlist?list=PLH5cFwS6-yF-yDy-eGA3nVVa-2Nl43ZKk)
+
+```shell
+# 进入青龙的挂载目录，大部分都是ql
+cd /root/ql/
+# 下载添加参数的脚本
+  # 国内
+  wget https://hub.0z.gs/xgzk/QL_variable/archive/refs/heads/main.zip
+  # 国外
+  wget https://github.com/xgzk/QL_variable/archive/refs/heads/main.zip
+# 解压
+unzip main.zip
+# 删除
+rm -rf main.zip
+# 进入QL_variable-main
+cd QL_variable-main/
+# 修改conn.yml文件，编辑模式按i 写完英文输入法按ESC :qw
+vim conn.yml
+# 查看容器别名,NAMES下的值就是容器的别名
+docker ps
+# 进入容器
+docker exec -it qinglong /bin/bash
+# 进入data目录
+cd data/QL_variable-main/
+# 安装pip3库
+pip3 install -r requirements.txt
+# 启动脚本
+python3 ql_addvalue.py
+# 安装pm2
+npm install pm2 -g
+# 执行
+pm2 start dockpm2/qlAddV.yml
 ```
 
 ## 活动相关
