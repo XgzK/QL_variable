@@ -4,14 +4,13 @@ from conn.get_qlcs import get_main
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import log_ip
 from conn.ql.ql_del import descend, ql_write, del_file
-from conn.ql.ql_list import ql_lis, vaguefind
+from conn.ql.ql_list import vaguefind
 from conn.ql.ql_run import ql_run
 from conn.ql.ql_token import token_main
 
 scheduler = APScheduler()
 
 
-# 定时获取任务列表
 @scheduler.task('interval', id='timing_ck', days=15)
 def timing_ck():
     """
@@ -19,15 +18,6 @@ def timing_ck():
     :return:
     """
     token_main()
-
-
-@scheduler.task('interval', id='timing_list', hours=24)
-def timing_list():
-    """
-    设置12个小时获取一次新的任务列表，主要用于定时获取任务列表
-    :return:
-    """
-    ql_lis()
 
 
 @scheduler.task('interval', id='immortal_main', minutes=15)
@@ -70,7 +60,6 @@ if __name__ == '__main__':
     print("开始运行")
     # 定时任务第一次不会执行，所以手动添加一次
     timing_ck()
-    timing_list()
     immortal_main()
     # 添加定时任务
     scheduler.start()
