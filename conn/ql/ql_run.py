@@ -19,7 +19,7 @@ def ql_run(data):
         url = ip['ip'] + '/open/crons/run'
         ss = requests.put(url=url, headers=ql_header(), data=json.dumps(data), timeout=10)
         # 延迟3秒
-        time.sleep(3)
+        time.sleep(15)
         status = ss.status_code
         # 获取返回的状态码
         if status == 200:
