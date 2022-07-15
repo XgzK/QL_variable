@@ -3,7 +3,7 @@ def yml_file(tx, sun, path='./conn.yml'):
 
     :param tx: 添加的值
     :param sun: 添加的行
-    :param path: 添加的路径
+    :param path: 添加的路径默认./conn.yml
     :return:
     """
     f = open(path, 'r+', encoding='utf-8')

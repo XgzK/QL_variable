@@ -5,6 +5,7 @@ import requests
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.get_headers import ql_header
 from conn.gheaders.log import log_ip
+from conn.ql.ql_write import yml_file
 
 
 def ql_lis():
@@ -14,14 +15,21 @@ def ql_lis():
     """
     try:
         jstx = read_yaml()
-        url = jstx['ip'] + "/open/crons"
-        ss = requests.get(url=url, headers=ql_header(), timeout=5)
-        js = ss.json()
-        with open(jstx['qljson'], mode='wt', encoding='utf-8') as f:
-            json.dump(js, f, ensure_ascii=False)
-            f.close()
+        # 判断所有获取所需的值，如果没有获取则跳过
+        print(jstx['judge'])
+        if jstx['judge'] == 0:
+            url = jstx['ip'] + "/open/crons"
+            ss = requests.get(url=url, headers=ql_header(), timeout=5)
+            js = ss.json()
+            with open(jstx['qljson'], mode='wt', encoding='utf-8') as f:
+                json.dump(js, f, ensure_ascii=False)
+                f.close()
+        else:
+            print("异常问题，没有获取到青龙的CK，后面将会不执行")
     except Exception as e:
         log_ip("ql_lis,异常信息" + str(e))
+        # 如果异常返回添加这个拒绝执行后面任务
+        yml_file("judge: 1", 19)
 
 
 def vaguefind(str12):

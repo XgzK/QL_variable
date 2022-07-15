@@ -3,7 +3,7 @@ Client ID: ''
 Client Secret: ''
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行，必需在第五行
 Authorization: 'Bearer '
-# 设置自己青龙的IP:端口
+# 设置自己青龙的IP:端口 不能http://127.0.0.1:5700/ 会报错
 ip: 'http://127.0.0.1:5700'
 # 青龙任务参数的存放网址，九月份会到期，需要更新，建议失效后反馈
 url: 'http://xr.xgz.buzz:5000/qlcs'
@@ -15,3 +15,5 @@ qlpath: '/root/ql/config/config.sh'
 delql: 12
 # 日志文件
 log: './ql.log'
+# 不能移动，用于判断是否有异常如果有异常则不执行后面任务,0表示没有异常
+judge: 0

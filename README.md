@@ -93,6 +93,7 @@ ps -ef|grep ql_cs.py |grep -v grep|awk '{print $2}'|xargs kill -9
 第13行 是青龙配置文件的路径 默认/root/ql/config/config.sh
 第15行 不修改，此行不能移动或者更改，否则会删除错误你们青龙配置文件
 第17行 日志输出路径
+第19行 判断是否有异常不用管
 ```
 
 ## 活动相关
