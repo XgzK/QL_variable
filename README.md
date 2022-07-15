@@ -1,4 +1,7 @@
-# 容器运行的一律不能用出现编码问题正在修复，请勿现在使用容器运行尽快修复问题
+# 2022-07-16 3:23之前使用青龙容器教程或者使用pm2指令启动脚本的看到后立刻拉取最新脚本，使用python3 ql_kill.py不受影响
+
+### 建议使用非容器的方式运行，方便后期维护更新，如非必要更新不用更新此脚本1.1.X 如果版本是1.2.X就需要更新
+
 # 根据变量运行对应任务
 
 ## 并不需要拉取KR库大部分脚本名称都是一样的，只有个别的库可能不同
@@ -126,10 +129,8 @@ cd data/QL_variable-main/
 pip3 install -r requirements.txt
 # 启动脚本
 python3 ql_addvalue.py
-# 安装pm2
-npm install pm2 -g
 # 执行
-pm2 start dockpm2/qlAddV.yml
+pm2 start qlAddV.yml
 # 退出容器 ctrl+p+q
 ```
 

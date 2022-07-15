@@ -1,4 +1,0 @@
-apps:
-  - script: .. ql_addvalue.py
-    name: ql_addvalue
-    interpreter: python3
