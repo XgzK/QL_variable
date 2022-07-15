@@ -129,6 +129,7 @@ python3 ql_addvalue.py
 npm install pm2 -g
 # 执行
 pm2 start dockpm2/qlAddV.yml
+# 退出容器 ctrl+p+q
 ```
 
 ## 活动相关
