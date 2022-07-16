@@ -1,8 +1,5 @@
-# 2022-07-16 3:23之前使用青龙容器教程或者使用pm2指令启动脚本的看到后立刻拉取最新脚本，使用python3 ql_kill.py不受影响
-
-### 建议使用非容器的方式运行，方便后期维护更新，如非必要更新不用更新此脚本1.1.X 如果版本是1.2.X就需要更新
-
-### 本教程默认配置是根据 https://github.com/whyour/qinglong，如果使用一键安装请自己找配置位置
+# 容器运行的一律不能用出现编码问题正在修复，请勿现在使用容器运行尽快修复问题
+# 根据变量运行对应任务
 
 ## 并不需要拉取KR库大部分脚本名称都是一样的，只有个别的库可能不同
 
@@ -86,19 +83,17 @@ ps -ef|grep ql_addvalue.py |grep -v grep|awk '{print $2}'|xargs kill -9
 
 ### conn.yml配置详情
 
-#### 建议使用阅读此说明
 ```txt
 第2行 登录青龙面板-->系统设置-->应用设置-->新建应用，选择定时任务的权限就行，复制Client ID
 第3行 登录青龙面板-->系统设置-->应用设置-->新建应用，选择定时任务的权限就行，复制Client Secret
 第5行不用管1，但是不能删这一行或者移动
-第7行 换成自己的青龙面板的域名:端口 ，127.0.0.1:5700也可以
+第7行 换成自己的青龙面板的域名:端口
 第9行 是我搭建获取TG中KR信息的网址，九月会域名到期，可能不定期更换
 第11行 是青龙任务列表，你们可以去地址查看你们青龙的脚本
-第13行 是青龙配置文件的路径 默认/root/ql/config/config.sh，容器运行改成 ql/data/config/config.sh
+第13行 是青龙配置文件的路径 默认/root/ql/config/config.sh
 第15行 不修改，此行不能移动或者更改，否则会删除错误你们青龙配置文件
 第17行 日志输出路径
 第19行 判断是否有异常不用管
-第21行 青龙数据库 默认 /root/ql/db/database.sqlite 如果容器运行填写 ql/data/db/database.sqlite
 ```
 
 ## 在青龙容器运行脚本
@@ -131,8 +126,10 @@ cd data/QL_variable-main/
 pip3 install -r requirements.txt
 # 启动脚本
 python3 ql_addvalue.py
+# 安装pm2
+npm install pm2 -g
 # 执行
-pm2 start qlAddV.yml
+pm2 start dockpm2/qlAddV.yml
 # 退出容器 ctrl+p+q
 ```
 
