@@ -9,7 +9,7 @@ ip: 'http://127.0.0.1:5700'
 url: 'http://xr.xgz.buzz:5000/qlcs'
 # 青龙的任务存储地址，这个可以不用管
 qljson: './conn/data/ql.json'
-# 青龙配置文件，改成自己的配置文件, 容器运行改成 ql/data/config/config.sh
+# 青龙配置文件，改成自己的配置文件, 容器运行改成 /ql/data/config/config.sh
 qlpath: '/root/ql/config/config.sh'
 # 获取的内容添加的开始行，建议最后一行，要不然后面内容都会删除，不能移动行必须第15行
 delql: 12
@@ -17,5 +17,5 @@ delql: 12
 log: './ql.log'
 # 不能移动，用于判断是否有异常如果有异常则不执行后面任务,0表示没有异常
 judge: 1
-# 青龙的数据库 /root/ql/db/database.sqlite 如果容器运行填写 ql/data/db/database.sqlite
+# 青龙的数据库 /root/ql/db/database.sqlite 如果容器运行填写 /ql/data/db/database.sqlite
 db: /root/ql/db/database.sqlite
