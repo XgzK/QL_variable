@@ -51,36 +51,6 @@
   </code></pre>
 </details>
 
-### 运行脚本
-
-#### 安装需要的库
-
-```text
-pip3 install -r requirements.txt
-```
-
-#### 启动脚本
-
-如果运行没有问题就执行下面的命令
-运行此脚本如果没有异常报错就是成功
-
-```shell
-python3 ql_addvalue.py
-```
-
-#### 添加守护进程
-
-如果你想要守护进程，可以执行下面的命令
-
-```shell
-python3 ql_kill.py
-```
-
-结束脚本运行
-
-```shell
-ps -ef|grep ql_addvalue.py |grep -v grep|awk '{print $2}'|xargs kill -9
-```
 
 ### conn.yml配置详情
 
@@ -91,16 +61,86 @@ ps -ef|grep ql_addvalue.py |grep -v grep|awk '{print $2}'|xargs kill -9
 第7行 换成自己的青龙面板的域名:端口 ，默认127.0.0.1:5700 就行
 第9行 是我搭建获取TG中KR信息的网址，九月会域名到期，可能不定期更换
 第11行 是青龙任务列表，你们可以去地址查看你们青龙的脚本
-第13行 是青龙配置文件的路径 默认/root/ql/config/config.sh 容器运行改成 /ql/data/config/config.sh
+第13行 是青龙配置文件的路径 默认/root/ql/config/config.sh 容器运行 改成 如果容器有data目录添加这个/ql/data/config/config.sh 如果没有data目录添加/ql/config/config.sh
 第15行 不修改，此行不能移动或者更改，否则会删除错误你们青龙配置文件
 第17行 日志输出路径
 第19行 判断是否有异常不用管
-第21行 青龙的数据库 /root/ql/db/database.sqlite 如果容器运行填写 /ql/data/db/database.sqlite
+第21行 青龙的数据库 /root/ql/db/database.sqlite 容器运行 改成 如果容器有data目录添加这个/ql/data/db/database.sqlite 如果没有data目录添加/ql/db/database.sqlite
+```
+
+## 在服务器运行脚本
+
+```shell
+# 下载添加参数的脚本
+  # 国内
+  wget https://hub.0z.gs/xgzk/QL_variable/archive/refs/heads/main.zip
+  # 国外
+  wget https://github.com/xgzk/QL_variable/archive/refs/heads/main.zip
+# 解压
+unzip main.zip
+# 删除
+rm -rf main.zip
+# 进入QL_variable-main
+cd QL_variable-main/
+# 修改conn.yml文件，编辑模式按i 写完英文输入法按ESC :qw
+vim conn.yml
+# 安装依赖库
+pip3 install -r requirements.txt
+# 测试脚本是否正常
+python3 ql_addvalue.py
+# 添加守护进程
+python3 ql_kill.py
+# 结束守护进程！！！ 执行脚本会停止运行
+ps -ef|grep ql_addvalue.py |grep -v grep|awk '{print $2}'|xargs kill -9
 ```
 
 ## 在青龙容器运行脚本
 
 ## [找 自动添加参数](https://www.youtube.com/playlist?list=PLH5cFwS6-yF-yDy-eGA3nVVa-2Nl43ZKk)
+
+#### 老版本青龙执行指令
+
+如果容器ql目录是这样执行这个命令
+<img src="./img/2.10.13.png">
+
+```shell
+# 进入青龙的挂载目录，大部分都是ql
+cd /root/ql/db
+# 下载添加参数的脚本
+  # 国内
+  wget https://hub.0z.gs/xgzk/QL_variable/archive/refs/heads/main.zip
+  # 国外
+  wget https://github.com/xgzk/QL_variable/archive/refs/heads/main.zip
+# 解压
+unzip main.zip
+# 删除
+rm -rf main.zip
+# 进入QL_variable-main
+cd QL_variable-main/
+# 修改conn.yml文件，编辑模式按i 写完英文输入法按ESC :qw
+vim conn.yml
+# 查看容器别名,NAMES下的值就是容器的别名
+docker ps
+# 进入容器
+docker exec -it qinglong /bin/bash
+# 进入data目录
+cd db/QL_variable-main/
+# 安装pip3库
+pip3 install -r requirements.txt
+# 启动脚本
+python3 ql_addvalue.py
+# 安装pm2
+npm install pm2 -g
+# 执行
+pm2 start qlAddV.yml
+# 结束执行 !!!! 不用脚本才用的的，用了会停止脚本
+pm2 delete ql_addvalue
+# 退出容器 ctrl+p+q
+```
+
+#### 新版本青龙执行指令
+
+<img src="./img/2.13.2.png" alt="版本图片">
 
 ```shell
 # 进入青龙的挂载目录，大部分都是ql
@@ -131,7 +171,9 @@ python3 ql_addvalue.py
 # 安装pm2
 npm install pm2 -g
 # 执行
-pm2 start dockpm2/qlAddV.yml
+pm2 start qlAddV.yml
+# 结束执行 !!!! 不用脚本才用的的，用了会停止脚本
+pm2 delete ql_addvalue
 # 退出容器 ctrl+p+q
 ```
 
