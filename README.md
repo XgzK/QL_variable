@@ -61,11 +61,11 @@
 第7行 换成自己的青龙面板的域名:端口 ，默认127.0.0.1:5700 就行
 第9行 是我搭建获取TG中KR信息的网址，九月会域名到期，可能不定期更换
 第11行 是青龙任务列表，你们可以去地址查看你们青龙的脚本
-第13行 是青龙配置文件的路径 默认/root/ql/config/config.sh 容器运行 改成 如果容器有data目录添加这个/ql/data/config/config.sh 如果没有data目录添加/ql/config/config.sh
+第13行 是青龙配置文件的路径 默认/root/ql/config/config.sh 容器运行 改成 如果容器有data目录(11版本好像有)添加这个/ql/data/config/config.sh 如果没有data目录(10版本没有)添加/ql/config/config.sh
 第15行 不修改，此行不能移动或者更改，否则会删除错误你们青龙配置文件
 第17行 日志输出路径
 第19行 判断是否有异常不用管
-第21行 青龙的数据库 /root/ql/db/database.sqlite 容器运行 改成 如果容器有data目录添加这个/ql/data/db/database.sqlite 如果没有data目录添加/ql/db/database.sqlite
+第21行 青龙的数据库 /root/ql/db/database.sqlite 容器运行 改成 如果容器有data(11版本好像有)目录添加这个/ql/data/db/database.sqlite 如果没有data(10版本没有)目录添加/ql/db/database.sqlite
 ```
 
 ## 在服务器运行脚本
@@ -129,11 +129,9 @@ cd db/QL_variable-main/
 pip3 install -r requirements.txt
 # 启动脚本
 python3 ql_addvalue.py
-# 安装pm2
-npm install pm2 -g
 # 执行
 pm2 start qlAddV.yml
-# 结束执行 !!!! 不用脚本才用的的，用了会停止脚本
+# 结束脚本执行 !!!! 不用脚本才用的的，用了会停止脚本
 pm2 delete ql_addvalue
 # 退出容器 ctrl+p+q
 ```
@@ -168,8 +166,6 @@ cd data/QL_variable-main/
 pip3 install -r requirements.txt
 # 启动脚本
 python3 ql_addvalue.py
-# 安装pm2
-npm install pm2 -g
 # 执行
 pm2 start qlAddV.yml
 # 结束执行 !!!! 不用脚本才用的的，用了会停止脚本

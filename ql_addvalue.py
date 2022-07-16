@@ -7,6 +7,7 @@ from conn.ql.ql_del import descend, ql_write, del_file
 from conn.ql.ql_list import vaguefind
 from conn.ql.ql_run import ql_run
 from conn.ql.ql_token import token_main
+from conn.web.ql_web import run_web
 
 scheduler = APScheduler()
 
@@ -30,7 +31,7 @@ def immortal_main():
     if jstx['judge'] == 0:
         jsli = get_main()
         # 判断是否有任务
-        if len(jsli) > 0:
+        if jsli != -1:
             print("有任务")
             # 遍历获取所有任务列表
             for i in range(len(jsli[0])):
@@ -64,6 +65,4 @@ if __name__ == '__main__':
     # 添加定时任务
     scheduler.start()
     print("手动执行结束")
-    # 让程序一直运行
-    while True:
-        pass
+    run_web()

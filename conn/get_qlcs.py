@@ -11,16 +11,16 @@ def get_qlcs():
     """
     try:
         ur = read_yaml()
-        res = requests.get(url=ur['url'], timeout=5)
+        res = requests.get(url=ur['url'], timeout=15)
         jstx = res.json()
         # 判断是是否为空
         if len(jstx) > 0:
             return jstx
         else:
-            return []
+            return -1
     except Exception as e:
         log_ip("get_qlcs,获取参数的网址异常，请去github反馈,异常信息：" + str(e))
-        return []
+        return -1
 
 
 def js_parameter(jsvalue):
@@ -50,8 +50,8 @@ def get_main():
     :return: [0]返回的脚本名称 [1] 运行脚本需要的参数,如果没有返回空列表
     """
     gejs = get_qlcs()
-    if len(gejs) > 0:
+    if gejs != -1:
         js = js_parameter(gejs)
         return js
     else:
-        return []
+        return -1
