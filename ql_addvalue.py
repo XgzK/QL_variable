@@ -46,7 +46,7 @@ def immortal_main():
                     id = vaguefind(jsli[0][i])
                     print("id:" + str(id))
                     # 判断是否有脚本
-                    if id != -1:
+                    if id[0] != -1:
                         # 根据脚本id，执行脚本
                         print("执行脚本")
                         ql_run(id)
