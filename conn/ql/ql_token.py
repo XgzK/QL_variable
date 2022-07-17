@@ -37,13 +37,13 @@ def token_main():
         ck = ql_tk()
         if ck != 0:
             str1 = 'Authorization:' + f" '{ck}'"
-            yml_file(str1, 5)
+            yml_file(str1, 7)
             log_ip("新的Bearer添加成功token_main")
-            yml_file("judge: 0", 19)
+            yml_file("judge: 0", 21)
         else:
             log_ip("新的Bearer添加失败,token_main")
             # 如果异常就向conn.yml添加一个值 false
-            yml_file("judge: 1", 19)
+            yml_file("judge: 1", 21)
     except Exception as e:
         print("token_main败，请检查conn.yml文件第2行和第3行，异常信息：" + str(e))
         log_ip("token_main败，请检查conn.yml文件第2行和第3行，异常信息：" + str(e))

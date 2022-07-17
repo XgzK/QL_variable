@@ -1,5 +1,7 @@
-# 容器运行的一律不能用出现编码问题正在修复，请勿现在使用容器运行尽快修复问题
+# TG群 https://t.me/intiidea 前期脚本经常修复，建议加群(仅个人建议)
+
 # 根据变量运行对应任务
+
 #### 本脚本配置是根据 https://github.com/whyour/qinglong 的配置进行的，如使用一键脚本，自行修改配置文件
 
 ## 并不需要拉取KR库大部分脚本名称都是一样的，只有个别的库可能不同
@@ -55,17 +57,23 @@
 ### conn.yml配置详情
 
 ```txt
-第2行 登录青龙面板-->系统设置-->应用设置-->新建应用，选择定时任务的权限就行，复制Client ID
-第3行 登录青龙面板-->系统设置-->应用设置-->新建应用，选择定时任务的权限就行，复制Client Secret
-第5行不用管1，但是不能删这一行或者移动
-第7行 换成自己的青龙面板的域名:端口 ，默认127.0.0.1:5700 就行
-第9行 是我搭建获取TG中KR信息的网址，九月会域名到期，可能不定期更换
-第11行 是青龙任务列表，你们可以去地址查看你们青龙的脚本
-第13行 是青龙配置文件的路径 默认/root/ql/config/config.sh 容器运行 改成 如果容器有data目录(11版本好像有)添加这个/ql/data/config/config.sh 如果没有data目录(10版本没有)添加/ql/config/config.sh
-第15行 不修改，此行不能移动或者更改，否则会删除错误你们青龙配置文件
-第17行 日志输出路径
-第19行 判断是否有异常不用管
-第21行 青龙的数据库 /root/ql/db/database.sqlite 容器运行 改成 如果容器有data(11版本好像有)目录添加这个/ql/data/db/database.sqlite 如果没有data(10版本没有)目录添加/ql/db/database.sqlite
+第2行·青龙版本2.13.X写13其他版本以此类推
+第4行 登录青龙面板-->系统设置-->应用设置-->新建应用，选择定时任务的权限就行，复制Client ID
+第5行 登录青龙面板-->系统设置-->应用设置-->新建应用，选择定时任务的权限就行，复制Client Secret
+第7行不用管1，但是不能删这一行或者移动
+第9行 换成自己的青龙面板的域名:端口 ，默认127.0.0.1:5700 就行
+第11行 是我搭建获取TG中KR信息的网址，九月会域名到期，可能不定期更换
+第13行 是青龙任务列表，你们可以去地址查看你们青龙的脚本
+第15行 是青龙配置文件的路径 默认/root/ql/config/config.sh 容器运行 改成 如果容器有data目录(11版本好像有)添加这个/ql/data/config/config.sh 如果没有data目录(10版本没有)添加/ql/config/config.sh
+第17行 不修改，此行不能移动或者更改，否则会删除错误你们青龙配置文件
+第19行 日志输出路径
+第21行 判断是否有异常不用管
+第23行 青龙的数据库 
+    > 11以后版本/root/ql/db/database.sqlite 容器运行 改成/ ql/data/db/database.sqlite
+    > 10版本之前/root/ql/db/crontab.db 容器运行 改成/ ql/db/crontab.db
+    > 本人测试了10版本和13版本可行
+    > 9版本之前不知道存在不，没测试 ，11、12版本未测试，请自行测试
+第25行 用于去重的数据库，不用管，如果更改目录需要去相关目录移动数据库文件
 ```
 
 ## 在服务器运行脚本
@@ -92,6 +100,9 @@ python3 ql_addvalue.py
 python3 ql_kill.py
 # 结束守护进程！！！ 执行脚本会停止运行
 ps -ef|grep ql_addvalue.py |grep -v grep|awk '{print $2}'|xargs kill -9
+
+# 重启脚本
+python3 ql_kill.py
 ```
 
 ## 在青龙容器运行脚本
@@ -134,6 +145,12 @@ pm2 start qlAddV.yml
 # 结束脚本执行 !!!! 不用脚本才用的的，用了会停止脚本
 pm2 delete ql_addvalue
 # 退出容器 ctrl+p+q
+
+# 重启脚本相关，好像pm2会自动重启，不清楚只是听说
+# 查看脚本ID ql_addvalue就是
+pm2 list
+# 重启 获取输入的ID pm2 restart 3
+pm2 restart ID
 ```
 
 #### 新版本青龙执行指令
@@ -171,6 +188,12 @@ pm2 start qlAddV.yml
 # 结束执行 !!!! 不用脚本才用的的，用了会停止脚本
 pm2 delete ql_addvalue
 # 退出容器 ctrl+p+q
+
+# 重启脚本相关，好像pm2会自动重启，不清楚只是听说
+# 查看脚本ID ql_addvalue就是
+pm2 list
+# 重启 获取输入的ID pm2 restart 3
+pm2 restart ID
 ```
 
 ## 活动相关
@@ -193,4 +216,13 @@ http://xr.xgz.buzz:5000/qlcs TG上一些活动参数
 http://xr.xgz.buzz:5000/qljs 里面脚本名称
 http://xr.xgz.buzz:5000/qlurl 一些参数
 http://xr.xgz.buzz:5000/qlrz 脚本运行的日志很乱
+```
+
+## 更新说明
+
+```text
+版本1.1 
+ > 修复不同版本数据库差异问题
+ > 添加去重功能
+ > BUG未知，请遇到反馈
 ```

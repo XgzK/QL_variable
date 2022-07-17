@@ -1,6 +1,7 @@
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import log_ip
 from conn.ql.ql_write import yml_file
+from conn.sql.addsql import insert_data
 
 
 def descend():
@@ -13,7 +14,7 @@ def descend():
         file = open(yml['qlpath'], 'r', encoding="utf-8")
         lines = file.readlines()
         str1 = 'delql: ' + str(len(lines))
-        yml_file(str1, 15)
+        yml_file(str1, 17)
         file.close()
     except Exception as e:
         log_ip("descend,异常信息：" + str(e))
@@ -43,12 +44,20 @@ def ql_write(str12):
     """
     写入青龙任务列表，把内容添加到文件最后一行
     :param str12: 传入内容
-    :return:
+    :return: 如果没有执行过返回0，如果执行过返回-1
     """
     try:
-        yml = read_yaml()
-        file = open(yml['qlpath'], 'a', encoding="utf-8")
-        file.write(str12)
-        file.close()
+        # 添加到数据库，如果成功添加表示之前没有运行过
+        st = insert_data(str12)
+        if st == 0:
+            yml = read_yaml()
+            file = open(yml['qlpath'], 'a', encoding="utf-8")
+            file.write(str12)
+            file.close()
+            return 0
+        else:
+            log_ip(str(str12) + "已经存在本次不再执行")
+            return -1
     except Exception as e:
         log_ip("ql_write,异常信息：" + str(e))
+        return -1
