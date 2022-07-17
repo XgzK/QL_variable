@@ -1,7 +1,7 @@
 # pip3 install -r requirements.txt
 
 # 其他库
-requests
-PyYAML
-Flask-APScheduler
-Flask
+requests > 1
+PyYAML > 1
+Flask > 1
+Flask-APScheduler > 1

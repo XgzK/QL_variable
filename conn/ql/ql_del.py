@@ -14,7 +14,7 @@ def descend():
         file = open(yml['qlpath'], 'r', encoding="utf-8")
         lines = file.readlines()
         str1 = 'delql: ' + str(len(lines))
-        yml_file(str1, 17)
+        yml_file(str1, yml['Record']['delql'])
         file.close()
     except Exception as e:
         log_ip("descend,异常信息：" + str(e))
@@ -56,7 +56,7 @@ def ql_write(str12):
             file.close()
             return 0
         else:
-            log_ip(str(str12) + "已经存在本次不再执行")
+            log_ip("参数已经执行过" + str(str12) + "不再重复执行")
             return -1
     except Exception as e:
         log_ip("ql_write,异常信息：" + str(e))

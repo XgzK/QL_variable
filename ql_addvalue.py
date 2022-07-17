@@ -32,10 +32,8 @@ def immortal_main():
         jsli = get_main()
         # 判断是否有任务
         if jsli != -1:
-            print("有任务")
             # 遍历获取所有任务列表
             for i in range(len(jsli[0])):
-                print("获取到数据了")
                 # 读取文件的行数
                 descend()
                 # 把内容添加最后一行,如果返回-1说明已经存在了

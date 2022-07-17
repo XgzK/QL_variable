@@ -23,8 +23,8 @@ def ql_tk():
         log_ip("获取登录Bearer成功")
         return jstx['data']['token_type'] + " " + jstx['data']['token']
     except Exception as e:
-        print("ql_tk异常信息，请检查conn.yml文件第2行和第3行，异常信息：" + str(e))
-        log_ip("ql_tk异常信息，请检查conn.yml文件第2行和第3行，异常信息：" + str(e))
+        print("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
+        log_ip("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
         return 0
 
 
@@ -35,15 +35,16 @@ def token_main():
     """
     try:
         ck = ql_tk()
+
         if ck != 0:
             str1 = 'Authorization:' + f" '{ck}'"
-            yml_file(str1, 7)
+            yml_file(str1, read_yaml()['Record']['Authorization'])
             log_ip("新的Bearer添加成功token_main")
-            yml_file("judge: 0", 21)
+            yml_file("judge: 0", read_yaml()['Record']['judge'])
         else:
             log_ip("新的Bearer添加失败,token_main")
-            # 如果异常就向conn.yml添加一个值 false
-            yml_file("judge: 1", 21)
+            # 如果异常就向conn.yml添加一个值 1
+            yml_file("judge: 1", read_yaml()['Record']['judge'])
     except Exception as e:
-        print("token_main败，请检查conn.yml文件第2行和第3行，异常信息：" + str(e))
-        log_ip("token_main败，请检查conn.yml文件第2行和第3行，异常信息：" + str(e))
+        print("token_main败，请检查conn.yml文件，异常信息：" + str(e))
+        log_ip("token_main败，请检查conn.yml文件，异常信息：" + str(e))

@@ -12,11 +12,7 @@ def vaguefind(str12):
     try:
         versi = read_yaml()
         # 判断青龙版本
-        if versi['qlVersion'] == 10:
-            return ql10_db(str12)
-        elif versi['qlVersion'] == 13:
-            return ql13_sql(str12)
-        elif versi['qlVersion'] < 10:
+        if versi['qlVersion'] <= 10:
             return ql10_db(str12)
         elif versi['qlVersion'] >= 11:
             return ql13_sql(str12)
