@@ -54,6 +54,7 @@
 </details>
 
 
+
 ### conn.yml配置详情
 
 ```txt
@@ -71,10 +72,9 @@
     > 下面是官方青龙的配置，可能会和部分青龙版的目录有差异
     > 11以后版本/root/ql/db/database.sqlite 容器运行 改成 /ql/data/db/database.sqlite
     > 10版本之前/root/ql/db/crontab.db 容器运行 改成 /ql/db/crontab.db
-    > 本人测试了10版本和13版本可行
-    > 9版本之前不知道存在不，没测试 ，11、12版本未测试，请自行测试
-第23行 用于去重的数据库，不用管，如果更改目录需要去相关目录移动数据库文件
-第25行记录 7、5、19行的
+第23行 判断是有去重，0是去重复，1是不去重复，默认是0
+第25行 用于去重的数据库，不用管，如果更改目录需要去相关目录移动数据库文件
+第27行记录 7、5、19行的
 ```
 
 ## 在服务器运行脚本，推荐使用
@@ -212,8 +212,9 @@ pm2 restart ID
 参数网址
 
 ```text
-http://xr.xgz.buzz:5000 测试页面，确定网址是否正常运行
-http://xr.xgz.buzz:5000/qlcs TG上一些活动参数
+http://cs.xgz.buzz/ql/jd.json 测试配置是否正确，替换conn.yml中的http://xr.xgz.buzz:5000/qlcs就行，仅用于测试
+http://xr.xgz.buzz:5000 确定网址是否正常运行
+http://xr.xgz.buzz:5000/qlcs TG上一些活动参数，正式接口，日常使用这个
 http://xr.xgz.buzz:5000/qljs 里面脚本名称
 http://xr.xgz.buzz:5000/qlurl 一些参数
 http://xr.xgz.buzz:5000/qlrz 脚本运行的日志很乱

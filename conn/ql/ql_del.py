@@ -40,6 +40,19 @@ def del_file():
         log_ip("del_file,异常信息：" + str(e))
 
 
+def deduplication(str12):
+    """
+    添加到内容到青龙配置文件
+    :param str12: 传入内容
+    :return:
+    """
+    yml = read_yaml()
+    file = open(yml['qlpath'], 'a', encoding="utf-8")
+    file.write("\n" + str12)
+    file.close()
+    return 0
+
+
 def ql_write(str12):
     """
     写入青龙任务列表，把内容添加到文件最后一行
@@ -47,17 +60,18 @@ def ql_write(str12):
     :return: 如果没有执行过返回0，如果执行过返回-1
     """
     try:
-        # 添加到数据库，如果成功添加表示之前没有运行过
-        st = insert_data(str12)
-        if st == 0:
-            yml = read_yaml()
-            file = open(yml['qlpath'], 'a', encoding="utf-8")
-            file.write(str12)
-            file.close()
-            return 0
+        deve = read_yaml()
+        # 判断是否去重数据
+        if deve['deduplication'] == 0:
+            # 添加到数据库，如果成功添加表示之前没有运行过
+            st = insert_data(str12)
+            if st == 0:
+                return deduplication(str12)
+            else:
+                log_ip("参数已经执行过" + str(str12) + "不再重复执行")
+                return -1
         else:
-            log_ip("参数已经执行过" + str(str12) + "不再重复执行")
-            return -1
+            return deduplication(str12)
     except Exception as e:
         log_ip("ql_write,异常信息：" + str(e))
         return -1
