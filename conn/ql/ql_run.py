@@ -20,8 +20,8 @@ def ql_run(data):
         status = ss.status_code
         # 获取返回的状态码
         if status == 200:
-            # 延迟15秒
-            # time.sleep(15)
+            # 延迟20秒
+            time.sleep(20)
             log_ip("任务执行成功")
         else:
             log_ip("任务执行失败:" + str(status))
