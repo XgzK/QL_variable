@@ -1,6 +1,6 @@
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import log_ip
-from conn.ql.ql_Version import ql10_db, ql13_sql
+from conn.ql.ql_Version import ql10_db, ql13_sql, ql10_2_db
 
 
 def vaguefind(str12):
@@ -12,8 +12,10 @@ def vaguefind(str12):
     try:
         versi = read_yaml()
         # 判断青龙版本
-        if versi['qlVersion'] <= 10:
+        if versi['qlVersion'] == 10:
             return ql10_db(str12)
+        elif versi['qlVersion'] == 9:
+            return ql10_2_db(str12)
         elif versi['qlVersion'] >= 11:
             return ql13_sql(str12)
         else:
