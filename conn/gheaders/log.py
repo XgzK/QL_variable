@@ -1,8 +1,8 @@
 import logging
 import os
-import time
 
 from conn.gheaders.conn import read_yaml
+from conn.gheaders.ti import date_minutes
 
 path = read_yaml()['log']
 # 1.创建日志器对象
@@ -15,8 +15,7 @@ logger.addHandler(file_handle)
 
 
 def log_ip(data):
-    aa = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-    logging.error(f"{aa} : {data}")
+    logging.error(f"{date_minutes()} : {data}")
     file_handle.close()
     dele_ip()
 

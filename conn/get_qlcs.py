@@ -1,7 +1,24 @@
+import time
+
 import requests
 
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import log_ip
+
+
+def get_url():
+    """
+    获取爬取的网址
+    :return: 返回爬取的网址
+    """
+    try:
+        ur = read_yaml()
+        res = requests.get(url=ur['url'], timeout=15)
+        # 返回状态码为200时
+        return res
+    except Exception as e:
+        log_ip("get_url,获取爬取的网址异常，请去github反馈,异常信息：" + str(e))
+        return -1
 
 
 def get_qlcs():
@@ -10,16 +27,24 @@ def get_qlcs():
     :return: 返回json格式文件,如果没有返回空列表
     """
     try:
-        ur = read_yaml()
-        res = requests.get(url=ur['url'], timeout=15)
-        jstx = res.json()
-        # 判断是是否为空
-        if len(jstx) > 0:
-            return jstx
-        else:
-            return -1
+        # 最多请求3次，避免请求失败
+        for i in range(3):
+            res = get_url()
+            # 返回状态码为200时
+            if res.status_code == 200:
+
+                jstx = res.json()
+                # 判断是是否为空
+                if len(jstx) > 0:
+                    return jstx
+                else:
+                    return -1
+            else:
+                # 返回状态码不为200时，延迟3秒再请求
+                time.sleep(3)
+        return -1
     except Exception as e:
-        log_ip("get_qlcs,获取参数的网址异常，请去github反馈,异常信息：" + str(e))
+        log_ip("get_qlcs,异常信息：" + str(e))
         return -1
 
 

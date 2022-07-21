@@ -1,7 +1,8 @@
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import log_ip
+from conn.gheaders.ti import date_minutes
 from conn.ql.ql_write import yml_file
-from conn.sql.addsql import insert_data
+from conn.sql.addsql import insert_data, select_datati
 
 
 def descend():
@@ -64,11 +65,17 @@ def ql_write(str12):
         # 判断是否去重数据
         if deve['deduplication'] == 0:
             # 添加到数据库，如果成功添加表示之前没有运行过
-            st = insert_data(str12)
+            print("添加到数据库")
+            st = insert_data(str12, date_minutes())
+            print(st)
             if st == 0:
                 return deduplication(str12)
             else:
+                inquire = select_datati(str12)
+                log_ip("===========================================================")
                 log_ip("参数已经执行过" + str(str12) + "不再重复执行")
+                log_ip("在 " + str(inquire[0][1]) + " 数据库中参数是 " + str(inquire[0][0]) + "所以不再重复执行")
+                log_ip("===========================================================")
                 return -1
         else:
             return deduplication(str12)
