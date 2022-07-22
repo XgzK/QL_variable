@@ -12,7 +12,7 @@ from conn.web.ql_web import run_web
 scheduler = APScheduler()
 
 
-@scheduler.task('interval', id='timing_ck', days=8)
+@scheduler.task('interval', id='timing_ck', days=15)
 def timing_ck():
     """
     设置每半个月获取一次新的ck,青龙作者是的是一个月保质期，不过这里设置为半个月
@@ -21,7 +21,7 @@ def timing_ck():
     token_main()
 
 
-@scheduler.task('interval', id='immortal_main', minutes=15)
+@scheduler.task('interval', id='immortal_main', minutes=8)
 def immortal_main():
     """
     主要功能运行,每15分钟运行一次
