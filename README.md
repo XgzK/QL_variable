@@ -68,14 +68,15 @@
 第15行 不修改，此行不能移动或者更改，否则会删除错误你们青龙配置文件
 第17行 日志输出路径
 第19行 判断是否有异常不用管
-第21行 青龙的数据库 
+第21行 多少分钟执行一次
+第23行 青龙的数据库 
     > 下面是官方青龙的配置，可能会和部分青龙版的目录有差异
     > 11以后版本/root/ql/db/database.sqlite 容器运行 改成 /ql/data/db/database.sqlite
     > 10.3版本之后定义为10版本 /root/ql/db/crontab.db 容器运行 改成 /ql/db/crontab.db
     > 10.2版本之前定义为9版本 /root/ql/db/crontab.db 容器运行 改成 /ql/db/crontab.db
-第23行 判断是有去重，0是去重复，1是不去重复，默认是0
-第25行 用于去重的数据库，不用管，如果更改目录需要去相关目录移动数据库文件
-第27行记录 7、5、19行的
+第25行 判断是有去重，0是去重复，1是不去重复，默认是0
+第27行 用于去重的数据库，不用管，如果更改目录需要去相关目录移动数据库文件
+第29行记录 7、5、19行的
 ```
 
 ## 在服务器运行脚本，推荐使用
@@ -216,8 +217,6 @@ pm2 restart ID
 http://cs.xgz.buzz/ql/jd.json 测试配置是否正确，替换conn.yml中的http://xr.xgz.buzz:5000/qlcs就行，仅用于测试
 http://xr.xgz.buzz:5000 确定网址是否正常运行
 http://xr.xgz.buzz:5000/qlcs TG上一些活动参数，正式接口，日常使用这个
-http://xr.xgz.buzz:5000/qljs 里面脚本名称
-http://xr.xgz.buzz:5000/qlurl 一些参数
 http://xr.xgz.buzz:5000/qlrz 脚本运行的日志很乱
 ```
 
