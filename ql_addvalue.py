@@ -12,7 +12,7 @@ from conn.web.ql_web import run_web
 scheduler = APScheduler()
 
 
-@scheduler.task('interval', id='timing_ck', days=15)
+@scheduler.task('interval', id='timing_ck', days=8)
 def timing_ck():
     """
     设置每半个月获取一次新的ck,青龙作者是的是一个月保质期，不过这里设置为半个月
@@ -21,10 +21,10 @@ def timing_ck():
     token_main()
 
 
-@scheduler.task('interval', id='immortal_main', minutes=read_yaml()['time'])
+@scheduler.task('interval', id='immortal_main', minutes=15)
 def immortal_main():
     """
-    主要功能运行函数
+    主要功能运行,每15分钟运行一次
     :return:
     """
     jstx = read_yaml()
@@ -51,8 +51,8 @@ def immortal_main():
                     # 删除添加的行
                     del_file()
         else:
-            log_ip(f"本次没有任务，{jstx['time']}分钟后再次运行")
-            print(f"本次没有任务，{jstx['time']}分钟后再次运行")
+            log_ip("本次没有任务，15分钟后再次运行")
+            print("本次没有任务，15分钟后再次运行")
     else:
         print("异常问题：conn.yml文件中judge设置为false,表示配置异常")
 
