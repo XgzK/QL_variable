@@ -64,19 +64,25 @@ def ql_write(str12):
         deve = read_yaml()
         # 判断是否去重数据
         if deve['deduplication'] == 0:
-            # 添加到数据库，如果成功添加表示之前没有运行过
-            print("添加到数据库")
-            st = insert_data(str12, date_minutes())
-            print(st)
-            if st == 0:
-                return deduplication(str12)
+            # 针对某些不需要去重复的数据，如果不是exp则不去重复
+            if str12[:3] == "exp":
+                # 添加到数据库，如果成功添加表示之前没有运行过
+                print("添加到数据库")
+                st = insert_data(str12, date_minutes())
+                print(st)
+                if st == 0:
+                    return deduplication(str12)
+                else:
+                    inquire = select_datati(str12)
+                    log_ip("===========================================================")
+                    log_ip("参数已经执行过" + str(str12) + "不再重复执行")
+                    log_ip("在 " + str(inquire[0][1]) + " 数据库中参数是 " + str(inquire[0][0]) + "所以不再重复执行")
+                    log_ip("===========================================================")
+                    return -1
             else:
-                inquire = select_datati(str12)
-                log_ip("===========================================================")
-                log_ip("参数已经执行过" + str(str12) + "不再重复执行")
-                log_ip("在 " + str(inquire[0][1]) + " 数据库中参数是 " + str(inquire[0][0]) + "所以不再重复执行")
-                log_ip("===========================================================")
-                return -1
+                print(str12[3:])
+                # 把后端添加的前3位去掉
+                return deduplication(str12[3:])
         else:
             return deduplication(str12)
     except Exception as e:
