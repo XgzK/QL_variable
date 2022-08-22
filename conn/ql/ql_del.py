@@ -1,10 +1,10 @@
 from conn.gheaders.conn import read_yaml
-from conn.gheaders.log import log_ip
+from conn.gheaders.log import LoggerClass
 from conn.gheaders.ti import date_minutes
 from conn.ql.ql_write import yml_file
 from conn.sql.addsql import insert_data, select_datati
 
-
+logger = LoggerClass('debug')
 def descend():
     """
     用于读取青龙配置文件的末尾，并添加到conn.yml指定行
@@ -18,7 +18,7 @@ def descend():
         yml_file(str1, yml['Record']['delql'])
         file.close()
     except Exception as e:
-        log_ip("descend,异常信息：" + str(e))
+        logger.logger("descend,异常信息：" + str(e))
 
 
 def del_file():
@@ -38,7 +38,7 @@ def del_file():
         file_new.writelines(lines)  # 将删除行后的数据写入文件
         file_new.close()
     except Exception as e:
-        log_ip("del_file,异常信息：" + str(e))
+        logger.logger("del_file,异常信息：" + str(e))
 
 
 def deduplication(str12):
@@ -74,10 +74,10 @@ def ql_write(str12):
                     return deduplication(str12)
                 else:
                     inquire = select_datati(str12)
-                    log_ip("===========================================================")
-                    log_ip("参数已经执行过" + str(str12) + "不再重复执行")
-                    log_ip("在 " + str(inquire[0][1]) + " 数据库中参数是 " + str(inquire[0][0]) + "所以不再重复执行")
-                    log_ip("===========================================================")
+                    logger.logger("===========================================================")
+                    logger.logger("参数已经执行过" + str(str12) + "不再重复执行")
+                    logger.logger("在 " + str(inquire[0][1]) + " 数据库中参数是 " + str(inquire[0][0]) + "所以不再重复执行")
+                    logger.logger("===========================================================")
                     return -1
             else:
                 print(str12[3:])
@@ -86,5 +86,5 @@ def ql_write(str12):
         else:
             return deduplication(str12)
     except Exception as e:
-        log_ip("ql_write,异常信息：" + str(e))
+        logger.write_log("ql_write,异常信息：" + str(e))
         return -1

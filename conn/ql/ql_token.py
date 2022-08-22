@@ -1,9 +1,9 @@
 import requests
 
 from conn.gheaders.conn import read_yaml
-from conn.gheaders.log import log_ip
+from conn.gheaders.log import LoggerClass
 from conn.ql.ql_write import yml_file
-
+logger = LoggerClass('debug')
 
 def ql_tk():
     """
@@ -20,11 +20,11 @@ def ql_tk():
         cs = requests.get(url=url, params=params, timeout=5)
         print(cs.url)
         jstx = cs.json()
-        log_ip("获取登录Bearer成功")
+        logger.write_log("获取登录Bearer成功")
         return jstx['data']['token_type'] + " " + jstx['data']['token']
     except Exception as e:
         print("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
-        log_ip("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
+        logger.write_log("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
         return 0
 
 
@@ -39,12 +39,12 @@ def token_main():
         if ck != 0:
             str1 = 'Authorization:' + f" '{ck}'"
             yml_file(str1, read_yaml()['Record']['Authorization'])
-            log_ip("新的Bearer添加成功token_main")
+            logger.write_log("新的Bearer添加成功token_main")
             yml_file("judge: 0", read_yaml()['Record']['judge'])
         else:
-            log_ip("新的Bearer添加失败,token_main")
+            logger.write_log("新的Bearer添加失败,token_main")
             # 如果异常就向conn.yml添加一个值 1
             yml_file("judge: 1", read_yaml()['Record']['judge'])
     except Exception as e:
         print("token_main败，请检查conn.yml文件，异常信息：" + str(e))
-        log_ip("token_main败，请检查conn.yml文件，异常信息：" + str(e))
+        logger.write_log("token_main败，请检查conn.yml文件，异常信息：" + str(e))

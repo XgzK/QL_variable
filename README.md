@@ -1,5 +1,4 @@
-# TG群 https://t.me/intiidea 前期脚本经常修复，建议加群(仅个人建议)
-# TG号被封，有问题先发邮箱，或者等几天再处理
+# TG群 https://t.me/InteIJ 前期脚本经常修复，建议加群(仅个人建议)
 
 # 根据变量运行对应任务
 
@@ -111,8 +110,6 @@ python3 ql_kill.py
 
 ## 在青龙容器运行脚本
 
-## [找 自动添加参数](https://www.youtube.com/playlist?list=PLH5cFwS6-yF-yDy-eGA3nVVa-2Nl43ZKk)
-
 #### 老版本青龙执行指令
 
 如果容器ql目录是这样执行这个命令
@@ -215,10 +212,9 @@ pm2 restart ID
 参数网址
 
 ```text
-http://cs.xgz.buzz/ql/jd.json 测试配置是否正确，替换conn.yml中的http://xr.xgz.buzz:5000/qlcs就行，仅用于测试
-http://xr.xgz.buzz:5000 确定网址是否正常运行
-http://xr.xgz.buzz:5000/qlcs TG上一些活动参数，正式接口，日常使用这个
-http://xr.xgz.buzz:5000/qlrz 脚本运行的日志很乱
+http://xgzq.ml:5000 确定网址是否正常运行
+http://xgzq.ml:5000/qlcs TG上一些活动参数，正式接口，日常使用这个
+http://xgzq.ml:5000/qlrz 脚本运行的日志很乱
 ```
 
 ## 更新说明
@@ -238,4 +234,7 @@ http://xr.xgz.buzz:5000/qlrz 脚本运行的日志很乱
     > 更新可以保留conn.yml文件
     > 对一些获取进行不去重处理
     > 建议之前版本拉取最新脚本
+版本1.3
+    > 添加了配置文件检测
+    > 还是开发中,这几天慢慢完善
 ```

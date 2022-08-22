@@ -1,7 +1,7 @@
 from conn.gheaders.conn import read_yaml
-from conn.gheaders.log import log_ip
+from conn.gheaders.log import LoggerClass
 from conn.ql.ql_Version import ql10_db, ql13_sql, ql10_2_db
-
+logger = LoggerClass('debug')
 
 def vaguefind(str12):
     """
@@ -20,7 +20,7 @@ def vaguefind(str12):
             return ql13_sql(str12)
         else:
             print("青龙版本未知")
-            log_ip("青龙版本未知,请阅读conn.yml配置文件说明")
+            logger.write_log("青龙版本未知,请阅读conn.yml配置文件说明")
             return [-1]
     except Exception as e:
-        log_ip("vaguefind,异常信息：" + str(e))
+        logger.write_log("vaguefind,异常信息：" + str(e))

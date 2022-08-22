@@ -3,7 +3,9 @@ import time
 import requests
 
 from conn.gheaders.conn import read_yaml
-from conn.gheaders.log import log_ip
+from conn.gheaders.log import LoggerClass
+
+logger = LoggerClass('debug')
 
 
 def get_url():
@@ -17,7 +19,7 @@ def get_url():
         # 返回状态码为200时
         return res
     except Exception as e:
-        log_ip("get_url,获取爬取的网址异常，请去github反馈,异常信息：" + str(e))
+        logger.write_log("get_url,获取爬取的网址异常，请去github反馈,异常信息：" + str(e))
         return -1
 
 
@@ -44,7 +46,7 @@ def get_qlcs():
                 time.sleep(3)
         return -1
     except Exception as e:
-        log_ip("get_qlcs,异常信息：" + str(e))
+        logger.write_log("get_qlcs,异常信息：" + str(e))
         return -1
 
 
@@ -65,7 +67,7 @@ def js_parameter(jsvalue):
             jsval.append(qlcs[1])
         return [jsname, jsval]
     except Exception as e:
-        log_ip("js_parameter,异常信息：" + str(e))
+        logger.write_log("js_parameter,异常信息：" + str(e))
         return []
 
 

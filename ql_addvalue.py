@@ -1,15 +1,26 @@
 from flask_apscheduler import APScheduler
 
+from conn.Inspector import Check
 from conn.get_qlcs import get_main
 from conn.gheaders.conn import read_yaml
-from conn.gheaders.log import log_ip
+from conn.gheaders.log import LoggerClass, def_log
 from conn.ql.ql_del import descend, ql_write, del_file
 from conn.ql.ql_list import vaguefind
 from conn.ql.ql_run import ql_run
 from conn.ql.ql_token import token_main
 from conn.web.ql_web import run_web
 
+logger = LoggerClass('debug')
 scheduler = APScheduler()
+check = Check()
+
+@scheduler.task('interval', id='tk', days=1)
+def tc():
+    """
+    一天删除一次日志
+    :return:
+    """
+    def_log()
 
 
 @scheduler.task('interval', id='timing_ck', days=15)
@@ -51,18 +62,19 @@ def immortal_main():
                     # 删除添加的行
                     del_file()
         else:
-            log_ip(f"本次没有任务，{jstx['time']}分钟后再次运行")
+            logger.write_log(f"本次没有任务，{jstx['time']}分钟后再次运行")
             print(f"本次没有任务，{jstx['time']}分钟后再次运行")
     else:
         print("异常问题：conn.yml文件中judge设置为false,表示配置异常")
 
 
 if __name__ == '__main__':
-    print("开始运行")
-    # 定时任务第一次不会执行，所以手动添加一次
-    timing_ck()
-    immortal_main()
-    # 添加定时任务
-    scheduler.start()
-    print("手动执行结束")
-    run_web()
+    pa = check.cpath()
+    if pa == 0:
+        # 定时任务第一次不会执行，所以手动添加一次
+        timing_ck()
+        immortal_main()
+        # 添加定时任务
+        scheduler.start()
+        print("手动执行结束")
+        run_web()

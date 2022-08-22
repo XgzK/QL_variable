@@ -2,8 +2,9 @@ import json
 import re
 
 from conn.gheaders.conn import read_txt, read_yaml
-from conn.gheaders.log import log_ip
+from conn.gheaders.log import LoggerClass
 from conn.sql.pysql import select_data
+logger = LoggerClass('debug')
 
 """
 此脚本用来适配青龙版本的
@@ -29,13 +30,13 @@ def ql13_sql(str12):
                 # 因为必须数组所以这里创建一个数组,返回数组id
                 dd = [l[i][0]]
                 # 如果对比成功立刻结束此方法
-                log_ip("脚本: " + str12 + "名称: " + l[i][1] + "id: " + str(l[i][0]))
+                logger.write_log("脚本: " + str12 + "名称: " + l[i][1] + "id: " + str(l[i][0]))
                 return dd
         # 如果运行到这里表示这个脚本你没有
-        log_ip(str(str12) + "脚本不存在")
+        logger.write_log(str(str12) + "脚本不存在")
         return [-1]
     except Exception as e:
-        log_ip("ql13_sql,异常信息：" + str(e))
+        logger.write_log("ql13_sql,异常信息：" + str(e))
         return [-1]
 
 
@@ -61,13 +62,13 @@ def ql10_db(str12):
                 # 因为必须数组所以这里创建一个数组,返回数组id
                 dd = [sq['_id']]
                 # 如果对比成功立刻结束此方法
-                log_ip("脚本: " + str12 + " 名称: " + sq['name'] + " id: " + sq['_id'])
+                logger.write_log("脚本: " + str12 + " 名称: " + sq['name'] + " id: " + sq['_id'])
                 return dd
         # 如果运行到这里表示这个脚本你没有
-        log_ip(str(str12) + "：脚本你没有!!!!!")
+        logger.write_log(str(str12) + "：脚本你没有!!!!!")
         return [-1]
     except Exception as e:
-        log_ip("ql10_db,异常信息：" + str(e))
+        logger.write_log("ql10_db,异常信息：" + str(e))
         return [-1]
 
 
@@ -93,11 +94,11 @@ def ql10_2_db(str12):
                 # 因为必须数组所以这里创建一个数组,返回数组id
                 dd = [sq['_id']]
                 # 如果对比成功立刻结束此方法
-                log_ip("脚本: " + str12 + " 名称: " + sq['name'] + " id: " + sq['_id'])
+                logger.write_log("脚本: " + str12 + " 名称: " + sq['name'] + " id: " + sq['_id'])
                 return dd
         # 如果运行到这里表示这个脚本你没有
-        log_ip(str(str12) + "：脚本你没有!!!!!")
+        logger.write_log(str(str12) + "：脚本你没有!!!!!")
         return [-1]
     except Exception as e:
-        log_ip("ql10_2_db,异常信息：" + str(e))
+        logger.write_log("ql10_2_db,异常信息：" + str(e))
         return [-1]
