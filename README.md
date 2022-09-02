@@ -121,8 +121,8 @@ wget https://xgzq.tk/library/qlva.tgz
 tar zxvf qlva.tgz
 # 删除
 rm -rf qlva.tgz
-# 进入QL_variable-main
-cd QL_variable-main/
+# 进入QL_variable
+cd QL_variable/
 # 修改conn.yml文件，编辑模式按i 写完英文输入法按ESC :qw
 vim conn.yml
 # 查看容器别名,NAMES下的值就是容器的别名
@@ -130,7 +130,7 @@ docker ps
 # 进入容器
 docker exec -it qinglong /bin/bash
 # 进入data目录
-cd db/QL_variable-main/
+cd db/QL_variable/
 # 安装pip3库
 pip3 install -r requirements.txt
 # 启动脚本
@@ -160,8 +160,8 @@ wget https://xgzq.tk/library/qlva.tgz
 tar zxvf qlva.tgz
 # 删除
 rm -rf qlva.tgz
-# 进入QL_variable-main
-cd QL_variable-main/
+# 进入QL_variable
+cd QL_variable/
 # 修改conn.yml文件，编辑模式按i 写完英文输入法按ESC :qw
 vim conn.yml
 # 查看容器别名,NAMES下的值就是容器的别名
@@ -169,7 +169,7 @@ docker ps
 # 进入容器
 docker exec -it qinglong /bin/bash
 # 进入data目录
-cd data/QL_variable-main/
+cd data/QL_variable/
 # 安装pip3库
 pip3 install -r requirements.txt
 # 启动脚本
