@@ -83,14 +83,11 @@
 
 ```shell
 # 下载添加参数的脚本
-  # 国内
-  wget https://hub.0z.gs/xgzk/QL_variable/archive/refs/heads/main.zip
-  # 国外
-  wget https://github.com/xgzk/QL_variable/archive/refs/heads/main.zip
+wget https://xgzq.tk/library/qlva.tgz
 # 解压
-unzip main.zip
+tar zxvf qlva.tgz
 # 删除
-rm -rf main.zip
+rm -rf qlva.tgz
 # 进入QL_variable-main
 cd QL_variable-main/
 # 修改conn.yml文件，编辑模式按i 写完英文输入法按ESC :qw
@@ -119,14 +116,11 @@ python3 ql_kill.py
 # 进入青龙的挂载目录，大部分都是ql
 cd /root/ql/db
 # 下载添加参数的脚本
-  # 国内
-  wget https://hub.0z.gs/xgzk/QL_variable/archive/refs/heads/main.zip
-  # 国外
-  wget https://github.com/xgzk/QL_variable/archive/refs/heads/main.zip
+wget https://xgzq.tk/library/qlva.tgz
 # 解压
-unzip main.zip
+tar zxvf qlva.tgz
 # 删除
-rm -rf main.zip
+rm -rf qlva.tgz
 # 进入QL_variable-main
 cd QL_variable-main/
 # 修改conn.yml文件，编辑模式按i 写完英文输入法按ESC :qw
@@ -157,19 +151,15 @@ pm2 restart ID
 #### 新版本青龙执行指令
 
 <img src="./img/2.13.2.png" alt="版本图片">
-
 ```shell
 # 进入青龙的挂载目录，大部分都是ql
 cd /root/ql/
 # 下载添加参数的脚本
-  # 国内
-  wget https://hub.0z.gs/xgzk/QL_variable/archive/refs/heads/main.zip
-  # 国外
-  wget https://github.com/xgzk/QL_variable/archive/refs/heads/main.zip
+wget https://xgzq.tk/library/qlva.tgz
 # 解压
-unzip main.zip
+tar zxvf qlva.tgz
 # 删除
-rm -rf main.zip
+rm -rf qlva.tgz
 # 进入QL_variable-main
 cd QL_variable-main/
 # 修改conn.yml文件，编辑模式按i 写完英文输入法按ESC :qw
