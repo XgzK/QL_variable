@@ -88,8 +88,8 @@ wget https://xgzq.tk/library/qlva.tgz
 tar zxvf qlva.tgz
 # 删除
 rm -rf qlva.tgz
-# 进入QL_variable-main
-cd QL_variable-main/
+# 进入QL_variable
+cd QL_variable/
 # 修改conn.yml文件，编辑模式按i 写完英文输入法按ESC :qw
 vim conn.yml
 # 安装依赖库
