@@ -81,8 +81,11 @@ def delete_first_lines(filename, count):
     :param count: 行
     :return:
     """
-    fin = open(filename, 'r', encoding='utf-8')
-    a = fin.readlines()
-    fout = open(filename, 'w', encoding='utf-8')
-    b = ''.join(a[count:])
-    fout.write(b)
+    try:
+        fin = open(filename, 'r', encoding='utf-8')
+        a = fin.readlines()
+        fout = open(filename, 'w', encoding='utf-8')
+        b = ''.join(a[count:])
+        fout.write(b)
+    except Exception as e:
+        print(e)

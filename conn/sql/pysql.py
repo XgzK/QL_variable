@@ -15,16 +15,20 @@ def create_db():
     return cursor, db
 
 
-def select_data():
+def select_data() -> list:
     """
     查询数据
-    :return:
+    :return: 返回数组
     """
-    # 创建数据库
-    cursor, db = create_db()
-    # 查询数据
-    cursor.execute('select * from Crontabs')
-    data = cursor.fetchall()
-    # 关闭数据库
-    db.close()
-    return data
+    try:
+        # 创建数据库
+        cursor, db = create_db()
+        # 查询数据
+        cursor.execute('select * from Crontabs')
+        data = cursor.fetchall()
+        # 关闭数据库
+        db.close()
+        return data
+    except Exception as e:
+        print("数据库异常信息,表不存在: ", e)
+        return [-1]

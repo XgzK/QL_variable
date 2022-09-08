@@ -15,7 +15,7 @@ def log():
     lo = rz()
     if lo == -1:
         return "日志为空"
-    return rz()
+    return lo
 
 
 def run_web():

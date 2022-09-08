@@ -40,7 +40,6 @@ class LoggerClass:
         # 生成以当天日期为名称的日志文件
         self.filename = self.logFile
         # 定义日志输出到前面定义的filename中
-        print(self.filename)
         self.filelogger = RotatingFileHandler(self.logFile, 'a+', encoding="UTF-8")
         self.filelogger.setLevel('DEBUG')  # 设置Handler级别
         # self.filelogger.setLevel(self.level_relations.get(level))
@@ -88,16 +87,6 @@ class LoggerClass:
         except Exception as e:
             print("日志写入权限错误：", e)
 
-    # class LogHandleError(Exception):
-    #     print("日志级别错误")
-    #     # "日志级别错误"
-    #     pass
-
-    # def del_log():
-    #     # 当文件大于1M时，删除文件
-    #     if os.path.getsize(path) > 1242880:
-    #         os.remove(path)
-
     def get_file_sorted(self, file_path):
         """最后修改时间顺序升序排列 os.path.getmtime()->获取文件最后修改时间"""
         dir_list = os.listdir(file_path)
@@ -134,8 +123,7 @@ def rz():
     :return: 打印html格式的日志，异常返回-1
     """
     try:
-        sun = ''
-        __count = 0
+        st = ' '
         if yml == -1:
             return -1
         log = yml['log']
@@ -143,35 +131,26 @@ def rz():
         rz1 = read_txt(log)
         if rz1 == -1:
             return -1
-        # 如果大于100条就设置前面的
         if len(rz1) > 100:
-            del rz1[:-100]
             delete_first_lines(yml['log'], -100)
         # 遍历所有行
         for i in rz1:
-            # print(i)
-            # if __count > 100:
-            #     __count = 0
-            #     sun = ''
             # 如果就\n则跳过
             if i == '\n':
-                # __count += 1
-                # print(__count)
                 continue
             #  把末尾的\n换成<br>
-            # j = i.replace('\n', '<br>')
             j = re.findall(r"\[\d+m(.*)\x1b", i)
             if j:
-                sun += j[0] + "<br>"
-                __count += 1
+                st += j[0] + "<br>"
                 continue
             j = re.findall(r"\d+m(.*)", i)
             if j:
-                sun += j[0] + "<br>"
+                st += j[0] + "<br>"
                 # __count += 1
                 continue
-        return sun
+                # 如果大于100条就设置前面的
+        print('打印',st)
+        return st
     except Exception as e:
-        print("下面异常问题")
-        print(e)
+        print("下面异常问题: ", e)
         return -1
