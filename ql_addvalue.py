@@ -14,6 +14,7 @@ logger = LoggerClass('debug')
 scheduler = APScheduler()
 check = Check()
 
+
 @scheduler.task('interval', id='tk', days=1)
 def tc():
     """
