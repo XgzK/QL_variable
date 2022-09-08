@@ -8,7 +8,7 @@ import os
 
 from logging.handlers import RotatingFileHandler
 
-from conn.gheaders.conn import read_yaml, read_txt
+from conn.gheaders.conn import read_yaml, read_txt, delete_first_lines
 
 yml = read_yaml()
 
@@ -143,12 +143,16 @@ def rz():
         rz1 = read_txt(log)
         if rz1 == -1:
             return -1
+        # 如果大于100条就设置前面的
+        if len(rz1) > 100:
+            del rz1[:-100]
+            delete_first_lines(yml['log'], -100)
         # 遍历所有行
         for i in rz1:
             # print(i)
-            if __count > 100:
-                __count = 0
-                sun = ''
+            # if __count > 100:
+            #     __count = 0
+            #     sun = ''
             # 如果就\n则跳过
             if i == '\n':
                 # __count += 1
@@ -164,19 +168,10 @@ def rz():
             j = re.findall(r"\d+m(.*)", i)
             if j:
                 sun += j[0] + "<br>"
-                __count += 1
+                # __count += 1
                 continue
         return sun
     except Exception as e:
+        print("下面异常问题")
+        print(e)
         return -1
-
-
-def def_log():
-    """
-    删除日志
-    :return:
-    """
-    lo = yml['log']
-    with open(lo, 'w', encoding='utf-8') as f:
-        # 关闭文件
-        f.close()

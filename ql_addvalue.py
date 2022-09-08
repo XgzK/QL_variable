@@ -3,7 +3,7 @@ from flask_apscheduler import APScheduler
 from conn.Inspector import Check
 from conn.get_qlcs import get_main
 from conn.gheaders.conn import read_yaml
-from conn.gheaders.log import LoggerClass, def_log
+from conn.gheaders.log import LoggerClass
 from conn.ql.ql_del import descend, ql_write, del_file
 from conn.ql.ql_list import vaguefind
 from conn.ql.ql_run import ql_run
@@ -13,15 +13,6 @@ from conn.web.ql_web import run_web
 logger = LoggerClass('debug')
 scheduler = APScheduler()
 check = Check()
-
-
-@scheduler.task('interval', id='tk', days=1)
-def tc():
-    """
-    一天删除一次日志
-    :return:
-    """
-    def_log()
 
 
 @scheduler.task('interval', id='timing_ck', days=15)
