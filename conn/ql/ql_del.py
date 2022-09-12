@@ -74,10 +74,10 @@ def ql_write(str12):
                     return deduplication(str12)
                 else:
                     inquire = select_datati(str12)
-                    logger.logger("===========================================================")
-                    logger.logger("参数已经执行过" + str(str12) + "不再重复执行")
-                    logger.logger("在 " + str(inquire[0][1]) + " 数据库中参数是 " + str(inquire[0][0]) + "所以不再重复执行")
-                    logger.logger("===========================================================")
+                    logger.write_log("===========================================================")
+                    logger.write_log("参数已经执行过" + str(str12) + "不再重复执行")
+                    logger.write_log("在 " + str(inquire[0][1]) + " 数据库中参数是 " + str(inquire[0][0]) + "所以不再重复执行")
+                    logger.write_log("===========================================================")
                     return -1
             else:
                 print(str12[3:])
