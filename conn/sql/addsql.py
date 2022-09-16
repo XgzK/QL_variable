@@ -30,7 +30,7 @@ def create_table():
     cursor, db = create_db()
     # 创建表 ip= 服务器ip port=端口 protocol=协议 country=国家，ip不能为空和唯一
     cursor.execute(
-        'CREATE TABLE `repeat` (`jd_value1` varchar(255) NOT NULL UNIQUE, `jd_data` varchar(25) NOT NULL UNIQUE);')
+        'CREATE TABLE `repeat` (`jd_value1` varchar(255) NOT NULL UNIQUE, `jd_data` varchar(25) NOT NULL);')
     # 关闭数据库
     db.close()
 
@@ -47,13 +47,14 @@ def insert_data(jd_value1, jd_data):
         # 创建数据库
         cursor, db = create_db()
         # 插入数据
-        cursor.execute('INSERT INTO `repeat` VALUES (?,?)', (jd_value1, jd_data))
+        cursor.execute(f"INSERT INTO repeat VALUES ('{jd_value1}','{jd_data}');")
         # 提交数据
         db.commit()
         # 关闭数据库
         db.close()
         return 0
     except Exception as e:
+        print(e)
         return -1
 
 

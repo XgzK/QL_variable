@@ -130,3 +130,4 @@ class QL:
                 return js['data']['version']
         except Exception as e:
             print('异常信息', e)
+            return -1

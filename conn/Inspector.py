@@ -26,7 +26,6 @@ class Check:
                 os.makedirs(pa[0])
         db = os.path.isfile(yml['repeat'])
         if not db:
-            print("检测不到数据库开始创建")
             create_db()
             create_table()
 

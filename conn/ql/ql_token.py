@@ -48,13 +48,12 @@ def ql_write(str12):
                 # 添加到数据库，如果成功添加表示之前没有运行过
                 st = insert_data(str12, date_minutes())
                 # 如果数据库中没有存在则返回原值
-                if st == 0:
+                if int(st) == 0:
                     return str12
                 else:
                     inquire = select_datati(str12)
                     logger.write_log("参数已经执行过" + str(str12) + "不再重复执行")
-                    logger.write_log(
-                        "在 " + str(inquire[0][1]) + " 数据库中参数是 " + str(inquire[0][0]) + "所以不再重复执行")
+                    logger.write_log(f"在 {inquire[0][1]} 数据库中参数是 {inquire[0][0]} 所以不再重复执行")
                     return -1
             else:
                 # 把后端添加的NOT不去重标记去掉
@@ -71,18 +70,23 @@ def ql_write(str12):
         return -1
 
 
-def ql_compared(jst: str) -> list:
+def ql_compared(jst: str, va: int) -> list:
     """
     遍历青龙任务来对比,获取任务ID
     :param jst: 脚本名称
+    :param va: 版本号
     :return: ID or -1
     """
     try:
         jstx = read_yaml(yam['json'])
         for i in jstx:
             if i['command'].split('/')[-1] == jst:
-                return [i['id']]
+                # 适配版本10
+                if int(va) == 10:
+                    return [i['_id']]
+                else:
+                    return [i['id']]
         return [-1]
     except Exception as e:
-        print(e)
+        print('异常信息',e)
         return [-1]

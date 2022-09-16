@@ -1,12 +1,12 @@
 # 设置自己青龙的IP:端口 结尾不能带/ 会报错
-ip: 'http://127.0.0.1:5700'
+ip: ''
 # 下面和青龙有关 系统设置-->应用设置-->新建应用-->权限选择所有自己配置
-Client ID: 'I7KeMXHs_EQV'
-Client Secret: 'jz_apwkF-Rlrpf9gO2gqKurt'
+Client ID: ''
+Client Secret: ''
 # 青龙任务参数的存放网址
-url: 'http://xgzq.ml:5000/qlcs'
+url: 'http://127.0.0.1:5000/qlcs'
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行
-Authorization: 'Bearer 587cc276-71b8-4655-983a-fb8bb321d6ee'
+Authorization: 'Bearer 1feb15eb-beae-48f2-892d-4179c5252e45'
 # 日志文件
 log: './log/ql.log'
 # 用于去重复的任务，的数据库，不用修改
