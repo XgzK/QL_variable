@@ -19,11 +19,11 @@ def get_url():
         # 返回状态码为200时
         return res
     except Exception as e:
-        logger.write_log("get_url,获取爬取的网址异常，请去github反馈,异常信息：" + str(e))
+        logger.write_log("get_url,获取活动网址异常: " + str(e))
         return -1
 
 
-def get_qlcs():
+def get_va() -> str:
     """
     获取青龙任务需要的参数
     :return: 返回json格式文件,如果没有返回空列表
@@ -34,51 +34,50 @@ def get_qlcs():
             res = get_url()
             # 返回状态码为200时
             if res.status_code == 200:
-
                 jstx = res.json()
                 # 判断是是否为空
                 if len(jstx) > 0:
                     return jstx
                 else:
-                    return -1
+                    return '-1'
             else:
                 # 返回状态码不为200时，延迟3秒再请求
                 time.sleep(3)
-        return -1
+        return '-1'
     except Exception as e:
         logger.write_log("get_qlcs,异常信息：" + str(e))
-        return -1
+        return '-1'
 
 
-def js_parameter(jsvalue):
+def js_parameter(js_value) -> list:
     """
     处理获取到的参数，把脚本名称和参数分隔开
-    :param jsvalue:
-    :return: [0]返回的脚本名称 [1] 运行脚本需要的参数
+    :param js_value:
+    :return: [0]返回的脚本名称 [1] 运行脚本需要的参数 or []
     """
     try:
-        jsname = []
-        jsval = []
+        js_name = []
+        js_val = []
         # 循环获取的json
-        for i in jsvalue:
-            data = jsvalue[i]
-            qlcs = data.split("\n")
-            jsname.append(qlcs[0])
-            jsval.append(qlcs[1])
-        return [jsname, jsval]
+        for i in js_value:
+            data = js_value[i]
+            ql_cs = data.split("\n")
+            js_name.append(ql_cs[0])
+            js_val.append(ql_cs[1])
+        return [js_name, js_val]
     except Exception as e:
-        logger.write_log("js_parameter,异常信息：" + str(e))
+        logger.write_log("js_parameter,异常信息: " + str(e))
         return []
 
 
-def get_main():
+def get_main() -> list:
     """
     主要用于获取爬取
-    :return: [0]返回的脚本名称 [1] 运行脚本需要的参数,如果没有返回空列表
+    :return: [0]返回的脚本名称 [1] 运行脚本需要的参数,如果没有返回[]
     """
-    gejs = get_qlcs()
-    if gejs != -1:
-        js = js_parameter(gejs)
+    jsv = get_va()
+    if jsv != '-1':
+        js = js_parameter(jsv)
         return js
     else:
-        return -1
+        return []

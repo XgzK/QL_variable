@@ -2,30 +2,14 @@ import requests
 
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import LoggerClass
-from conn.ql.ql_write import yml_file
-logger = LoggerClass('debug')
+from conn.gheaders.ti import date_minutes
+from conn.ql.ql import QL
+from conn.gheaders.conn import yml_file
+from conn.sql.addsql import insert_data, select_datati
 
-def ql_tk():
-    """
-    用于获取登录用的ck,ck有效期一个月
-    :return: 返回登录用的Bearer XXXXXXXXXXX，如果没有获取到，返回0
-    """
-    try:
-        yam = read_yaml()
-        url = yam['ip'] + "/open/auth/token"
-        params = {
-            'client_id': yam['Client ID'],
-            'client_secret': yam['Client Secret']
-        }
-        cs = requests.get(url=url, params=params, timeout=5)
-        print(cs.url)
-        jstx = cs.json()
-        logger.write_log("获取登录Bearer成功")
-        return jstx['data']['token_type'] + " " + jstx['data']['token']
-    except Exception as e:
-        print("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
-        logger.write_log("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
-        return 0
+logger = LoggerClass('debug')
+ql = QL()
+yam = read_yaml()
 
 
 def token_main():
@@ -34,7 +18,7 @@ def token_main():
     :return:
     """
     try:
-        ck = ql_tk()
+        ck = ql.ql_tk()
 
         if ck != 0:
             str1 = 'Authorization:' + f" '{ck}'"
@@ -48,3 +32,57 @@ def token_main():
     except Exception as e:
         print("token_main败，请检查conn.yml文件，异常信息：" + str(e))
         logger.write_log("token_main败，请检查conn.yml文件，异常信息：" + str(e))
+
+
+def ql_write(str12):
+    """
+    写入青龙任务配置文件
+    :param str12: 传入内容
+    :return: 如果没有执行过返回0，如果执行过返回-1
+    """
+    try:
+        # 判断是否去重数据
+        if yam['deduplication'] == 0:
+            # 针对某些不需要去重复的数据，如果不是exp则不去重复
+            if str12[:3] == "exp":
+                # 添加到数据库，如果成功添加表示之前没有运行过
+                st = insert_data(str12, date_minutes())
+                # 如果数据库中没有存在则返回原值
+                if st == 0:
+                    return str12
+                else:
+                    inquire = select_datati(str12)
+                    logger.write_log("参数已经执行过" + str(str12) + "不再重复执行")
+                    logger.write_log(
+                        "在 " + str(inquire[0][1]) + " 数据库中参数是 " + str(inquire[0][0]) + "所以不再重复执行")
+                    return -1
+            else:
+                # 把后端添加的NOT不去重标记去掉
+                return str12[3:]
+        else:
+            # 不去重复
+            if str12[:3] == "exp":
+                return str12
+            else:
+                # 把后端添加的NOT不去重标记去掉
+                return str12[3:]
+    except Exception as e:
+        logger.write_log("ql_write,异常信息：" + str(e))
+        return -1
+
+
+def ql_compared(jst: str) -> list:
+    """
+    遍历青龙任务来对比,获取任务ID
+    :param jst: 脚本名称
+    :return: ID or -1
+    """
+    try:
+        jstx = read_yaml(yam['json'])
+        for i in jstx:
+            if i['command'].split('/')[-1] == jst:
+                return [i['id']]
+        return [-1]
+    except Exception as e:
+        print(e)
+        return [-1]

@@ -5,6 +5,7 @@ from conn.gheaders.conn import read_yaml
 """
 用于去重复的数据
 """
+yam = read_yaml()
 
 
 def create_db():
@@ -13,7 +14,7 @@ def create_db():
     :return:
     """
     # 创建数据库
-    db = sqlite3.connect(read_yaml()["repeat"])
+    db = sqlite3.connect(yam["repeat"])
     # 创建游标
     cursor = db.cursor()
     return cursor, db
@@ -28,7 +29,8 @@ def create_table():
     # 创建数据库
     cursor, db = create_db()
     # 创建表 ip= 服务器ip port=端口 protocol=协议 country=国家，ip不能为空和唯一
-    cursor.execute('CREATE TABLE `repeat` (`jd_value1` varchar(255) NOT NULL UNIQUE)')
+    cursor.execute(
+        'CREATE TABLE `repeat` (`jd_value1` varchar(255) NOT NULL UNIQUE, `jd_data` varchar(25) NOT NULL UNIQUE);')
     # 关闭数据库
     db.close()
 
@@ -56,11 +58,11 @@ def insert_data(jd_value1, jd_data):
 
 
 # 查询数据方法
-def select_datati(value1):
+def select_datati(value1) -> list:
     """
     查询数据
     :param value1: 传入的数据
-    :return: 返回查询到的数据
+    :return: 返回查询到的数据 or []
     """
     try:
         # 创建数据库
@@ -72,4 +74,4 @@ def select_datati(value1):
         db.close()
         return data
     except Exception as e:
-        return -1
+        return []
