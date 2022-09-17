@@ -149,7 +149,6 @@ def rz():
                 # __count += 1
                 continue
                 # 如果大于100条就设置前面的
-        print('打印',st)
         return st
     except Exception as e:
         print("下面异常问题: ", e)
