@@ -29,10 +29,19 @@ def ym_change(li: list):
         if len(ur) == 0:
             revise_yaml(f"time: {li[3]}", 17)
             revise_yaml(f"url: '{li[4]}'", 7)
+            os.system("kill -9 $(netstat -nlp | grep addvalue.py | awk '{print $7}' | awk -F'/' '{ print $1 }')")
             return "添加私人API成功"
         else:
             return "提交的公益API禁止修改时间"
-
+    # li3空4非空
+    elif li[4] != '' and li[3] == '':
+        # 提交非自己搭建的接口
+        revise_yaml(f"ip: '{li[0]}'", 2)
+        revise_yaml(f"Client ID: '{li[1]}'", 4)
+        revise_yaml(f"Client Secret: '{li[2]}'", 5)
+        revise_yaml(f"url: '{li[4]}'", 7)
+        os.system("kill -9 $(netstat -nlp | grep addvalue.py | awk '{print $7}' | awk -F'/' '{ print $1 }')")
+        return "添加API成功"
     elif li[3] != '' and li[4] == '':
         # 自己搭建了爬虫接口
         revise_yaml(f"ip: '{li[0]}'", 2)
@@ -41,6 +50,7 @@ def ym_change(li: list):
         ur = re.findall(r'xgzq\.ml', yml['url'])
         if len(ur) == 0:
             revise_yaml(f"time: {li[3]}", 17)
+            os.system("kill -9 $(netstat -nlp | grep addvalue.py | awk '{print $7}' | awk -F'/' '{ print $1 }')")
             return "修改爬取时间成功"
         else:
             return "提交的公益API禁止修改时间"

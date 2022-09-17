@@ -1,12 +1,12 @@
 # 设置自己青龙的IP:端口 结尾不能带/ 会报错
-ip: 'http://xgzq.ml:5700'
+ip: ''
 # 下面和青龙有关 系统设置-->应用设置-->新建应用-->权限选择所有自己配置
-Client ID: 'eeee'
-Client Secret: '谷歌'
+Client ID: ''
+Client Secret: ''
 # 青龙任务参数的存放网址
-url: 'http://xgzfqf.ml:57'
+url: 'http://xgzfqf.ml:5700'
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行
-Authorization: 'Bearer 0850aaf4-5e0d-4220-a172-d1b7e0fdee22'
+Authorization: ''
 # 日志文件
 log: './log/ql.log'
 # 用于去重复的任务，的数据库，不用修改

@@ -94,11 +94,11 @@ vim conn.yml
 # 安装依赖库
 pip3 install -r requirements.txt
 # 测试脚本是否正常
-python3 ql_addvalue.py
+python3 addvalue.py
 # 添加守护进程
 python3 ql_kill.py
 # 结束守护进程！！！ 执行脚本会停止运行
-ps -ef|grep ql_addvalue.py |grep -v grep|awk '{print $2}'|xargs kill -9
+ps -ef|grep addvalue.py |grep -v grep|awk '{print $2}'|xargs kill -9
 
 # 重启脚本
 python3 ql_kill.py
@@ -133,7 +133,7 @@ cd db/QL_variable/
 # 安装pip3库
 pip3 install -r requirements.txt
 # 启动脚本
-python3 ql_addvalue.py
+python3 addvalue.py
 # 执行
 pm2 start qlAddV.yml
 # 结束脚本执行 !!!! 不用脚本才用的的，用了会停止脚本
