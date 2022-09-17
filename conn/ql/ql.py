@@ -30,12 +30,10 @@ class QL:
                 'client_secret': yam['Client Secret']
             }
             cs = requests.get(url=url, params=params, timeout=5)
-            print(cs.url)
             jstx = cs.json()
             logger.write_log("获取登录Bearer成功")
             return jstx['data']['token_type'] + " " + jstx['data']['token']
         except Exception as e:
-            print("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
             logger.write_log("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
             return 0
 
@@ -76,7 +74,7 @@ class QL:
             if li['code'] == 200:
                 return li['data']
         except Exception as e:
-            print(e)
+            pass
 
     def configs_check(self, path):
         """
@@ -129,5 +127,4 @@ class QL:
             if js['code'] == 200:
                 return js['data']['version']
         except Exception as e:
-            print('异常信息', e)
             return -1

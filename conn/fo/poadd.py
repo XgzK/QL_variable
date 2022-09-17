@@ -12,8 +12,10 @@ def ym_change(li: list):
     :param li:
     :return:
     """
+    l = re.findall('(http.*?:\d+)', li[0])
+    li[0] = l[0]
     # li34都是空
-    if li[3] == '' and li[4] != '':
+    if li[3] == '' and li[4] == '':
         # 表示用户没有输入时间
         revise_yaml(f"ip: '{li[0]}'", 2)
         revise_yaml(f"Client ID: '{li[1]}'", 4)
@@ -26,15 +28,15 @@ def ym_change(li: list):
         revise_yaml(f"Client ID: '{li[1]}'", 4)
         revise_yaml(f"Client Secret: '{li[2]}'", 5)
         ur = re.findall(r'xgzq\.ml', li[4])
-        if len(ur) == 0:
+        if len(ur) == 0 and li[3] >= 2:
             revise_yaml(f"time: {li[3]}", 17)
             revise_yaml(f"url: '{li[4]}'", 7)
             os.system("kill -9 $(netstat -nlp | grep addvalue.py | awk '{print $7}' | awk -F'/' '{ print $1 }')")
             return "添加私人API成功"
         else:
-            return "提交的公益API禁止修改时间"
+            return "提交的公益API禁止修改时间,或时间不得小于2分钟"
     # li3空4非空
-    elif li[4] != '' and li[3] == '':
+    elif li[4] != '' and int(li[3]) == '':
         # 提交非自己搭建的接口
         revise_yaml(f"ip: '{li[0]}'", 2)
         revise_yaml(f"Client ID: '{li[1]}'", 4)
@@ -48,12 +50,13 @@ def ym_change(li: list):
         revise_yaml(f"Client ID: '{li[1]}'", 4)
         revise_yaml(f"Client Secret: '{li[2]}'", 5)
         ur = re.findall(r'xgzq\.ml', yml['url'])
-        if len(ur) == 0:
+        if len(ur) == 0 and int(li[3]) >= 2:
             revise_yaml(f"time: {li[3]}", 17)
             os.system("kill -9 $(netstat -nlp | grep addvalue.py | awk '{print $7}' | awk -F'/' '{ print $1 }')")
             return "修改爬取时间成功"
         else:
-            return "提交的公益API禁止修改时间"
+            return "提交的公益API禁止修改时间,或时间不得小于2分钟"
+    return "错误"
 
 
 def upgrade(sun: int):

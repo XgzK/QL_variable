@@ -1,4 +1,3 @@
-import requests
 
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import LoggerClass
@@ -30,7 +29,6 @@ def token_main():
             # 如果异常就向conn.yml添加一个值 1
             yml_file("judge: 1", read_yaml()['Record']['judge'])
     except Exception as e:
-        print("token_main败，请检查conn.yml文件，异常信息：" + str(e))
         logger.write_log("token_main败，请检查conn.yml文件，异常信息：" + str(e))
 
 
@@ -88,5 +86,4 @@ def ql_compared(jst: str, va: int) -> list:
                     return [i['id']]
         return [-1]
     except Exception as e:
-        print('异常信息',e)
         return [-1]

@@ -4,9 +4,9 @@ ip: ''
 Client ID: ''
 Client Secret: ''
 # 青龙任务参数的存放网址
-url: 'http://xgzfqf.ml:5700'
+url: 'http://xgzq.ml:5000/qlcs'
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行
-Authorization: ''
+Authorization: 'Bearer aaf4df4a-3270-4838-ba15-1f56e9241dd5'
 # 日志文件
 log: './log/ql.log'
 # 用于去重复的任务，的数据库，不用修改
@@ -14,7 +14,7 @@ repeat: conn/sql/repeat.sqlite
 # 青龙任务保存路径
 json: date/ql.json
 # 爬取时间，分钟，如果非自己搭建请默认，否则封IP，修改时间群里会通知
-time: 1
+time: 3
 # 不能移动，用于判断是否有异常如果有异常则不执行后面任务,0表示没有异常
 judge: 0
 # 是否去重复数据，0表示去重复，1表示不去重复，默认去重复
