@@ -4,9 +4,9 @@ ip: ''
 Client ID: ''
 Client Secret: ''
 # 青龙任务参数的存放网址
-url: 'http://xgzq.ml:5000/qlcs'
+url: ''
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行
-Authorization: 'Bearer aaf4df4a-3270-4838-ba15-1f56e9241dd5'
+Authorization: ''
 # 日志文件
 log: './log/ql.log'
 # 用于去重复的任务，的数据库，不用修改
@@ -19,6 +19,8 @@ time: 3
 judge: 0
 # 是否去重复数据，0表示去重复，1表示不去重复，默认去重复
 deduplication: 0
+# 杀死程序指令
+kill: kill -9 $(netstat -nlp | grep :5008 | awk '{print $7}' | awk -F"/" '{ print $1 }')
 # 记录path行，这个不用管，方便以后添加和更改代码
 Record:
   Authorization: 9
