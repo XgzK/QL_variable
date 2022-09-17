@@ -4,7 +4,7 @@ ip: ''
 Client ID: ''
 Client Secret: ''
 # 青龙任务参数的存放网址
-url: ''
+url: 'http://xgzq.ml:5000/qlcs'
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行
 Authorization: ''
 # 日志文件

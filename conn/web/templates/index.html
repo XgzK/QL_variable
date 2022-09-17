@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>青龙参数提交</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/gate.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <title>青龙参数提交</title>
 </head>
 <body>
 <div>
     <form action="/" method="post">
         <p>如果不是自己搭建的爬虫端请勿填写活动获取时间,公益链接会拉黑私自修改时间的IP</p>
+        <p>提交后请关闭网页重新输入，否则会重复提交</p>
         <p>{{ res }}</p>
         <label>
             <input type="url" name="books[]" required="required" placeholder="请输入青龙的地址">

@@ -2,9 +2,9 @@
 # 进入/root目录
 cd /root/ || exit
 # 下载
-wget https://xgzq.tk/library/qlva1.tgz
+wget https://xgzq.tk/library/qlva.tgz
 # 解压
-tar -zxvf qlva1.tgz
+tar -zxvf qlva.tgz
 # 如果是1保留配置文件
 if test "$1" = "1"; then
    echo "保留配置文件更新项目"
@@ -34,7 +34,7 @@ else
   echo "没有检测到文件不需要额外执行其他任务"
 fi
 # 删除压缩包, 删除文件夹
-rm -rf qlva1.tgz QL_variable
+rm -rf qlva.tgz QL_variable
 cd /val || exit
 pip3 install -r requirements.txt
 # shellcheck disable=SC2046
