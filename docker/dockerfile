@@ -1,0 +1,4 @@
+FROM d3fk/python_in_bottle:latest
+COPY . /root
+WORKDIR /ip
+ENTRYPOINT ["sh", "/root/detect.sh"]

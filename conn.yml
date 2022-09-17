@@ -1,12 +1,12 @@
 # 设置自己青龙的IP:端口 结尾不能带/ 会报错
-ip: ''
+ip: 'http://xgzq.ml:5700'
 # 下面和青龙有关 系统设置-->应用设置-->新建应用-->权限选择所有自己配置
-Client ID: ''
-Client Secret: ''
+Client ID: 'eeee'
+Client Secret: '谷歌'
 # 青龙任务参数的存放网址
-url: 'http://127.0.0.1:5000/qlcs'
+url: 'http://xgzfqf.ml:57'
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行
-Authorization: 'Bearer 1feb15eb-beae-48f2-892d-4179c5252e45'
+Authorization: 'Bearer 0850aaf4-5e0d-4220-a172-d1b7e0fdee22'
 # 日志文件
 log: './log/ql.log'
 # 用于去重复的任务，的数据库，不用修改
@@ -14,7 +14,7 @@ repeat: conn/sql/repeat.sqlite
 # 青龙任务保存路径
 json: date/ql.json
 # 爬取时间，分钟，如果非自己搭建请默认，否则封IP，修改时间群里会通知
-time: 3
+time: 1
 # 不能移动，用于判断是否有异常如果有异常则不执行后面任务,0表示没有异常
 judge: 0
 # 是否去重复数据，0表示去重复，1表示不去重复，默认去重复

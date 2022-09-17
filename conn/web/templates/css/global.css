@@ -1,0 +1,15 @@
+body{
+    background: #F3F2E2;
+}
+a{
+    text-decoration: none;
+}
+
+/* 内容居中 */
+div{
+    /* background: #71a879; */
+    text-align: center;
+}
+.api{
+    width: 300px;
+}

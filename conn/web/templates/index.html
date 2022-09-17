@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青龙参数提交</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+</head>
+<body>
+<div>
+    <form action="/" method="post">
+        <p>如果不是自己搭建的爬虫端请勿填写活动获取时间,公益链接会拉黑私自修改时间的IP</p>
+        <p>{{ res }}</p>
+        <label>
+            <input type="url" name="books[]" required="required" placeholder="请输入青龙的地址">
+        </label><br>
+        <label>
+            <input type="text" name="books[]" required="required" placeholder="请输入青龙的Client ID">
+        </label><br>
+        <label>
+            <input type="text" name="books[]" required="required" placeholder="请输入青龙的Client Secret">
+        </label><br>
+        <label>
+            <input type="number" name="books[]" placeholder="活动获取时间">
+        </label><br>
+        <label>
+            <input type="url" name="books[]" placeholder="私人爬虫接口">
+        </label><br>
+        <button type="submit">提交API</button>
+    </form>
+    <form action="/gi" method="post" target="_blank">
+        <label>
+            <select name="gi">
+                <option value="0" selected = "selected">不保留配置文件更新</option>
+                <option value="1">保留配置文件更新</option>
+            </select>
+        </label>
+        <button type="submit">更新</button>
+    </form>
+</div>
+</body>
+</html>
