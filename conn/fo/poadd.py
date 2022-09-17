@@ -28,7 +28,7 @@ def ym_change(li: list):
         revise_yaml(f"Client ID: '{li[1]}'", 4)
         revise_yaml(f"Client Secret: '{li[2]}'", 5)
         ur = re.findall(r'xgzq\.ml', li[4])
-        if len(ur) == 0 and li[3] >= 2:
+        if len(ur) == 0 and int(li[3]) >= 2:
             revise_yaml(f"time: {li[3]}", 17)
             revise_yaml(f"url: '{li[4]}'", 7)
             os.system("kill -9 $(netstat -nlp | grep addvalue.py | awk '{print $7}' | awk -F'/' '{ print $1 }')")
@@ -36,7 +36,7 @@ def ym_change(li: list):
         else:
             return "提交的公益API禁止修改时间,或时间不得小于2分钟"
     # li3空4非空
-    elif li[4] != '' and int(li[3]) == '':
+    elif li[4] != '' and li[3] == '':
         # 提交非自己搭建的接口
         revise_yaml(f"ip: '{li[0]}'", 2)
         revise_yaml(f"Client ID: '{li[1]}'", 4)
