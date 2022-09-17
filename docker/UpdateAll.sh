@@ -34,7 +34,7 @@ else
   echo "没有检测到文件不需要额外执行其他任务"
 fi
 # 删除压缩包, 删除文件夹
-rm -rf qlva.tgz ip
+rm -rf qlva.tgz QL_variable
 cd /val || exit
 pip3 install -r requirements.txt
 # shellcheck disable=SC2046

@@ -54,7 +54,7 @@ def upgrade(sun: int):
     """
     if int(sun) == 0:
         print("不保留配置更新")
-        os.system("sh /root/gi.sh")
+        os.system("sh /root/UpdateAll.sh")
     elif int(sun) == 1:
         print("保留配置更新")
-        os.system("sh /root/gi.sh 1")
+        os.system("sh /root/UpdateAll.sh 1")
