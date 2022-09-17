@@ -51,9 +51,11 @@ def immortal_main():
     main_core(val)
 
 
-if __name__ == '__main__':
-    t1 = threading.Thread(target=run_web, args=())
-    t1.start()
+def mai():
+    """
+    执行主要程序
+    :return:
+    """
     tf = True
     while tf:
         ym = read_yaml()
@@ -64,6 +66,7 @@ if __name__ == '__main__':
             time.sleep(10)
     # 创建一些路径和数据库
     Check().cpath()
+    global val
     val = adaptation()
     # 定时任务第一次不会执行，所以手动添加一次
     timing_ck()
@@ -71,3 +74,9 @@ if __name__ == '__main__':
     immortal_main()
     # 添加定时任务
     scheduler.start()
+
+
+if __name__ == '__main__':
+    t1 = threading.Thread(target=mai, args=())
+    t1.start()
+    run_web()
