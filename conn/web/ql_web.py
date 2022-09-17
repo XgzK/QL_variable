@@ -1,13 +1,19 @@
-from flask import Flask
+from flask import Flask, render_template, request
 
 from conn.gheaders.log import rz
+from conn.fo.poadd import ym_change
 
 app = Flask(__name__)
+app._static_folder = "./templates/"
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
-    return "你好本程序运行正常运行"
+    if request.method == 'POST':
+        books = request.values.getlist('books[]')
+        # 把表单传递给方法添加到conn.yml
+        return render_template('index.html', res=ym_change(books))
+    return render_template('index.html')
 
 
 @app.route('/log')
@@ -16,6 +22,17 @@ def log():
     if lo == -1:
         return "日志为空"
     return lo
+
+
+@app.route("/gi", methods=['GET', 'POST'])
+def gi():
+    if request.method == 'POST':
+        git = request.values.get('gi')
+        print(git)
+        return "sss"
+        # 把表单传递给方法添加到conn.yml
+        # return "render_template('index.html', res=ym_change(books))"
+    return render_template('index.html')
 
 
 def run_web():
