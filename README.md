@@ -30,14 +30,6 @@ http://IP:自定义端口/log 日志页面
 ```
 需要定时任务配置文件权限
 
-### amd64拉取容器可能报错
-在拉取时候添加
-```shell
---platform linux/amd64
-```
-```text
-standard_init_linux.go:219: exec user process caused: exec format error
-```
 ## 更新说明
 
 ```text
