@@ -29,7 +29,7 @@ class QL:
                 'client_id': yam['Client ID'],
                 'client_secret': yam['Client Secret']
             }
-            cs = requests.get(url=url, params=params, timeout=5)
+            cs = requests.get(url=url, params=params, timeout=10, headers=self.headers())
             jstx = cs.json()
             logger.write_log("获取登录Bearer成功")
             return jstx['data']['token_type'] + " " + jstx['data']['token']
