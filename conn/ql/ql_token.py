@@ -77,6 +77,17 @@ def ql_compared(jst: str, va: int) -> list:
     """
     try:
         jstx = read_yaml(yam['json'])
+        #  task 库/脚本.js
+        ku = yam['library'] + jst
+        for i in jstx:
+            # 直接不分隔用最完整的格式百分之百匹配
+            if i['command'] == ku:
+                # 适配版本10
+                if int(va) == 10:
+                    return [i['_id']]
+                else:
+                    return [i['id']]
+        # 找到脚本立即停止
         for i in jstx:
             if i['command'].split('/')[-1] == jst:
                 # 适配版本10

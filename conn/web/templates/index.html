@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/gate.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
-    <title>青龙参数提交</title>
+    <title>青龙参数提交2.1</title>
 </head>
 <body>
 <div>
     <form action="/" method="post">
+        <p>2.1版本修改了配置文件请使用不保留配置文件更新</p>
         <p>如果不是自己搭建的爬虫端请勿填写活动获取时间,公益链接会拉黑私自修改时间的IP</p>
         <p>提交后请关闭网页重新输入，否则会重复提交</p>
         <p>{{ res }}</p>
@@ -28,6 +29,10 @@
         </label><br>
         <label>
             <input type="url" name="books[]" placeholder="私人爬虫接口">
+        </label><br>
+        <p>提交形式: task 库/任意脚本名称</p>
+        <label>
+            <input type="text" name="ku" placeholder="脚本优先执行的库">
         </label><br>
         <button type="submit">提交API</button>
     </form>

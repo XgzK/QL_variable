@@ -71,3 +71,16 @@ def upgrade(sun: int):
     elif int(sun) == 1:
         print("保留配置更新")
         os.system("sh /root/UpdateAll.sh 1")
+
+
+def library(ku):
+    """
+    修改库
+    :param ku: 库名称
+    :return:
+    """
+    try:
+        k = ku.split('/')[0] + '/'
+        revise_yaml(f'library: {k}',yml['Record']['library'])
+    except Exception as e:
+        print('library异常问题:', e)

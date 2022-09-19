@@ -21,7 +21,10 @@ judge: 0
 deduplication: 0
 # 杀死程序指令
 kill: kill -9 $(netstat -nlp | grep :5008 | awk '{print $7}' | awk -F"/" '{ print $1 }')
+# 优先根据特定库执行脚本
+library:  /
 # 记录path行，这个不用管，方便以后添加和更改代码
 Record:
   Authorization: 9
   judge: 19
+  library: 25
