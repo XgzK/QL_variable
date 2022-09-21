@@ -4,13 +4,13 @@ import time
 
 from flask_apscheduler import APScheduler
 
-from conn.Inspector import Check
+from conn.gheaders.Inspector import Check
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import LoggerClass
 from conn.ql.ql import QL
 from conn.ql.ql_token import token_main
 from conn.web.ql_web import run_web
-from conn.core import main_core, adaptation
+from conn.fo.core import main_core, adaptation
 
 logger = LoggerClass('debug')
 scheduler = APScheduler()
@@ -45,7 +45,7 @@ def ql_crons():
 @scheduler.task('interval', id='immortal_main', minutes=yml['time'])
 def immortal_main():
     """
-    主要功能运行,每5分钟运行一次
+    主要功能运行,特定分钟运行一次
     :return:
     """
     main_core(val)

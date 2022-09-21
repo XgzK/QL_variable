@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 from conn.gheaders.log import rz
-from conn.fo.poadd import ym_change, upgrade
+from conn.fo.poadd import ym_change, upgrade, library, to_stop
 
 app = Flask(__name__)
 app._static_folder = "./templates/"
@@ -11,8 +11,14 @@ app._static_folder = "./templates/"
 def index():
     if request.method == 'POST':
         books = request.values.getlist('books[]')
+        ku = request.values.get('ku')
+        k = ''
+        if len(ku) > 6:
+            k = library(ku)
         # 把表单传递给方法添加到conn.yml
-        return render_template('index.html', res=ym_change(books))
+        q = ym_change(books)
+        s = q + k
+        return render_template('index.html', res=s)
     return render_template('index.html')
 
 
@@ -30,6 +36,12 @@ def gi():
         git = request.values.get('gi')
         upgrade(int(git))
     return render_template('index.html')
+
+
+@app.route("/pare", methods=['GET'])
+def pare():
+    if request.method == 'GET':
+        return render_template('index.html', res=to_stop())
 
 
 def run_web():

@@ -7,7 +7,7 @@ import time
 import requests
 
 from conn.gheaders.conn import read_yaml
-from conn.gheaders.get_headers import ql_header
+from conn.gheaders.get_headers import ql_header, qlck_header
 from conn.gheaders.log import LoggerClass
 
 logger = LoggerClass('debug')
@@ -25,11 +25,13 @@ class QL:
         try:
             yam = read_yaml()
             url = yam['ip'] + "/open/auth/token"
-            params = {
+            data = {
                 'client_id': yam['Client ID'],
                 'client_secret': yam['Client Secret']
             }
-            cs = requests.get(url=url, params=params, timeout=10, headers=self.headers())
+            print(data)
+            cs = requests.get(url=url,  params=data, timeout=10, headers=qlck_header())
+            print(cs.url)
             jstx = cs.json()
             logger.write_log("获取登录Bearer成功")
             return jstx['data']['token_type'] + " " + jstx['data']['token']
@@ -127,4 +129,26 @@ class QL:
             if js['code'] == 200:
                 return js['data']['version']
         except Exception as e:
+            return -1
+
+    def disable(self, data):
+        """
+        禁用青龙任务
+        :param data: int数组
+        :return: 0 or -1
+        """
+        try:
+            ur = read_yaml()
+            url = ur['ip'] + '/open/crons/disable'
+            ss = requests.put(url=url, headers=self.headers(), data=json.dumps(data), timeout=10)
+            status = ss.status_code
+            # 获取返回的状态码
+            if status == 200:
+                logger.write_log("禁用任务成功")
+                return 0
+            else:
+                logger.write_log("任务禁用失败:" + str(status))
+                return -1
+        except Exception as e:
+            logger.write_log("执行青龙禁用任务失败，错误信息：" + str(e))
             return -1

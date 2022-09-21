@@ -13,7 +13,7 @@ logger = LoggerClass('debug')
 
 def main_core(va):
     """
-    主要功能运行,每15分钟运行一次
+    主要功能运行
     :param va: 青龙版本
     :return:
     """

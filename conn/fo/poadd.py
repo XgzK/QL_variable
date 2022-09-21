@@ -1,9 +1,14 @@
 import os
 import re
 
+from conn.fo.core import adaptation
+from conn.fo.stop import Prohibition
 from conn.gheaders.conn import read_yaml, revise_yaml
+from conn.ql.ql import QL
 
 yml = read_yaml()
+prohibition = Prohibition()
+ql = QL()
 
 
 def ym_change(li: list):
@@ -81,6 +86,24 @@ def library(ku):
     """
     try:
         k = ku.split('/')[0] + '/'
-        revise_yaml(f'library: {k}',yml['Record']['library'])
+        revise_yaml(f'library: {k}', yml['Record']['library'])
+        return ' '
     except Exception as e:
-        print('library异常问题:', e)
+        return '你配置文件不是最新版提交失败'
+
+
+def to_stop():
+    """
+    禁止活动任务脚本
+    :return:
+    """
+    try:
+        # 获取版本号
+        val = adaptation()
+        li = prohibition.get_re()
+        lis = prohibition.compareds(li, val)
+        print(lis)
+        ql.disable(lis)
+        return '禁止任务成功'
+    except Exception as e:
+        return '异常信息' + str(e)
