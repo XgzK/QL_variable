@@ -25,7 +25,7 @@ def main_core(va):
             # 遍历获取所有任务列表
             for i in range(len(li[0])):
                 # 检测是否被执行过
-                ctra = contrast(li[0][i])
+                ctra = contrast(li[1][i])
                 if ctra == 0:
                     # 传入脚本名称返回任务ID
                     ids = ql_compared(li[0][i], va)

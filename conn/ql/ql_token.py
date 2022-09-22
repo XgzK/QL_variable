@@ -113,10 +113,12 @@ def contrast(str12):
     try:
         # 提取脚本关键部分
         str12 = re.findall('export .*?="(.*?=?\w+)"', str12)
+        a1 = str12[0].split('=')
         inquire = select_datati('*')
         for i in inquire:
             aa = re.findall('export .*?="(.*?=?\w+)"', i[0])
-            if str12[0].split('=')[-1] == aa[0].split('=')[-1]:
+            a2 = aa[0].split('=')[-1]
+            if a1[-1] == a2:
                 logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数\n{str12[0]}\n之前执行的参数 {i[0]}')
                 return -1
         return 0
