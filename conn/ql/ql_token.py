@@ -1,3 +1,4 @@
+import re
 
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import LoggerClass
@@ -101,4 +102,27 @@ def ql_compared(jst: str, va: int) -> list:
         return [-1]
     except Exception as e:
         return [-1]
+
+
+def contrast(str12):
+    """
+    去除掉相同脚本参数,如果脚本相同只执行一次
+    :param str12: 活动参数
+    :return: 有返回-1 没有返回0
+    """
+    try:
+        # 提取脚本关键部分
+        str12 = re.findall('export .*?="(.*?=?\w+)"', str12)
+        inquire = select_datati('*')
+        for i in inquire:
+            aa = re.findall('export .*?="(.*?=?\w+)"', i[0])
+            if str12[0].split('=')[-1] == aa[0].split('=')[-1]:
+                logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数\n{str12[0]}\n之前执行的参数 {i[0]}')
+                return -1
+        return 0
+    except Exception as e:
+        logger.write_log('去掉相同活动异常: ', e)
+        return -1
+
+
 

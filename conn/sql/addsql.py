@@ -59,17 +59,20 @@ def insert_data(jd_value1, jd_data):
 
 
 # 查询数据方法
-def select_datati(value1) -> list:
+def select_datati(value='*') -> list:
     """
     查询数据
-    :param value1: 传入的数据
+    :param value: 传入的数据,默认查询所有返回参数，带值返回所有
     :return: 返回查询到的数据 or []
     """
     try:
         # 创建数据库
         cursor, db = create_db()
         # 查询数据
-        cursor.execute('select * from repeat WHERE jd_value1 = ?', (value1,))
+        if value == '*':
+            cursor.execute('select `jd_value1` from repeat')
+        else:
+            cursor.execute('select * from repeat WHERE jd_value1 = ?', (value,))
         data = cursor.fetchall()
         # 关闭数据库
         db.close()
