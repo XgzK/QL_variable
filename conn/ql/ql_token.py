@@ -99,7 +99,7 @@ def ql_compared(jst: str, va: int) -> list:
                     return [i['id']]
         return [-1]
     except Exception as e:
-        logger.write_log('查询任务异常信息: ', e)
+        logger.write_log(f'查询任务异常信息: {e}')
         return [-1]
 
 
