@@ -31,7 +31,6 @@ class Prohibition:
         :return: ID or -1
         """
         try:
-            print(va)
             li = []
             jstx = read_yaml(yam['json'])
             # 找到脚本立即停止

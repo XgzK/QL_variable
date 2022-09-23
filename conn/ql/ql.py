@@ -6,12 +6,12 @@ import time
 
 import requests
 
-from conn.gheaders.conn import read_yaml
+from conn.gheaders.conn import read_yaml, revise_yaml
 from conn.gheaders.get_headers import ql_header, qlck_header
 from conn.gheaders.log import LoggerClass
 
 logger = LoggerClass('debug')
-
+yam = read_yaml()
 
 class QL:
     def __init__(self):
@@ -23,7 +23,6 @@ class QL:
         :return: 返回登录用的Bearer XXXXXXXXXXX，如果没有获取到，返回0
         """
         try:
-            yam = read_yaml()
             url = yam['ip'] + "/open/auth/token"
             data = {
                 'client_id': yam['Client ID'],
@@ -37,6 +36,7 @@ class QL:
             return jstx['data']['token_type'] + " " + jstx['data']['token']
         except Exception as e:
             logger.write_log("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
+            revise_yaml('judge: 0',yam['Record']['judge'])
             return 0
 
     def ql_run(self, data):
@@ -74,9 +74,13 @@ class QL:
             lis = requests.get(url=url, headers=self.headers())
             li = lis.json()
             if li['code'] == 200:
+                print(li)
                 return li['data']
+            return -1
         except Exception as e:
-            pass
+            revise_yaml('judge: 0', yam['Record']['judge'])
+            logger.write_log("获取青龙任务列表失败", e)
+            return -1
 
     def configs_check(self, path):
         """
@@ -95,6 +99,7 @@ class QL:
             return {'code': 404}
         except Exception as e:
             logger.write_log("获取配置文件内容失败: ", e)
+            return {'code': 404}
 
     def configs_revise(self, path, data):
         """
@@ -115,6 +120,7 @@ class QL:
             return {'code': 404}
         except Exception as e:
             logger.write_log("修改配置文件内容失败: ", e)
+            return {'code': 404}
 
     def system_version(self):
         """
