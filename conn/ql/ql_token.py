@@ -23,14 +23,15 @@ def token_main():
         if ck != 0:
             str1 = 'Authorization:' + f" '{ck}'"
             yml_file(str1, read_yaml()['Record']['Authorization'])
-            logger.write_log("新的Bearer添加成功token_main")
             yml_file("judge: 0", read_yaml()['Record']['judge'])
+            return 0
         else:
-            logger.write_log("新的Bearer添加失败,token_main")
             # 如果异常就向conn.yml添加一个值 1
             yml_file("judge: 1", read_yaml()['Record']['judge'])
+            return -1
     except Exception as e:
         logger.write_log("token_main败，请检查conn.yml文件，异常信息：" + str(e))
+        return -1
 
 
 def ql_write(str12):

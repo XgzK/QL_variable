@@ -24,7 +24,16 @@ def timing_ck():
     设置每半个月获取一次新的ck,青龙作者是的是一个月保质期，不过这里设置为半个月
     :return:
     """
-    token_main()
+    for i in range(5):
+        ck = token_main()
+        if ck == 0:
+            logger.write_log("新的Bearer添加成功token_main")
+            return 0
+        logger.write_log("新的Bearer添加失败, 10s后再次获取")
+        time.sleep(10)
+
+
+
 
 
 @scheduler.task('interval', id='list', minutes=30)

@@ -13,6 +13,7 @@ from conn.gheaders.log import LoggerClass
 logger = LoggerClass('debug')
 yam = read_yaml()
 
+
 class QL:
     def __init__(self):
         self.headers = ql_header
@@ -28,13 +29,13 @@ class QL:
                 'client_id': yam['Client ID'],
                 'client_secret': yam['Client Secret']
             }
-            cs = requests.get(url=url,  params=data, timeout=10, headers=qlck_header())
+            cs = requests.get(url=url, params=data, timeout=10, headers=qlck_header())
             jstx = cs.json()
             logger.write_log("获取登录Bearer成功")
             return jstx['data']['token_type'] + " " + jstx['data']['token']
         except Exception as e:
             logger.write_log("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
-            revise_yaml('judge: 1',yam['Record']['judge'])
+            revise_yaml('judge: 1', yam['Record']['judge'])
             return 0
 
     def ql_run(self, data):
