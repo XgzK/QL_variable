@@ -80,7 +80,6 @@ def ql_compared(jst: str, va: int) -> list:
         jstx = read_yaml(yam['json'])
         #  task 库/脚本.js
         if yam['library'] != '/':
-            print("---------------------")
             ku = yam['library'] + jst
             for i in jstx:
                 # 直接不分隔用最完整的格式百分之百匹配
