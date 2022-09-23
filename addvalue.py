@@ -39,7 +39,7 @@ def ql_crons():
             json.dump(js, f, ensure_ascii=False)
             f.close()
     except Exception as e:
-        logger.write_log('获取列表异常', e)
+        logger.write_log(f'获取列表异常,{e}')
 
 
 @scheduler.task('interval', id='immortal_main', minutes=yml['time'])
