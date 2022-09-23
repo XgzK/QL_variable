@@ -36,8 +36,8 @@ fi
 # 删除压缩包, 删除文件夹
 rm -rf qlva.tgz QL_variable
 cd /val || exit
-pip3 install Flask-APScheduler
-pip3 install -r requirements.txt
+pip3 install Flask-APScheduler -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 # shellcheck disable=SC2046
 kill -9 $(netstat -nlp | grep :5008 | awk '{print $7}' | awk -F"/" '{ print $1 }')
 echo 杀死了了原本程序自动启动

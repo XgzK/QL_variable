@@ -79,7 +79,7 @@ def ql_compared(jst: str, va: int) -> list:
     try:
         jstx = read_yaml(yam['json'])
         #  task 库/脚本.js
-        try:
+        if jstx != '/':
             ku = yam['library'] + jst
             for i in jstx:
                 # 直接不分隔用最完整的格式百分之百匹配
@@ -89,8 +89,6 @@ def ql_compared(jst: str, va: int) -> list:
                         return [i['_id']]
                     else:
                         return [i['id']]
-        except KeyError as e:
-            print("你配置文件不是最新版,请更新最新版文件")
         # 找到脚本立即停止
         for i in jstx:
             if i['command'].split('/')[-1] == jst:
@@ -101,6 +99,7 @@ def ql_compared(jst: str, va: int) -> list:
                     return [i['id']]
         return [-1]
     except Exception as e:
+        logger.write_log('查询任务异常信息: ',e)
         return [-1]
 
 
