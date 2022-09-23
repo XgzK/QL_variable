@@ -70,7 +70,7 @@ def mai():
     val = adaptation()
     # 定时任务第一次不会执行，所以手动添加一次
     timing_ck()
-    # ql_crons()
+    ql_crons()
     immortal_main()
     # 添加定时任务
     scheduler.start()
