@@ -33,8 +33,9 @@ class Prohibition:
         try:
             li = []
             jstx = read_yaml(yam['json'])
+            va1 = jstx if int(va) < 14 else jstx['data']
             # 找到脚本立即停止
-            for i in jstx:
+            for i in va1:
                 for j in jst:
                     if i['command'].split('/')[-1] == j[2]:
                         # 适配版本10
