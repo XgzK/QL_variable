@@ -28,15 +28,13 @@ class QL:
                 'client_id': yam['Client ID'],
                 'client_secret': yam['Client Secret']
             }
-            print(data)
             cs = requests.get(url=url,  params=data, timeout=10, headers=qlck_header())
-            print(cs.url)
             jstx = cs.json()
             logger.write_log("获取登录Bearer成功")
             return jstx['data']['token_type'] + " " + jstx['data']['token']
         except Exception as e:
             logger.write_log("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
-            revise_yaml('judge: 0',yam['Record']['judge'])
+            revise_yaml('judge: 1',yam['Record']['judge'])
             return 0
 
     def ql_run(self, data):
@@ -74,11 +72,10 @@ class QL:
             lis = requests.get(url=url, headers=self.headers())
             li = lis.json()
             if li['code'] == 200:
-                print(li)
                 return li['data']
             return -1
         except Exception as e:
-            revise_yaml('judge: 0', yam['Record']['judge'])
+            revise_yaml('judge: 1', yam['Record']['judge'])
             logger.write_log("获取青龙任务列表失败", e)
             return -1
 
