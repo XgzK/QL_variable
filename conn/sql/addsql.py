@@ -79,3 +79,23 @@ def select_datati(value='*') -> list:
         return data
     except Exception as e:
         return []
+
+
+# 查询数据方法
+def dele_datati() -> int:
+    """
+    删除
+    :return: 返回查询到的数据 or []
+    """
+    try:
+        # 创建数据库
+        cursor, db = create_db()
+        # 查询数据
+        cursor.execute('delete from repeat')
+        # 提交数据
+        db.commit()
+        # 关闭数据库
+        db.close()
+        return 0
+    except Exception as e:
+        return 1

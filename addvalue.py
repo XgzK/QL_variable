@@ -9,6 +9,7 @@ from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import LoggerClass
 from conn.ql.ql import QL
 from conn.ql.ql_token import token_main
+from conn.sql.addsql import dele_datati
 from conn.web.ql_web import run_web
 from conn.fo.core import main_core, adaptation
 
@@ -59,6 +60,14 @@ def immortal_main():
     """
     main_core(val)
 
+
+@scheduler.task('interval', id='ti_ck', minutes=12)
+def ti_ck():
+    """
+    定时清空数据库
+    :return:
+    """
+    dele_datati()
 
 def mai():
     """
