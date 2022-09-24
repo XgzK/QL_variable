@@ -20,7 +20,7 @@ def token_main():
     try:
         ck = ql.ql_tk()
 
-        if ck != 0:
+        if ck != -1:
             str1 = 'Authorization:' + f" '{ck}'"
             yml_file(str1, read_yaml()['Record']['Authorization'])
             yml_file("judge: 0", read_yaml()['Record']['judge'])
