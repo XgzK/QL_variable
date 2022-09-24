@@ -23,10 +23,11 @@ class QL:
         用于获取登录用的ck,ck有效期一个月
         :return: 返回登录用的Bearer XXXXXXXXXXX，如果没有获取到，返回0
         """
-        url = yam['ip'] + "/open/auth/token"
+        yal = read_yaml()
+        url = str(yal['ip']) + "/open/auth/token"
         data = {
-            'client_id': yam['Client ID'],
-            'client_secret': yam['Client Secret']
+            'client_id': yal['Client ID'],
+            'client_secret': yal['Client Secret']
         }
         try:
             cs = requests.get(url=url, params=data, timeout=10, headers=qlck_header())
@@ -35,7 +36,7 @@ class QL:
             return jstx['data']['token_type'] + " " + jstx['data']['token']
         except Exception as e:
             logger.write_log("ql_tk异常信息，请检查conn.yml文件，异常信息：" + str(e))
-            logger.write_log(f"请求的参数是 {url}?{data}{'client_id'}&{data}{'client_secret'}")
+            logger.write_log(f"请求的参数是 {url}?{data['client_id']}&{data['client_secret']}")
             revise_yaml('judge: 1', yam['Record']['judge'])
             return -1
 
