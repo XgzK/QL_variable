@@ -17,51 +17,55 @@ def ym_change(li: list):
     :param li:
     :return:
     """
-    l = re.findall('(http.*?:\d+)', li[0])
-    li[0] = l[0]
-    # li34都是空
-    if li[3] == '' and li[4] == '':
-        # 表示用户没有输入时间
-        revise_yaml(f"ip: '{li[0]}'", 2)
-        revise_yaml(f"Client ID: '{li[1]}'", 4)
-        revise_yaml(f"Client Secret: '{li[2]}'", 5)
-        return '添加成功青龙'
-    # li34都非空
-    elif li[4] != '' and li[3] != '':
-        # 自己搭建了爬虫接口
-        revise_yaml(f"ip: '{li[0]}'", 2)
-        revise_yaml(f"Client ID: '{li[1]}'", 4)
-        revise_yaml(f"Client Secret: '{li[2]}'", 5)
-        ur = re.findall(r'xgzq\.ml', li[4])
-        if len(ur) == 0 and int(li[3]) >= 2:
-            revise_yaml(f"time: {li[3]}", 17)
+    l = re.findall('^(http.*?:\d+)/\w+', li[0])
+    if len(l) == 1:
+        li[0] = l[0]
+    else:
+        return "URL不符合格式要求,请复制浏览器显示青龙URL"
+    if li[0] != '' and li[1] != '' and li[2] != '':
+        # li34都是空
+        if li[3] == '' and li[4] == '':
+            # 表示用户没有输入时间
+            revise_yaml(f"ip: '{li[0]}'", 2)
+            revise_yaml(f"Client ID: '{li[1]}'", 4)
+            revise_yaml(f"Client Secret: '{li[2]}'", 5)
+            return '添加成功青龙'
+        # li34都非空
+        elif li[4] != '' and li[3] != '':
+            # 自己搭建了爬虫接口
+            revise_yaml(f"ip: '{li[0]}'", 2)
+            revise_yaml(f"Client ID: '{li[1]}'", 4)
+            revise_yaml(f"Client Secret: '{li[2]}'", 5)
+            ur = re.findall(r'xgzq\.ml', li[4])
+            if len(ur) == 0 and int(li[3]) >= 2:
+                revise_yaml(f"time: {li[3]}", 17)
+                revise_yaml(f"url: '{li[4]}'", 7)
+                os.system(yml['kill'])
+                return "添加私人API成功"
+            else:
+                return "提交的公益API禁止修改时间,或时间不得小于2分钟"
+        # li3空4非空
+        elif li[4] != '' and li[3] == '':
+            # 提交非自己搭建的接口
+            revise_yaml(f"ip: '{li[0]}'", 2)
+            revise_yaml(f"Client ID: '{li[1]}'", 4)
+            revise_yaml(f"Client Secret: '{li[2]}'", 5)
             revise_yaml(f"url: '{li[4]}'", 7)
             os.system(yml['kill'])
-            return "添加私人API成功"
-        else:
-            return "提交的公益API禁止修改时间,或时间不得小于2分钟"
-    # li3空4非空
-    elif li[4] != '' and li[3] == '':
-        # 提交非自己搭建的接口
-        revise_yaml(f"ip: '{li[0]}'", 2)
-        revise_yaml(f"Client ID: '{li[1]}'", 4)
-        revise_yaml(f"Client Secret: '{li[2]}'", 5)
-        revise_yaml(f"url: '{li[4]}'", 7)
-        os.system(yml['kill'])
-        return "添加API成功"
-    elif li[3] != '' and li[4] == '':
-        # 自己搭建了爬虫接口
-        revise_yaml(f"ip: '{li[0]}'", 2)
-        revise_yaml(f"Client ID: '{li[1]}'", 4)
-        revise_yaml(f"Client Secret: '{li[2]}'", 5)
-        ur = re.findall(r'xgzq\.ml', yml['url'])
-        if len(ur) == 0 and int(li[3]) >= 2:
-            revise_yaml(f"time: {li[3]}", 17)
-            os.system(yml['kill'])
-            return "修改爬取时间成功"
-        else:
-            return "提交的公益API禁止修改时间,或时间不得小于2分钟"
-    return "错误"
+            return "添加API成功"
+        elif li[3] != '' and li[4] == '':
+            # 自己搭建了爬虫接口
+            revise_yaml(f"ip: '{li[0]}'", 2)
+            revise_yaml(f"Client ID: '{li[1]}'", 4)
+            revise_yaml(f"Client Secret: '{li[2]}'", 5)
+            ur = re.findall(r'xgzq\.ml', yml['url'])
+            if len(ur) == 0 and int(li[3]) >= 2:
+                revise_yaml(f"time: {li[3]}", 17)
+                os.system(yml['kill'])
+                return "修改爬取时间成功"
+            else:
+                return "提交的公益API禁止修改时间,或时间不得小于2分钟"
+    return f"检测到输入参数不合法,<br>青龙地址: {li[0]} <br> Client ID: {li[1]}<br> Client Secret: {li[2]}"
 
 
 def upgrade(sun: int):

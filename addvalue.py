@@ -25,16 +25,14 @@ def timing_ck():
     设置每半个月获取一次新的ck,青龙作者是的是一个月保质期，不过这里设置为半个月
     :return:
     """
-    for i in range(5):
+    for i in range(3):
         ck = token_main()
         if ck == 0:
             logger.write_log("新的Bearer添加成功token_main")
             return 0
-        logger.write_log("新的Bearer添加失败, 10s后再次获取")
-        time.sleep(10)
-
-
-
+        logger.write_log("新的Bearer添加失败, 20s后再次获取")
+        time.sleep(20)
+    return -1
 
 
 @scheduler.task('interval', id='list', minutes=30)
@@ -48,8 +46,10 @@ def ql_crons():
         with open(yml['json'], mode='wt', encoding='utf-8') as f:
             json.dump(js, f, ensure_ascii=False)
             f.close()
+        return 0
     except Exception as e:
         logger.write_log(f'获取列表异常,{e}')
+        return -1
 
 
 @scheduler.task('interval', id='immortal_main', minutes=yml['time'])
@@ -69,6 +69,7 @@ def ti_ck():
     """
     dele_datati()
 
+
 def mai():
     """
     执行主要程序
@@ -78,17 +79,23 @@ def mai():
     while tf:
         ym = read_yaml()
         if ym['ip'] != '' and ym['Client ID'] != '' and ym['Client Secret'] != '':
-            tf = False
+            # 创建一些路径和数据库
+            Check().cpath()
+            global val
+            val = adaptation()
+            # 定时任务第一次不会执行，所以手动添加一次
+            ck = timing_ck()
+            cr = ql_crons()
+            if ck == 0 and cr == 0:
+                logger.write_log("连接青龙端成功")
+                tf = False
+            else:
+                logger.write_log("连接青龙端失败,定时任务不启动,请重新输入")
+                # 20秒检测一次
+                time.sleep(20)
         else:
-            # 10秒检测一次
-            time.sleep(10)
-    # 创建一些路径和数据库
-    Check().cpath()
-    global val
-    val = adaptation()
-    # 定时任务第一次不会执行，所以手动添加一次
-    timing_ck()
-    ql_crons()
+            # 15秒检测一次
+            time.sleep(20)
     immortal_main()
     # 添加定时任务
     scheduler.start()

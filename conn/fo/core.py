@@ -6,7 +6,6 @@ from conn.gheaders.log import LoggerClass
 from conn.ql.ql import QL
 from conn.ql.ql_token import ql_compared, ql_write, contrast
 
-jstx = read_yaml()
 ql = QL()
 logger = LoggerClass('debug')
 
@@ -17,6 +16,7 @@ def main_core(va):
     :param va: 青龙版本
     :return:
     """
+    jstx = read_yaml()
     # 判断运行必备参数是否发送了异常
     if jstx['judge'] == 0:
         li = get_main()
@@ -53,10 +53,13 @@ def main_core(va):
                                 ql.configs_revise('config.sh', bytex)
                     else:
                         logger.write_log(f"{li[0][i]} 脚本没有找到")
+            return 0
         else:
             logger.write_log(f"本次没有任务，{jstx['time']}分钟后再次运行")
+            return 0
     else:
-        logger.write_log("异常问题：conn.yml文件中judge设置为false,表示配置异常")
+        logger.write_log("异常问题,检测到程序非正常状态,不再执行")
+        return -1
 
 
 def adaptation():
