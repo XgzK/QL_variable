@@ -14,11 +14,13 @@ do
     # shellcheck disable=SC2009
     # shellcheck disable=SC2126
     stillRunning=$(ps -ef |grep addvalue.py |grep -v "grep" |wc -l)
-    if [ "$stillRunning" ]; then
+    if [ "$stillRunning" ]
+    then
       echo 程序死亡开始执行
       sleep 3s
       # 判断文件是否存在不存在则拉取
-      if [ ! -f "/val/addvalue.py" ]; then
+      if [ ! -f "/val/addvalue.py" ]
+      then
         echo "没有检测到文件存在拉取新项目"
         sh /root/UpdateAll.sh
       else

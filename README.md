@@ -1,6 +1,5 @@
-# TG群 https://t.me/InteIJ 前期脚本经常修复，建议加群(仅个人建议)
-
 #### 根据变量运行自动运行对应任务
+#### 因大部分人反馈看不到活动参数和这个活动没有执行过,为防止此类问题被以后再被提出,暂关闭自动删除活动参数和去除重复活动参数的功能,需要定期手动删除配置文件末行里添加的活动内容,自动删除活动参数和去除重复活动参数的功能短期不会开放
 ## 爬虫源码仓库 https://github.com/XgzK/TGreptile
 本项目主要为国内没外网环境的人准备的公益项目
 
@@ -18,17 +17,30 @@
 ### 容器构建命令
 ```shell
 docker run -dit \
-  -p 自定义:5008 \
+  -p 5008:5008 \
   -e TZ=Asia/Shanghai \
   --name qlva \
   --restart unless-stopped \
   xgzk/qlvariable:latest
 ```
 ```http request
-http://IP:自定义端口/ 提交和更新页面
-http://IP:自定义端口/log 日志页面
+http://IP:5008/ 提交青龙参数和更新程序
+http://IP:5008/log 日志页面
 ```
 需要定时任务配置文件权限
+容器里面没有代码需要等待1-4分钟让程序跑起来
+
+### 非adm64系统的问题
+```text
+因为不能测试adm64外的版本不清楚其他版本是否正常
+如果拉取三次容器都显示相同错误的
+请手动构架
+第一步 下载docker目录下的UpdateAll.sh detect.sh dockerfile
+上传到Linux系统进入这三个文件的目录,如果你是arm64直接执行
+docker build -t xgzk/qlvariable:latest: .
+就行,然后重新执行容器构建命令
+如果你不是arm64和adm64再反馈吧
+```
 
 ## 更新说明
 

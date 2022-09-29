@@ -6,7 +6,8 @@ wget https://xgzq.tk/library/qlva.tgz
 # 解压
 tar -zxvf qlva.tgz
 # 如果是1保留配置文件
-if test "$1" = "1"; then
+if test "$1" = "1"
+then
    echo "保留配置文件更新项目"
    # 把配置文件复制出来
    cp -r /val/conn.yml /
@@ -28,7 +29,8 @@ else
   cp -r /root/QL_variable/* /val
 fi
 # 判断文件是否存在存在则执行
-if [ -f "/root/QL_variable/test.sh" ]; then
+if [ -f "/root/QL_variable/test.sh" ]
+then
   sh /root/QL_variable/test.sh
 else
   echo "没有检测到文件不需要额外执行其他任务"
