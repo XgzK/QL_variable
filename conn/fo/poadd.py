@@ -19,9 +19,12 @@ def ym_change(li: list):
     :return:
     """
     st = ''
-    # 判断用户是否关闭了去重复开关,如果长度为6表示没有开启去重复
     if len(li) == 6:
         revise_yaml(f"deduplication: 1", yml['Record']['deduplication'])
+        st += '任务不去重复'
+    elif len(li) == 7:
+        revise_yaml(f"deduplication: 0", yml['Record']['deduplication'])
+        st += '任务去重复'
     # 判断用户输入的值如果返回的列表是先判断0-3是不是为空,如果为空则表示用户并不是提交青龙URL这里直接判断0位是不是空
     if li[0] != '' and li[1] != '' and li[2] != '':
         # 判断url是否符合要求
