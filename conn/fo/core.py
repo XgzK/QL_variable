@@ -32,7 +32,7 @@ def main_core(va):
                     # 判断是否有脚本
                     if ids[0] != -1:
                         # 处理数据和去判断是否去重复,返回处理过的参数
-                        judge = ql_write(li[1][i])
+                        judge = ql_write(li[1][i], jstx)
                         # 返回-1表示有异常
                         if judge != -1:
                             # 获取配置文件的内容

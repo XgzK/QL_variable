@@ -34,15 +34,16 @@ def token_main():
         return -1
 
 
-def ql_write(str12):
+def ql_write(str12, yal):
     """
     写入青龙任务配置文件
     :param str12: 传入内容
+    :param yal: conn.yml配置文件内容
     :return: 如果没有执行过返回0，如果执行过返回-1
     """
     try:
         # 判断是否去重数据
-        if yam['deduplication'] == 0:
+        if yal['deduplication'] == 0:
             # 针对某些不需要去重复的数据，如果不是exp则不去重复
             if str12[:3] == "exp":
                 # 添加到数据库，如果成功添加表示之前没有运行过
