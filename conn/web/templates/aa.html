@@ -1,0 +1,17 @@
+<!-- 告诉页面你使用的模板是哪个 -->
+{% extends 'module.html' %}
+{% block content %}
+    <h1>{% block title %}查看执行过的参数{% endblock %}</h1>
+    <table class="table table-success table-striped-columns">
+        <tr class="table-primary">
+            <th>重复的活动</th>
+            <th>执行时间</th>
+        </tr>
+        {% for se_repeat in se_repeat  %}
+            <tr>
+                <td>{{ se_repeat[0] }}</td>
+                <td>{{ se_repeat[1] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

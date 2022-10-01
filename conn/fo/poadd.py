@@ -13,59 +13,43 @@ ql = QL()
 
 def ym_change(li: list):
     """
-    往conn.yml添加内容
-    :param li:
+    根据用户表单提交的值往conn.yml添加内容
+    :param li: 表单返回的数组
     :return:
     """
-    l = re.findall('^(http.*?:\d+)/\w+', li[0])
-    if len(l) == 1:
-        li[0] = l[0]
-    else:
-        return "URL不符合格式要求,请复制浏览器显示青龙URL"
+    st = ''
+    # 判断用户是否关闭了去重复开关,如果长度为6表示没有开启去重复
+    if len(li) == 6:
+        revise_yaml(f"deduplication: 1", yml['Record']['deduplication'])
+    # 判断用户输入的值如果返回的列表是先判断0-3是不是为空,如果为空则表示用户并不是提交青龙URL这里直接判断0位是不是空
     if li[0] != '' and li[1] != '' and li[2] != '':
-        # li34都是空
-        if li[3] == '' and li[4] == '':
-            # 表示用户没有输入时间
-            revise_yaml(f"ip: '{li[0]}'", 2)
-            revise_yaml(f"Client ID: '{li[1]}'", 4)
-            revise_yaml(f"Client Secret: '{li[2]}'", 5)
-            return '添加成功青龙'
-        # li34都非空
-        elif li[4] != '' and li[3] != '':
-            # 自己搭建了爬虫接口
-            revise_yaml(f"ip: '{li[0]}'", 2)
-            revise_yaml(f"Client ID: '{li[1]}'", 4)
-            revise_yaml(f"Client Secret: '{li[2]}'", 5)
-            ur = re.findall(r'xgzq\.ml', li[4])
-            if len(ur) == 0 and int(li[3]) >= 2:
-                revise_yaml(f"time: {li[3]}", 17)
-                revise_yaml(f"url: '{li[4]}'", 7)
-                os.system(yml['kill'])
-                return "添加私人API成功"
-            else:
-                return "提交的公益API禁止修改时间,或时间不得小于2分钟"
-        # li3空4非空
-        elif li[4] != '' and li[3] == '':
-            # 提交非自己搭建的接口
-            revise_yaml(f"ip: '{li[0]}'", 2)
-            revise_yaml(f"Client ID: '{li[1]}'", 4)
-            revise_yaml(f"Client Secret: '{li[2]}'", 5)
-            revise_yaml(f"url: '{li[4]}'", 7)
+        # 判断url是否符合要求
+        ur = re.findall('^(http.*?:\d+)/', li[0])
+        # 如果不符合要求则进入
+        if len(ur) == 0:
+            return "URL不符合格式要求,请复制浏览器上完整的青龙URL"
+        # 把用户提交的青龙相关提交到配置文件
+        revise_yaml(f"ip: '{li[0]}'", yml['Record']['ql'][0])
+        revise_yaml(f"Client ID: '{li[1]}'", yml['Record']['ql'][1])
+        revise_yaml(f"Client Secret: '{li[2]}'", yml['Record']['ql'][2])
+        st += '青龙URL提交成功 '
+    # 3非空表示用户提交了自己的API
+    if li[3] != '':
+        ur = re.findall(r'xgzq', li[3])
+        # 要修改时间不能有 xgzq 的关键字
+        if ur and len(li[4]) != '' and type(li[4]) == int:
+            revise_yaml(f"time: {li[4]}", yml['Record']['time'])
+            revise_yaml(f"url: '{li[3]}'", yml['Record']['url'])
             os.system(yml['kill'])
-            return "添加API成功"
-        elif li[3] != '' and li[4] == '':
-            # 自己搭建了爬虫接口
-            revise_yaml(f"ip: '{li[0]}'", 2)
-            revise_yaml(f"Client ID: '{li[1]}'", 4)
-            revise_yaml(f"Client Secret: '{li[2]}'", 5)
-            ur = re.findall(r'xgzq\.ml', yml['url'])
-            if len(ur) == 0 and int(li[3]) >= 2:
-                revise_yaml(f"time: {li[3]}", 17)
-                os.system(yml['kill'])
-                return "修改爬取时间成功"
-            else:
-                return "提交的公益API禁止修改时间,或时间不得小于2分钟"
-    return f"检测到输入参数不合法,<br>青龙地址: {li[0]} <br> Client ID: {li[1]}<br> Client Secret: {li[2]}"
+        else:
+            revise_yaml(f"url: '{li[3]}'", yml['Record']['url'])
+            st += '爬虫API提交成功 '
+    # 表示用户输入了自己优先执行的库了
+    if li[5] != '':
+        k = li[5].split('/')[0] + '/'
+        revise_yaml(f'library: {k}', yml['Record']['library'])
+        st += f'你优先执行的库是: {k}'
+    return [0, st]
 
 
 def upgrade(sun: int):
@@ -80,20 +64,6 @@ def upgrade(sun: int):
     elif int(sun) == 1:
         print("保留配置更新")
         os.system("sh /root/UpdateAll.sh 1")
-
-
-def library(ku):
-    """
-    修改库
-    :param ku: 库名称
-    :return:
-    """
-    try:
-        k = ku.split('/')[0] + '/'
-        revise_yaml(f'library: {k}', yml['Record']['library'])
-        return ' '
-    except Exception as e:
-        return '你配置文件不是最新版提交失败'
 
 
 def to_stop():

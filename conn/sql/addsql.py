@@ -71,6 +71,8 @@ def select_datati(value='*') -> list:
         # 查询数据
         if value == '*':
             cursor.execute('select `jd_value1` from repeat')
+        elif value == 'all':
+            cursor.execute('select * from repeat')
         else:
             cursor.execute('select * from repeat WHERE jd_value1 = ?', (value,))
         data = cursor.fetchall()

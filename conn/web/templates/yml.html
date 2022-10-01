@@ -1,0 +1,43 @@
+{% extends 'module.html' %}
+{% block content %}
+    <h1>{% block title %}配置文件控制台{% endblock %}</h1>
+    <form method="post" action="/">
+        <div class="mb-3">
+            <label for="title">青龙URL</label>
+            {#   request.from['title'] 如果提交失败获取到提交的内容         #}
+            <input class="form-control form-control-lg" type="url" name="books[]" placeholder="青龙URL" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
+        </div>
+        <div class="mb-3">
+            <label for="title">Client ID</label>
+            {#   request.from['title'] 如果提交失败获取到提交的内容         #}
+            <input class="form-control form-control-lg" type="text" name="books[]" placeholder="请输入青龙的Client ID" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
+        </div>
+        <div class="mb-3">
+            <label for="title">Client Secret</label>
+            {#   request.from['title'] 如果提交失败获取到提交的内容         #}
+            <input class="form-control form-control-lg" type="text" name="books[]" placeholder="请输入青龙的Client Secret" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
+        </div>
+        <div class="mb-3">
+            <label for="title">获取活动API</label>
+            {#   request.from['title'] 如果提交失败获取到提交的内容         #}
+            <input class="form-control form-control-lg" type="url" name="books[]"  placeholder="提交的活动API" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
+        </div>
+        <div class="mb-3">
+            <label for="title">执行间隔时间</label>
+            {#   request.from['title'] 如果提交失败获取到提交的内容         #}
+            <input class="form-control form-control-lg" type="number" name="books[]" placeholder="请输入间隔时间" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
+        </div>
+        <div class="mb-3">
+            <label for="title">优先执行的库</label>
+            {#   request.from['title'] 如果提交失败获取到提交的内容         #}
+            <input class="form-control form-control-lg" type="text" name="books[]" placeholder="请输入优先执行的库" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="books[]" role="switch" id="flexSwitchCheckChecked" {{ chec }}>
+            <label class="form-check-label" for="flexSwitchCheckChecked">去重复开关</label>
+        </div>
+        <div  class="mb-3">
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </form>
+{% endblock %}

@@ -123,14 +123,13 @@ def rz():
     :return: 打印html格式的日志，异常返回-1
     """
     try:
-        st = ' '
+        st = []
         if yml == -1:
-            return -1
+            return []
         log = yml['log']
-        # print(log)
         rz1 = read_txt(log)
         if rz1 == -1:
-            return -1
+            return []
         if len(rz1) > 100:
             delete_first_lines(yml['log'], -100)
         # 遍历所有行
@@ -141,15 +140,8 @@ def rz():
             #  把末尾的\n换成<br>
             j = re.findall(r"\[\d+m(.*)\x1b", i)
             if j:
-                st += j[0] + "<br>"
+                st.append(j[0])
                 continue
-            j = re.findall(r"\d+m(.*)", i)
-            if j:
-                st += j[0] + "<br>"
-                # __count += 1
-                continue
-                # 如果大于100条就设置前面的
         return st
     except Exception as e:
-        print("下面异常问题: ", e)
-        return -1
+        return [f'日志文件异常: {e}']
