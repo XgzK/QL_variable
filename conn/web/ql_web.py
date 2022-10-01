@@ -1,3 +1,5 @@
+import threading
+
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 from conn.gheaders.conn import read_yaml
@@ -68,10 +70,10 @@ def gi():
     """
     if request.method == 'POST':
         git = request.values.get('gi')
-        print(git)
-        # upgrade(int(git))
+        t1 = threading.Thread(target=upgrade, args=(int(git),))
+        t1.start()
     # 提示语
-    flash('10秒后刷新浏览器')
+    flash('25秒后刷新浏览器')
     # 重定向到首页
     return redirect(url_for('index'))
 
@@ -91,5 +93,5 @@ def run_web():
     app.run(
         host='0.0.0.0',
         port=5008,
-        debug=True
+        debug=False
     )

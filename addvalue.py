@@ -32,6 +32,7 @@ def timing_ck():
             return 0
         logger.write_log("新的Bearer添加失败, 20s后再次获取")
         time.sleep(20)
+    logger.write_log("新的Bearer添加失败停止执行后面步骤")
     return -1
 
 
@@ -61,7 +62,7 @@ def immortal_main():
     main_core(val)
 
 
-@scheduler.task('interval', id='ti_ck', minutes=12)
+@scheduler.task('interval', id='ti_ck', days=24)
 def ti_ck():
     """
     定时清空数据库
@@ -83,14 +84,19 @@ def mai():
             Check().cpath()
             global val
             val = adaptation()
-            # 定时任务第一次不会执行，所以手动添加一次
-            ck = timing_ck()
-            cr = ql_crons()
-            if ck == 0 and cr == 0:
-                logger.write_log("连接青龙端成功")
-                tf = False
+            if val != -1:
+                # 定时任务第一次不会执行，所以手动添加一次
+                ck = timing_ck()
+                cr = ql_crons()
+                if ck == 0 and cr == 0:
+                    logger.write_log("连接青龙端成功")
+                    tf = False
+                else:
+                    logger.write_log("连接青龙端失败,定时任务不启动,请重新输入")
+                    # 20秒检测一次
+                    time.sleep(20)
             else:
-                logger.write_log("连接青龙端失败,定时任务不启动,请重新输入")
+                logger.write_log("无法获取版本号,程序无法自动适配")
                 # 20秒检测一次
                 time.sleep(20)
         else:
