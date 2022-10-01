@@ -70,6 +70,6 @@ def adaptation():
     qlv = ql.system_version()
     if qlv != -1:
         qlv = re.findall('\d+\.(\d+)\.\d+', qlv)
-        return int(qlv[0])
+        return qlv[0]
     else:
         return -1

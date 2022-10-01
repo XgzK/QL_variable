@@ -24,8 +24,8 @@ def index():
         print(books)
         # 把表单传递给方法添加到conn.yml
         q = ym_change(books)
-        print(q)
-        return render_template('yml.html')
+        flash(q[1])
+        return redirect(url_for('index'))
     else:
         yml = read_yaml()
         if yml['deduplication'] == 1:
@@ -75,7 +75,7 @@ def gi():
     # 提示语
     flash('25秒后刷新浏览器')
     # 重定向到首页
-    return redirect(url_for('index'))
+    return redirect(url_for('under'))
 
 
 @app.route("/pare", methods=['GET'])
@@ -86,7 +86,7 @@ def pare():
     """
     res = to_stop()
     flash(res)
-    return render_template('gi.html')
+    return redirect(url_for('under'))
 
 
 def run_web():

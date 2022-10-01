@@ -30,7 +30,7 @@ def ym_change(li: list):
         if len(ur) == 0:
             return "URL不符合格式要求,请复制浏览器上完整的青龙URL"
         # 把用户提交的青龙相关提交到配置文件
-        revise_yaml(f"ip: '{li[0]}'", yml['Record']['ql'][0])
+        revise_yaml(f"ip: '{ur[0]}'", yml['Record']['ql'][0])
         revise_yaml(f"Client ID: '{li[1]}'", yml['Record']['ql'][1])
         revise_yaml(f"Client Secret: '{li[2]}'", yml['Record']['ql'][2])
         st += '青龙URL提交成功 '

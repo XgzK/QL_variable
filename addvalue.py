@@ -62,7 +62,7 @@ def immortal_main():
     main_core(val)
 
 
-@scheduler.task('interval', id='ti_ck', days=24)
+@scheduler.task('interval', id='ti_ck', days=1)
 def ti_ck():
     """
     定时清空数据库
