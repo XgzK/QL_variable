@@ -25,6 +25,10 @@ kill: kill -9 $(netstat -nlp | grep :5008 | awk '{print $7}' | awk -F"/" '{ prin
 library:  /
 # 记录path行，这个不用管，方便以后添加和更改代码
 Record:
+  ql: [2, 4, 5]
+  url: 7
+  time: 17
+  deduplication: 21
   Authorization: 9
   judge: 19
   library: 25
