@@ -62,7 +62,7 @@ def upgrade(sun: int):
     :param sun: 0 or 1
     :return:
     """
-    time.sleep(15)
+    time.sleep(4)
     if int(sun) == 0:
         print("不保留配置更新")
         os.system("sh /root/UpdateAll.sh")
