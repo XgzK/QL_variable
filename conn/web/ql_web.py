@@ -22,6 +22,7 @@ def index():
     if request.method == 'POST':
         books = request.values.getlist('books[]')
         print(books)
+        print(len(books))
         # 把表单传递给方法添加到conn.yml
         q = ym_change(books)
         flash(q[1])

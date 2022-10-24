@@ -4,34 +4,42 @@ import time
 
 from flask_apscheduler import APScheduler
 
+from conn.bot import bot
 from conn.gheaders.Inspector import Check
 from conn.gheaders.conn import read_yaml
-from conn.gheaders.log import LoggerClass
-from conn.ql.ql import QL
+from conn.ql import ql
+from conn.gheaders import logger
 from conn.ql.ql_token import token_main
 from conn.sql.addsql import dele_datati
 from conn.web.ql_web import run_web
-from conn.fo.core import main_core, adaptation
+from conn.fo.core import adaptation, main_core
 
-logger = LoggerClass('debug')
 scheduler = APScheduler()
 yml = read_yaml()
-ql = QL()
+
+
+@scheduler.task('interval', id='ti_ck', days=1)
+def ti_ck():
+    """
+    定时清空数据库
+    :return:
+    """
+    dele_datati()
 
 
 @scheduler.task('interval', id='timing_ck', days=15)
 def timing_ck():
     """
     设置每半个月获取一次新的ck,青龙作者是的是一个月保质期，不过这里设置为半个月
-    :return:
+    :return: 0 or -1
     """
     for i in range(3):
         ck = token_main()
         if ck == 0:
             logger.write_log("新的Bearer添加成功token_main")
             return 0
-        logger.write_log("新的Bearer添加失败, 20s后再次获取")
-        time.sleep(20)
+        logger.write_log("新的Bearer添加失败, 30s后再次获取")
+        time.sleep(30)
     logger.write_log("新的Bearer添加失败停止执行后面步骤")
     return -1
 
@@ -40,7 +48,7 @@ def timing_ck():
 def ql_crons():
     """
     获取青龙任务列表
-    :return:
+    :return: 0 or -1
     """
     try:
         js = ql.crons()
@@ -53,22 +61,27 @@ def ql_crons():
         return -1
 
 
-@scheduler.task('interval', id='immortal_main', minutes=yml['time'])
-def immortal_main():
+@bot.message_handler(func=lambda m: True)
+def ordinary(message):
     """
-    主要功能运行,特定分钟运行一次
+    私聊群聊消息
+    :param message:
     :return:
     """
-    main_core(val)
+    get_mes = message.text.split('\n')
+    # 如果刚好长度是2表示类型符合
+    if len(get_mes) == 2:
+        main_core(get_mes)
 
 
-@scheduler.task('interval', id='ti_ck', days=1)
-def ti_ck():
-    """
-    定时清空数据库
-    :return:
-    """
-    dele_datati()
+# @bot.channel_post_handler()
+# def ordi(message):
+#     """
+#     频道消息
+#     :param message:
+#     :return:
+#     """
+#     print(message)
 
 
 def mai():
@@ -82,32 +95,30 @@ def mai():
         if ym['ip'] != '' and ym['Client ID'] != '' and ym['Client Secret'] != '':
             # 创建一些路径和数据库
             Check().cpath()
-            global val
-            val = adaptation()
-            if val != -1:
-                # 定时任务第一次不会执行，所以手动添加一次
-                ck = timing_ck()
-                cr = ql_crons()
-                if ck == 0 and cr == 0:
-                    logger.write_log("连接青龙端成功")
-                    tf = False
-                else:
-                    logger.write_log("连接青龙端失败,定时任务不启动,请重新输入")
-                    # 20秒检测一次
-                    time.sleep(20)
+            # 把版本号传递给青龙
+            ql.Version = adaptation()
+            # 获取必备青龙参数
+            ck = timing_ck()
+            cr = ql_crons()
+            if ck == 0 and cr == 0:
+                logger.write_log("连接青龙端成功")
+                # 结束循环
+                tf = False
             else:
-                logger.write_log("无法获取版本号,程序无法自动适配")
-                # 20秒检测一次
+                logger.write_log("连接青龙端失败,定时任务不启动,请重新输入")
+                # n秒检测一次
                 time.sleep(20)
         else:
-            # 15秒检测一次
+            logger.write_log("没有检测到青龙必要参数存在不继续向下执行后续功能")
+            # n秒检测一次
             time.sleep(20)
-    immortal_main()
-    # 添加定时任务
+    # 启动定时任务
     scheduler.start()
 
 
 if __name__ == '__main__':
-    t1 = threading.Thread(target=mai, args=())
+    # 使用多线程防止任务阻塞
+    t1 = threading.Thread(target=run_web)
     t1.start()
-    run_web()
+    mai()
+    bot.infinity_polling()

@@ -17,6 +17,7 @@ yam = read_yaml()
 class QL:
     def __init__(self):
         self.headers = ql_header
+        self.Version = 0  # 青龙版本号
 
     def ql_tk(self):
         """

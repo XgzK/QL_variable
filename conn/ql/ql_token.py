@@ -3,12 +3,11 @@ import re
 from conn.gheaders.conn import read_yaml
 from conn.gheaders.log import LoggerClass
 from conn.gheaders.ti import date_minutes
-from conn.ql.ql import QL
+from conn.ql import ql
 from conn.gheaders.conn import yml_file
 from conn.sql.addsql import insert_data, select_datati
 
 logger = LoggerClass('debug')
-ql = QL()
 yam = read_yaml()
 
 
