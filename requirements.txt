@@ -5,5 +5,5 @@ requests > 1
 PyYAML > 1
 Flask > 1
 Flask-APScheduler > 1
-
+pytelegrambotapi
 colorlog>=6.7.0
