@@ -11,6 +11,6 @@ class Bot:
         yml = read_yaml()
         self.token = yml['Token']
         self.bots = TeleBot(self.token)
-        self.proxy = asyncio_helper.proxy = yml['Proxy']
+        asyncio_helper.proxy = yml['Proxy']
         self.chat_id = []  # 群组和频道
         self.status = ["left", "member", "administrator", "creator"]  # member 成员 left 不在群组 administrator 管理员 creator 群主

@@ -11,8 +11,9 @@ from conn.ql import ql
 from conn.gheaders import logger
 from conn.ql.ql_token import token_main
 from conn.sql.addsql import dele_datati
+from conn.txt.txt_zli import tx_revise
 from conn.web.ql_web import run_web
-from conn.fo.core import adaptation, main_core
+from conn.fo.core import adaptation
 
 scheduler = APScheduler()
 yml = read_yaml()
@@ -68,10 +69,9 @@ def ordinary(message):
     :param message:
     :return:
     """
-    get_mes = message.text.split('\n')
-    # 如果刚好长度是2表示类型符合
-    if len(get_mes) == 2:
-        main_core(get_mes)
+    print(message)
+    tx_revise(message.text)
+
 
 
 # @bot.channel_post_handler()
