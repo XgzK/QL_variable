@@ -119,7 +119,7 @@ def contrast(str12):
             aa = re.findall('export .*?="(.*?=?\w+)"', i[0])
             a2 = aa[0].split('=')[-1]
             if a1[-1] == a2:
-                logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数 <br>{str12} <br>之前执行的参数 {i[0]}')
+                logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数 {str12} 之前执行的参数 {i[0]}')
                 return -1
         return 0
     except Exception as e:

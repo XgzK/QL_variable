@@ -6,9 +6,9 @@ Client Secret: ''
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行
 Authorization: ''
 # 机器人的 token
-Token:
+Token: ""
 # 代理 如果不能访问TG需要设置代理 支持协议 http https socks socks4 socks5 格式 协议:ip:端口
-Proxy:
+Proxy: ""
 # 日志文件
 log: 'log/ql.log'
 # 用于去重复的任务，的数据库，不用修改
