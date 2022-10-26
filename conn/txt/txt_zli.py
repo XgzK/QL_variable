@@ -18,7 +18,7 @@ def tx_revise(tx1: str):
         jdht = re.findall(r'(https://u\.jd\.com/.*?)', tx1, re.S)
         if len(jdht) > 0:
             return
-        ex_ht = re.findall('(export [0-9a-zA-Z_]+="?https://[a-zA-z0-9-&\.\?=_/].*")', tx1, re.S)
+        ex_ht = re.findall('(export [0-9a-zA-Z_]+="?https://[a-zA-Z0-9-&\.\?=_/].*")', tx1, re.S)
         # 如果开头是export =后面有"https://则添加到文本中
         if ex_ht:
             tx_compared(ex_ht[0])
