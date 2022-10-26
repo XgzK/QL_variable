@@ -21,10 +21,10 @@ def ym_change(li: list):
     """
     tf = 0  # 记录是否需要重启
     st = ''
-    if len(li) == 6:
+    if len(li) == 7:
         revise_yaml(f"deduplication: 1", yml['Record']['deduplication'])
         st += '任务不去重复'
-    elif len(li) == 7:
+    elif len(li) == 8:
         revise_yaml(f"deduplication: 0", yml['Record']['deduplication'])
         st += '任务去重复'
     # 判断用户输入的值如果返回的列表是先判断0-3是不是为空,如果为空则表示用户并不是提交青龙URL这里直接判断0位是不是空
@@ -52,6 +52,12 @@ def ym_change(li: list):
         revise_yaml(f'Proxy: {li[5]}', yml['Record']['Proxy'])
         st += f'代理添加成功'
         tf = 1
+    if li[6] != '':
+        tg_url = re.findall('^(http.*?:\d+)', li[6])
+        if tg_url:
+            revise_yaml(f'TG_API_HOST: {tg_url[0]}', yml['Record']['TG_API_HOST'])
+            st += f'反代添加成功'
+            tf = 1
     if tf == 1:
         t1 = threading.Thread(target=upgrade, args=(1,))
         t1.start()

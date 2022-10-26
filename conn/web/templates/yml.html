@@ -24,9 +24,14 @@
             <label for="title">机器人Token</label>
             <input class="form-control form-control-lg" type="text" name="books[]" placeholder="https://t.me/BotFather 给的Token" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
         </div>
+        <p>反代和代理只能使用一个,如果填写代理就不检测反代</p>
         <div class="mb-3">
             <label for="title">代理</label>
             <input class="form-control form-control-lg" type="text" name="books[]" placeholder="如果没有外网环境填写格式 协议:ip:端口" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
+        </div>
+        <div class="mb-3">
+            <label for="title">反代</label>
+            <input class="form-control form-control-lg" type="text" name="books[]" placeholder="如果填写反代会替换https://api.telegram.org " aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
         </div>
         <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" name="books[]" role="switch" id="flexSwitchCheckChecked" {{ chec }}>
