@@ -53,7 +53,7 @@ def ym_change(li: list):
         st += f'代理添加成功'
         tf = 1
     if li[6] != '':
-        tg_url = re.findall('^(http.*?:\d+)', li[6])
+        tg_url = re.findall('(http.*)', li[6])
         if tg_url:
             revise_yaml(f'TG_API_HOST: {tg_url[0]}', yml['Record']['TG_API_HOST'])
             st += f'反代添加成功'
