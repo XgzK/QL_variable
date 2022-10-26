@@ -1,22 +1,25 @@
 """
 长链接请求,后期处理
 """
+import json
+import re
 
 import requests
-
+import http.client
 from conn.gheaders.conn import read_yaml
 
 
 class GetUpdate:
     def __init__(self):
         yml = read_yaml()
-        self.url = ("https://api.telegram.org" if yml['TG_API_HOST'] == "" else yml['TG_API_HOST']) + "/bot" + yml['Token']
+        self.url = ("https://api.telegram.org" if yml['TG_API_HOST'] == "" else yml['TG_API_HOST']) + "/bot" + yml[
+            'Token']
         self.headers = {
             'accept': 'application/json',
             'content-type': 'application/json'
         }
         self.data = {
-            "offset": None,
+            "offset": 0,
             "timeout": 100
         }
 
@@ -26,10 +29,19 @@ class GetUpdate:
         :return: 失败返回 {"ok": False,"result": []}
         """
         try:
-            tg_me = requests.get(url=self.url + "/getUpdates", params=self.data, headers=self.headers)
-            if tg_me.status_code == 200:
-                return tg_me.json()
-            else:
-                return {"ok": False, "result": [tg_me.json()]}
+            ur = re.findall("https://(.*?)(/.*)", self.url)
+            if len(ur[0]) == 2:
+                conn = http.client.HTTPSConnection(ur[0][0])
+                conn.request("GET", f"{ur[0][1]}/getUpdates?offset={self.data['offset']}&timeout=100",
+                             headers=self.headers)
+                res = conn.getresponse()
+                if res.status == 200:
+                    data = res.read()
+                    js = json.loads(data)
+                    if 'ok' in js:
+                        return js
+                elif res.status == 502:
+                    return {"ok": True, "result": []}
+            return {"ok": False, "result": []}
         except Exception as e:
             return {"ok": False, "result": [e]}
