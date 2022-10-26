@@ -131,22 +131,38 @@ if __name__ == '__main__':
         logger.write_log("调用了开发者自己写的TG接口")
         tg_mes = GetUpdate()
         while True:
-            tg_ms = tg_mes.get_long_link()
-            # 消息不为空和没有异常
-            if tg_ms['ok']:
-                if tg_ms["result"]:
-                    # 确认收到消息
-                    tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
-                    # 循环消息
-                    for result in tg_ms["result"]:
-                        if 'text' in result['message']:
-                            # print(result['message']['text'])
-                            tx_revise(result['message']['text'])
-                        # else:
-                        #     print("不是文本类型")
-                # else:
-                #     print("收到消息为空")
-            else:
-                logger.write_log(f"异常消息 {tg_ms['result']} 触发异常停止60秒")
-                time.sleep(60)
+            try:
+                tg_ms = tg_mes.get_long_link()
+                # 消息不为空和没有异常
+                if tg_ms['ok']:
+                    if tg_ms["result"]:
+                        # 确认收到消息
+                        tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
+                        for result in tg_ms["result"]:
+                            # message 一般是 私聊 群消息 加入群组 and 是消息而非加入群组
+                            if 'message' in result and "chat" in result['message']:
+                                # 私聊消息
+                                if result['message']['chat']['type'] == 'private':
+                                    if 'text' in result['message']:
+                                        logger.write_log(f"收到私聊消息内容 {result['message']['text']}")
+                                        tx_revise(result['message']['text'])
+                                # 群消息
+                                elif result['message']['chat']['type'] == 'supergroup':
+                                    if 'text' in result['message']:
+                                        tx_revise(result['message']['text'])
+                            # 频道消息
+                            elif 'channel_post' in result:
+                                if result['channel_post']['chat']['type'] == 'channel':
+                                    if 'text' in result['channel_post']:
+                                        tx_revise(result['channel_post']['text'])
+                            else:
+                                pass
+                                # print(result)
+                    # else:
+                    #     print("收到消息为空")
+                else:
+                    logger.write_log(f"异常消息 {tg_ms['result']} 触发异常停止10秒")
+                    time.sleep(10)
+            except Exception as e:
+                logger.write_log(f"个人开发类异常: {e}")
 

@@ -4,7 +4,6 @@
 import json
 import re
 
-import requests
 import http.client
 from conn.gheaders.conn import read_yaml
 
@@ -42,6 +41,8 @@ class GetUpdate:
                         return js
                 elif res.status == 502:
                     return {"ok": True, "result": []}
+                else:
+                    return {"ok": False, "result": [res.status]}
             return {"ok": False, "result": []}
         except Exception as e:
             return {"ok": False, "result": [e]}
