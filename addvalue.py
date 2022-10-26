@@ -5,6 +5,7 @@ import time
 from flask_apscheduler import APScheduler
 
 from conn.bot import bot
+from conn.bot.getUpdate import GetUpdate
 from conn.gheaders.Inspector import Check
 from conn.gheaders.conn import read_yaml
 from conn.ql import ql
@@ -69,9 +70,8 @@ def ordinary(message):
     :param message:
     :return:
     """
-    print(message)
+    # print(message)
     tx_revise(message.text)
-
 
 
 # @bot.channel_post_handler()
@@ -121,4 +121,32 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=run_web)
     t1.start()
     mai()
-    bot.infinity_polling()
+    # 用来检测用户用什么方式
+    yml = read_yaml()
+    if yml['TG_API_HOST'] != '' or yml['Proxy']:
+        logger.write_log("你调用了官方封装的TG机器人方法库")
+        # 如果用户没有填写反代或没有设置代理将调用第三方封装机器人
+        bot.infinity_polling()
+    else:
+        logger.write_log("调用了开发者自己写的TG接口")
+        tg_mes = GetUpdate()
+        while True:
+            tg_ms = tg_mes.get_long_link()
+            # 消息不为空和没有异常
+            if tg_ms['ok']:
+                if tg_ms["result"]:
+                    # 确认收到消息
+                    tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
+                    # 循环消息
+                    for result in tg_ms["result"]:
+                        if 'text' in result['message']:
+                            # print(result['message']['text'])
+                            tx_revise(result['message']['text'])
+                        # else:
+                        #     print("不是文本类型")
+                # else:
+                #     print("收到消息为空")
+            else:
+                logger.write_log(f"异常消息 {tg_ms['result']} 触发异常停止60秒")
+                time.sleep(60)
+
