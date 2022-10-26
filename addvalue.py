@@ -123,7 +123,7 @@ if __name__ == '__main__':
     mai()
     # 用来检测用户用什么方式
     yml = read_yaml()
-    if yml['TG_API_HOST'] != '' or yml['Proxy']:
+    if yml['TG_API_HOST'] == '' or yml['Proxy']:
         logger.write_log("你调用了官方封装的TG机器人方法库")
         # 如果用户没有填写反代或没有设置代理将调用第三方封装机器人
         bot.infinity_polling()
