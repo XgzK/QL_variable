@@ -3,7 +3,7 @@ TG机器人
 """
 from telebot import asyncio_helper, TeleBot
 
-from conn.gheaders.conn import read_yaml
+from com.gheaders.conn import read_yaml
 
 
 class Bot:

@@ -1,4 +1,4 @@
-from conn.gheaders.conn import read_yaml
+from com.gheaders.conn import read_yaml
 
 
 def ql_header():

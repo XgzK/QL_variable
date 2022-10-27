@@ -2,10 +2,10 @@ import threading
 
 from flask import Flask, render_template, request, redirect, url_for, flash
 
-from conn.gheaders.conn import read_yaml
-from conn.gheaders.log import rz
-from conn.fo.poadd import ym_change, upgrade, to_stop
-from conn.sql.addsql import select_datati
+from com.gheaders.conn import read_yaml
+from com.gheaders.log import rz
+from com.fo.poadd import ym_change, upgrade, to_stop
+from com.sql import conn
 
 app = Flask(__name__)
 app._static_folder = "./templates/"
@@ -48,7 +48,7 @@ def repeat():
     重复的数据库值
     :return:
     """
-    se_repeat = select_datati('all')
+    se_repeat = conn.selectAll(table=conn.surface[0])
     return render_template('aa.html', se_repeat=se_repeat)
 
 

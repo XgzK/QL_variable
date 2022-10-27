@@ -4,8 +4,8 @@
 import os
 import re
 
-from conn.gheaders.conn import read_yaml
-from conn.sql.addsql import create_db, create_table
+from com.gheaders.conn import read_yaml
+
 
 yml = read_yaml()
 
@@ -24,9 +24,8 @@ class Check:
         if pa:
             if not os.path.exists(pa[0]):
                 os.makedirs(pa[0])
-        db = os.path.isfile(yml['repeat'])
-        if not db:
-            create_db()
-            create_table()
+        # db = os.path.isfile(yml['repeat'])
+        # if not db:
+
 
 

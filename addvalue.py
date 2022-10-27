@@ -4,17 +4,17 @@ import time
 
 from flask_apscheduler import APScheduler
 
-from conn.bot import bot
-from conn.bot.getUpdate import GetUpdate
-from conn.gheaders.Inspector import Check
-from conn.gheaders.conn import read_yaml
-from conn.ql import ql
-from conn.gheaders import logger
-from conn.ql.ql_token import token_main
-from conn.sql.addsql import dele_datati
-from conn.txt.txt_zli import tx_revise
-from conn.web.ql_web import run_web
-from conn.fo.core import adaptation
+from com.bot import bot
+from com.bot.getUpdate import GetUpdate
+from com.gheaders.Inspector import Check
+from com.gheaders.conn import read_yaml
+from com.ql import ql
+from com.gheaders import logger
+from com.ql.ql_token import token_main
+from com.sql import conn
+from com.txt.txt_zli import tx_revise
+from com.web.ql_web import run_web
+from com.fo.core import adaptation
 
 scheduler = APScheduler()
 yml = read_yaml()
@@ -26,7 +26,7 @@ def ti_ck():
     定时清空数据库
     :return:
     """
-    dele_datati()
+    conn.delete(table=conn.surface[1])
 
 
 @scheduler.task('interval', id='timing_ck', days=15)

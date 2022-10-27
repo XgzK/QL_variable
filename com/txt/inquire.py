@@ -1,7 +1,7 @@
 import re
 
-from conn.gheaders import LoggerClass
-from conn.sql.JD_ql import select_data
+from com.gheaders import LoggerClass
+from com.sql import conn
 
 logger = LoggerClass('debug')
 
@@ -14,9 +14,9 @@ def fuzzy_query(url=None):
     """
     try:
         # 读取数据库中活动全部链接的数据
-        lines = select_data('jd_url')
+        lines = conn.selectAll(table=conn.surface[0], where=f'jd_url != ""')
         # 获取数据库中的参数
-        values = select_data('jd_value1,jd_value2,jd_value3, jd_re')
+        values = conn.selectAll(table=conn.surface[0], field="jd_value1,jd_value2,jd_value3, jd_re")
         lis = []
         if len(values) != 0:
             for i in range(len(lines)):

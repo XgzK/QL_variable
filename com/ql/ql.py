@@ -6,9 +6,9 @@ import time
 
 import requests
 
-from conn.gheaders.conn import read_yaml, revise_yaml
-from conn.gheaders.get_headers import ql_header, qlck_header
-from conn.gheaders.log import LoggerClass
+from com.gheaders.conn import read_yaml, revise_yaml
+from com.gheaders.get_headers import ql_header, qlck_header
+from com.gheaders.log import LoggerClass
 
 logger = LoggerClass('debug')
 yam = read_yaml()

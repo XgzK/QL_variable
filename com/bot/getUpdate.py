@@ -5,7 +5,7 @@ import json
 import re
 
 import http.client
-from conn.gheaders.conn import read_yaml
+from com.gheaders.conn import read_yaml
 
 
 class GetUpdate:

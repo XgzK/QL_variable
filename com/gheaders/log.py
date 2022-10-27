@@ -8,7 +8,7 @@ import os
 
 from logging.handlers import RotatingFileHandler
 
-from conn.gheaders.conn import read_yaml, read_txt, delete_first_lines
+from com.gheaders.conn import read_yaml, read_txt, delete_first_lines
 
 yml = read_yaml()
 

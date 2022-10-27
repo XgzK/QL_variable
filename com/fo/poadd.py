@@ -3,10 +3,10 @@ import re
 import threading
 import time
 
-from conn.fo.core import adaptation
-from conn.fo.stop import Prohibition
-from conn.gheaders.conn import read_yaml, revise_yaml
-from conn.ql.ql import QL
+from com.fo.core import adaptation
+from com.fo.stop import Prohibition
+from com.gheaders.conn import read_yaml, revise_yaml
+from com.ql.ql import QL
 
 yml = read_yaml()
 prohibition = Prohibition()

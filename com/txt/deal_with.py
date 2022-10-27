@@ -3,10 +3,10 @@
 """
 import re
 
-from conn.gheaders import LoggerClass
-from conn.sql.JD_ql import select_data
-from conn.txt.inquire import fuzzy_query
-from conn.txt.txt_compared import tx_compared
+from com.gheaders import LoggerClass
+from com.sql import conn
+from com.txt.inquire import fuzzy_query
+from com.txt.txt_compared import tx_compared
 
 logger = LoggerClass('debug')
 
@@ -25,7 +25,7 @@ def export_txt(extx):
         # 去除separate[1]前后的",避免有的值有有的没有
         separate[1] = separate[1].replace('"', '')
         # 程序第一个值是不是和自己相识
-        sq = select_data(data='jd_value1', value=f'jd_value1="NOT{separate[0]}"')
+        sq = conn.selectTopone(table=conn.surface[0],  where=f"jd_value1='NOT{separate[0]}'")
         # print('查询的结果是', sq)
         if len(sq) > 0:
             # 获取设置得正则表达式
@@ -64,7 +64,7 @@ def https_txt(http):
                                 tx_compared(st)
                             elif ink[1] is not None and ink[1] != "":
                                 # 正常不去重复的值都是一个
-                                sq = select_data(data='jd_value1', value=f'jd_value1="NOT{ink[1]}"')
+                                sq = conn.selectTopone(table=conn.surface[0], field="jd_value1",  where=f'jd_value1="NOT{ink[1]}"')
                                 if len(sq) == 1:
                                     # 获取设置得正则表达式
                                     ink[1] = 'NOT' + ink[1]

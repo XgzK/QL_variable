@@ -1,12 +1,12 @@
 # 设置自己青龙的IP:端口
-ip: ''
+ip: 'http://xgzq.ml:5715'
 # 下面和青龙有关 系统设置-->应用设置-->新建应用-->权限选择所有自己配置
-Client ID: ''
-Client Secret: ''
+Client ID: 'FLeLeZOC76_H'
+Client Secret: 'azT2_P5T7pHqht3WHDXR--yI'
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行
-Authorization: ''
+Authorization: 'Bearer 88691d03-ec97-49e8-9233-a0378384b450'
 # 机器人的 token
-Token: ""
+Token: "5707318662:AAGMTmN6GrSisrnyKbS-dJaN3PQjDIDf_KQ"
 # 代理 如果不能访问TG需要设置代理 支持协议 http https socks socks4 socks5 格式 协议:ip:端口
 Proxy: ""
 # 反代域名,
@@ -14,7 +14,7 @@ TG_API_HOST: ""
 # 日志文件
 log: 'log/ql.log'
 # 用于去重复的任务，的数据库，不用修改
-repeat: conn/sql/repeat.sqlite
+repeat: com/sql/repeat.sqlite
 # 青龙任务保存路径
 json: date/ql.json
 # 不能移动，用于判断是否有异常如果有异常则不执行后面任务,0表示没有异常

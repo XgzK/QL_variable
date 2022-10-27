@@ -1,11 +1,12 @@
+import datetime
 import re
 
-from conn.gheaders.conn import read_yaml
-from conn.gheaders.log import LoggerClass
-from conn.gheaders.ti import date_minutes
-from conn.ql import ql
-from conn.gheaders.conn import yml_file
-from conn.sql.addsql import insert_data, select_datati
+from com.gheaders.conn import read_yaml
+from com.gheaders.log import LoggerClass
+from com.ql import ql
+from com.gheaders.conn import yml_file
+
+from com.sql import conn
 
 logger = LoggerClass('debug')
 yam = read_yaml()
@@ -41,30 +42,17 @@ def ql_write(str12, yal):
     :return: 如果没有执行过返回0，如果执行过返回-1
     """
     try:
-        # 判断是否去重数据
-        if yal['deduplication'] == 0:
-            # 针对某些不需要去重复的数据，如果不是exp则不去重复
-            if str12[:3] == "exp":
+        # 针对某些不需要去重复的数据，如果不是exp则不去重复
+        if str12[:3] == "exp":
+            # 判断是否去重数据
+            if yal['deduplication'] == 0:
                 # 添加到数据库，如果成功添加表示之前没有运行过
-                st = insert_data(str12, date_minutes())
-                # 如果数据库中没有存在则返回原值
-                if int(st) == 0:
-                    return str12
-                else:
-                    inquire = select_datati(str12)
-                    logger.write_log("参数已经执行过" + str(str12) + "不再重复执行")
-                    logger.write_log(f"在 {inquire[0][1]} 数据库中参数是 {inquire[0][0]} 所以不再重复执行")
-                    return -1
-            else:
-                # 把后端添加的NOT不去重标记去掉
-                return str12[3:]
+                conn.insert(table=conn.surface[1], jd_value1=str12,
+                                 jd_data=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            return str12
         else:
-            # 不去重复
-            if str12[:3] == "exp":
-                return str12
-            else:
-                # 把后端添加的NOT不去重标记去掉
-                return str12[3:]
+            # 把后端添加的NOT不去重标记去掉
+            return str12[3:]
     except Exception as e:
         logger.write_log("ql_write,异常信息：" + str(e))
         return -1
@@ -111,15 +99,25 @@ def contrast(str12):
     :return: 有返回-1 没有返回0
     """
     try:
+        print("进入匹配页面")
         # 提取脚本关键部分
         str1 = re.findall('export .*?="(.*?=?\w+)"', str12)
+        print(str1)
         a1 = str1[0].split('=')
-        inquire = select_datati('*')
+        print(a1)
+        print('请求去重复数据库')
+        inquire = conn.selectAll(table=conn.surface[1])
         for i in inquire:
+            print(i)
             aa = re.findall('export .*?="(.*?=?\w+)"', i[0])
-            a2 = aa[0].split('=')[-1]
-            if a1[-1] == a2:
-                logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数 {str12} 之前执行的参数 {i[0]}')
+            # 如果返回有值对比
+            if aa:
+                a2 = aa[0].split('=')[-1]
+                if a1[-1] == a2:
+                    logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数 {str12} 之前执行的参数 {i[0]}')
+                    return -1
+            else:
+                logger.write_log(f'检测到活动失败跳过执行本次参数 {str12}')
                 return -1
         return 0
     except Exception as e:
