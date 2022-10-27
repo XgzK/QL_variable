@@ -16,13 +16,10 @@ def tx_compared(tx1):
         if tx1[0:6:1] == 'export' or tx1[0:9:1] == 'NOTexport':
             # 把export DPLHTY="b4be"的键和值分开
             tx = tx1.split('=')
-            print(tx)
             # 先查询这个值在不在jd_value1中
             value1 = conn.selectTopone(table=conn.surface[0], where=f'jd_value1="{tx[0]}"')
-            print(value1)
             # 再查询这个值在不在jd_value2中
             value2 = conn.selectTopone(table=conn.surface[0], where=f'jd_value2="{tx[0]}"')
-            print(value2)
             # 再查询这个值在不在jd_value3中
             value3 = conn.selectTopone(table=conn.surface[0], where=f'jd_value3="{tx[0]}"')
             if value1:
