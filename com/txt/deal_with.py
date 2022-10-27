@@ -43,6 +43,7 @@ def https_txt(http):
     :return: 处理后的二维list，异常返回-1
     """
     try:
+        http = http.replace('"', "").replace('`', "")
         # 先查询是否存有这个链接
         li = fuzzy_query(http)
         if len(li) == 0:

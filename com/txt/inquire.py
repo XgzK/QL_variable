@@ -18,9 +18,12 @@ def fuzzy_query(url=None):
         lis = []
         # 遍历数据库正则表达式非空
         for i in lines:
-            zzbds = re.findall(f'{i[6]}.*?', url)
-            if zzbds:
-                lis.append(i)
+            try:
+                zzbds = re.findall(f'{i[6]}.*?', url)
+                if zzbds:
+                    lis.append(i)
+            except Exception as e:
+                logger.write_log(f"inquire.fuzzy_query 在对比数据库中出现异常: {e}")
         if lis:
             return lis
         logger.write_log("模糊查询中: " + str(url) + " 没有找到,请添加")
