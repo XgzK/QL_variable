@@ -18,7 +18,7 @@ def fuzzy_query(url=None):
         lis = []
         # 遍历数据库正则表达式非空
         for i in lines:
-            zzbds = re.findall(r'{}.*?'.format(str(i[6])), url)
+            zzbds = re.findall(f'{i[6]}.*?', url)
             if zzbds:
                 lis.append(i)
         if lis:

@@ -48,7 +48,7 @@ def repeat():
     重复的数据库值
     :return:
     """
-    se_repeat = conn.selectAll(table=conn.surface[0])
+    se_repeat = conn.selectAll(table=conn.surface[1])
     return render_template('aa.html', se_repeat=se_repeat)
 
 

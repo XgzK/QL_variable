@@ -18,7 +18,7 @@ def tx_revise(tx1: str):
         jdht = re.findall(r'(https://u\.jd\.com/.*?)', tx1, re.S)
         if len(jdht) > 0:
             return
-        ht_tx = re.findall(r'(https://.*?-isv.*?\.com/[a-zA-z0-9-&\.\?=_/\+].*)', tx1, re.S)
+        ht_tx = re.findall(r'(https://.*?-isv.*?\.com/[a-zA-z0-9-&\.\?=_/\+].*)"?', tx1, re.S)
         if len(ht_tx) > 0:
             https_txt(ht_tx[0])
             return
