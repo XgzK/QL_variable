@@ -34,7 +34,7 @@ def main_core(data: list):
                         # 获取配置文件内容
                         bytex = content['data']
                         # 向青龙配置文件添加活动
-                        revise = ql.configs_revise('config.sh', str(bytex) + '\n' + judge)
+                        revise = ql.configs_revise('config.sh', bytex + '\n' + judge)
                         # 表示添加活动成功
                         if revise["code"] == 200:
                             # 根据脚本id，执行脚本

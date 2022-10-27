@@ -26,5 +26,5 @@ def fuzzy_query(url=None):
         logger.write_log("模糊查询中: " + str(url) + " 没有找到,请添加")
         return []
     except Exception as e:
-        logger.write_log("inquire.fuzzy_query,异常问题: " + str(e))
+        logger.write_log("inquire.fuzzy_query,异常问题: " + str(e) + "异常的值是: " + url)
         return []

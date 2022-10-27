@@ -39,7 +39,7 @@ class GetUpdate:
                     js = json.loads(data)
                     if 'ok' in js:
                         return js
-                elif res.status == 502:
+                elif res.status == 502 or res.status == 409:
                     return {"ok": True, "result": []}
                 else:
                     return {"ok": False, "result": [res.status]}
