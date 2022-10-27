@@ -1,12 +1,12 @@
 # 设置自己青龙的IP:端口
-ip: 'http://xgzq.ml:5715'
+ip: ''
 # 下面和青龙有关 系统设置-->应用设置-->新建应用-->权限选择所有自己配置
-Client ID: 'FLeLeZOC76_H'
-Client Secret: 'azT2_P5T7pHqht3WHDXR--yI'
+Client ID: ''
+Client Secret: ''
 # 青龙类似于cookie，登录后自动获取，不用管,不能移动行
-Authorization: 'Bearer 88691d03-ec97-49e8-9233-a0378384b450'
+Authorization: ''
 # 机器人的 token
-Token: "5707318662:AAGMTmN6GrSisrnyKbS-dJaN3PQjDIDf_KQ"
+Token: ""
 # 代理 如果不能访问TG需要设置代理 支持协议 http https socks socks4 socks5 格式 协议:ip:端口
 Proxy: ""
 # 反代域名,
@@ -24,7 +24,7 @@ deduplication: 0
 # 杀死程序指令
 kill: kill -9 $(netstat -nlp | grep :5008 | awk '{print $7}' | awk -F"/" '{ print $1 }')
 # 优先根据特定库执行脚本
-library: task XgzK_JD_annex/
+library: /
 # 记录path行，这个不用管，方便以后添加和更改代码
 Record:
   ql: [2, 4, 5]
