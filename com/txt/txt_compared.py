@@ -11,11 +11,16 @@ def tx_compared(tx1):
     :return: 返回数组的脚本名称[0]和变量[1],异常返回-1
     """
     try:
-        print('-----对比脚本')
         # 切割字符串
-        if tx1[0:6:1] == 'export' or tx1[0:9:1] == 'NOTexport':
+        if tx1[0:6:1] == 'export':
             # 把export DPLHTY="b4be"的键和值分开
             tx = tx1.split('=')
+            # 如果分成两个尝试判断数据库中是否需要跳过去重复
+            if len(tx) == 2:
+                value1 = conn.selectTopone(table=conn.surface[0], where=f'jd_value1="NOT{tx[0]}"')
+                if value1:
+                    main_core([value1[2], "NOT" + tx1])
+                    return
             # 先查询这个值在不在jd_value1中
             value1 = conn.selectTopone(table=conn.surface[0], where=f'jd_value1="{tx[0]}"')
             # 再查询这个值在不在jd_value2中

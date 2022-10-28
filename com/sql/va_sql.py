@@ -143,7 +143,7 @@ class Sql:
         global data
         try:
             # 实时刷新 self.conn.commit()
-            self.conn.commit()
+            # self.conn.commit()
             # 执行SQL语句
             self.cursor.execute(sql)
             # 使用 fetchone() 方法获取单条数据.
@@ -167,10 +167,10 @@ class Sql:
         where = 'where' in kwargs and 'where ' + kwargs['where'] or ''
         order = 'order' in kwargs and 'order by ' + kwargs['order'] or ''
         sql = 'select %s from %s %s %s ' % (field, table, where, order)
-        print(sql)
+        # print(sql)
         try:
             # 实时刷新 self.conn.commit()
-            self.conn.commit()
+            # self.conn.commit()
             # 执行SQL语句
             self.cursor.execute(sql)
             # 使用 fetchone() 方法获取单条数据.

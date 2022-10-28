@@ -19,7 +19,7 @@ def fuzzy_query(url=None):
         # 遍历数据库正则表达式非空
         for i in lines:
             try:
-                zzbds = re.findall(f'{i[6]}.*?', url)
+                zzbds = re.findall(f'{i[6]}', url)
                 if zzbds:
                     lis.append(i)
             except Exception as e:
