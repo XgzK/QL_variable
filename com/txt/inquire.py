@@ -14,15 +14,23 @@ def fuzzy_query(url=None):
     """
     try:
         # 读取数据库中活动全部链接的数据
-        lines = conn.selectAll(table=conn.surface[0], where=f'jd_url != ""')
+        lines = conn.selectAll(table=conn.surface[0], where=f'jd_url != "" and jd_re != ""')
+        # print(lines)
         lis = []
         # 遍历数据库正则表达式非空
         for i in lines:
             try:
+                # print('----------------------------')
+                # print(i)
+                # print(url)
                 zzbds = re.findall(f'{i[6]}', url)
+                # print('匹配结果',zzbds)
                 if zzbds:
+                    # print('添加之前',lis)
                     lis.append(i)
+                    # print('添加后',lis)
             except Exception as e:
+                logger.write_log(f"异常的数据库值是: {i}")
                 logger.write_log(f"inquire.fuzzy_query 在对比数据库中出现异常: {e}")
         if lis:
             return lis
