@@ -3,14 +3,11 @@ import re
 import threading
 import time
 
-from com.fo.core import adaptation
-from com.fo.stop import Prohibition
 from com.gheaders.conn import read_yaml, revise_yaml
-from com.ql.ql import QL
+from com.ql import ql
+from com.sql import conn
 
 yml = read_yaml()
-prohibition = Prohibition()
-ql = QL()
 
 
 def ym_change(li: list):
@@ -87,11 +84,21 @@ def to_stop():
     :return:
     """
     try:
-        # 获取版本号
-        val = adaptation()
-        li = prohibition.get_re()
-        lis = prohibition.compareds(li, val)
-        print(lis)
+        lis = []
+        yml = read_yaml()
+        lines = conn.selectAll(table=conn.surface[0])
+        jstx = read_yaml(yml['json'])
+        va1 = jstx if int(ql.Version) < 14 else jstx['data']
+        # 循环脚本库
+        for i in va1:
+            # 遍历数据库
+            for j in lines:
+                if i['command'].split('/')[-1] == j[2]:
+                    # 适配版本10
+                    if int(va1) == 10:
+                        lis.append(i['_id'])
+                    else:
+                        lis.append(i['id'])
         ql.disable(lis)
         return '禁止任务成功'
     except Exception as e:
