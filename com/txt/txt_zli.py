@@ -14,6 +14,7 @@ def tx_revise(tx1: str):
     :return: 正常返回200, 否则返回-1
     """
     try:
+        tx1 = tx1.replace("(", "").replace(")", "").replace("`", "")
         # 需要跳过的域名
         jdht = re.findall(r'(https://u\.jd\.com/.*?)', tx1, re.S)
         if len(jdht) > 0:
@@ -32,4 +33,3 @@ def tx_revise(tx1: str):
         tx_compared(ex_t2) if ex_t2 else ''
     except Exception as e:
         logger.write_log(f"分类型异常问题: {e}")
-
