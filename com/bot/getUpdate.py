@@ -20,6 +20,7 @@ class GetUpdate:
             "offset": 0,
             "timeout": 100
         }
+        self.proxies = {"https": yml['Proxy']} if yml['Proxy'] else None
 
     def get_long_link(self):
         """
@@ -28,7 +29,7 @@ class GetUpdate:
         """
         try:
             ur = httpx.get(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout=100",
-                           headers=self.headers, timeout=100)
+                           headers=self.headers, timeout=100, proxies=self.proxies)
             # 如果是200表示收到消息
             if ur.status_code == 200:
                 js = ur.json()
