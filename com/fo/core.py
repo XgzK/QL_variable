@@ -44,7 +44,6 @@ def main_core(data: list):
                                 logger.write_log(f"执行 {data[0]} 脚本成功 ID {ids[0]}")
                         # 把原来内容添加回去
                         ql.configs_revise('config.sh', bytex)
-                        q.task_done()
             else:
                 logger.write_log(f"{data[0]} 脚本没有找到")
         q.task_done()

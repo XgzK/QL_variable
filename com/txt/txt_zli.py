@@ -1,6 +1,5 @@
 import re
 
-from com import q
 from com.gheaders import LoggerClass
 from com.txt.deal_with import https_txt
 from com.txt.txt_compared import tx_compared
@@ -15,9 +14,6 @@ def tx_revise(tx1: str):
     :return: 正常返回200, 否则返回-1
     """
     try:
-        q.put(tx1)
-        print("加入队列", q.queue)
-        tx1 = q.get()
         # 需要跳过的域名
         jdht = re.findall(r'(https://u\.jd\.com/.*?)', tx1, re.S)
         if len(jdht) > 0:
