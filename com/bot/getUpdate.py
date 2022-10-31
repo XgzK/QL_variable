@@ -20,7 +20,7 @@ class GetUpdate:
             "offset": 0,
             "timeout": 100
         }
-        self.proxies = {"https": yml['Proxy']} if yml['Proxy'] else None
+        self.proxies = {"https://": yml['Proxy']} if yml['Proxy'] else None
 
     def get_long_link(self):
         """
