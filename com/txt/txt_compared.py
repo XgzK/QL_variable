@@ -29,11 +29,11 @@ def tx_compared(tx1):
             value3 = conn.selectTopone(table=conn.surface[0], where=f'jd_value3="{tx[0]}"')
             if value1:
                 main_core([value1[2], tx1])
-            elif value2:
+            if value2:
                 main_core([value2[2], tx1])
-            elif value3:
+            if value3:
                 main_core([value3[2], tx1])
-            else:
+            if value1 == value2 == value3 == "":
                 logger.write_log(f"在数据库中没有找到: {tx1}")
     except Exception as e:
         logger.write_log(f"tx_compared 异常对比脚本异常信息信息: {e}")

@@ -1,10 +1,9 @@
 """
 长链接请求,后期处理
 """
-import json
-import re
 
-import http.client
+import httpx
+
 from com.gheaders.conn import read_yaml
 
 
@@ -28,21 +27,20 @@ class GetUpdate:
         :return: 失败返回 {"ok": False,"result": []}
         """
         try:
-            ur = re.findall("https://(.*?)(/.*)", self.url)
-            if len(ur[0]) == 2:
-                conn = http.client.HTTPSConnection(ur[0][0])
-                conn.request("GET", f"{ur[0][1]}/getUpdates?offset={self.data['offset']}&timeout=100",
-                             headers=self.headers)
-                res = conn.getresponse()
-                if res.status == 200:
-                    data = res.read()
-                    js = json.loads(data)
-                    if 'ok' in js:
-                        return js
-                elif res.status == 502 or res.status == 409:
-                    return {"ok": True, "result": []}
-                else:
-                    return {"ok": False, "result": [res.status]}
-            return {"ok": False, "result": []}
+            ur = httpx.get(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout=100",
+                           headers=self.headers, timeout=100)
+            # 如果是200表示收到消息
+            if ur.status_code == 200:
+                js = ur.json()
+                if 'ok' in js:
+                    return js
+            # 502 和409表示没有消息
+            elif ur.status_code == 502 or ur.status_code == 409:
+                return {"ok": True, "result": []}
+            else:
+                print(ur.status_code)
+                # 遇到其他未知状态码打印出来
+                return {"ok": False, "result": [ur.status_code]}
         except Exception as e:
+            print(e)
             return {"ok": False, "result": [e]}
