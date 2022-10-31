@@ -34,7 +34,7 @@ def tx_compared(tx1):
                 q.put([value2[2], tx1])
             if value3:
                 q.put([value3[2], tx1])
-            if value1 == value2 == value3 == "":
+            if value1 == value2 == value3 is None:
                 logger.write_log(f"在数据库中没有找到: {tx1}")
             else:
                 tx1 = q.get()
