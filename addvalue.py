@@ -4,7 +4,8 @@ import time
 
 from flask_apscheduler import APScheduler
 
-from com.bot.getUpdate import GetUpdate
+from com.bot import tg_mes
+from com.bot.information import Interact
 from com.gheaders.Inspector import Check
 from com.gheaders.conn import read_yaml
 from com.ql import ql
@@ -94,13 +95,14 @@ def mai():
     scheduler.start()
 
 
+interact = Interact()
+
 if __name__ == '__main__':
     # 使用多线程防止任务阻塞
     t1 = threading.Thread(target=run_web)
     t1.start()
     mai()
     logger.write_log("调用了开发者自己写的TG接口")
-    tg_mes = GetUpdate()
     while True:
         try:
             tg_ms = tg_mes.get_long_link()
@@ -116,6 +118,7 @@ if __name__ == '__main__':
                             if result['message']['chat']['type'] == 'private':
                                 if 'text' in result['message']:
                                     logger.write_log(f"收到私聊消息内容 {result['message']['text']}")
+                                    interact.get_id(result['message'])
                                     tx_revise(result['message']['text'])
                             # 群消息
                             elif result['message']['chat']['type'] == 'supergroup':
@@ -125,6 +128,7 @@ if __name__ == '__main__':
                         elif 'channel_post' in result:
                             if result['channel_post']['chat']['type'] == 'channel':
                                 if 'text' in result['channel_post']:
+                                    logger.write_log(f"收到频道监控消息内容 {result['channel_post']['text']}")
                                     tx_revise(result['channel_post']['text'])
                         else:
                             pass
@@ -136,4 +140,3 @@ if __name__ == '__main__':
                 time.sleep(10)
         except Exception as e:
             logger.write_log(f"个人开发类异常: {e}")
-

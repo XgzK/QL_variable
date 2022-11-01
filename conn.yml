@@ -7,10 +7,18 @@ Client Secret: ''
 Authorization: ''
 # 机器人的 token
 Token: ""
-# 代理 如果不能访问TG需要设置代理 支持协议 http https socks socks4 socks5 格式 协议:ip:端口
+# 代理 如果不能访问TG需要设置代理 支持协议 http https socks socks4 socks5 格式 协议://ip:端口
 Proxy: ""
 # 反代域名,
 TG_API_HOST: ""
+#用户ID 保留关键字
+Administrator: ''
+# 要转发消息的群组或者频道ID
+Forward: ''
+# 转发到群组或者频道的ID
+Send_IDs: ''
+# 不执行脚本名称,保留关键字
+prohibit: []
 # 日志文件
 log: 'log/ql.log'
 # 用于去重复的任务，的数据库，不用修改
