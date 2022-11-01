@@ -9,3 +9,4 @@ Flask-APScheduler > 1
 pytelegrambotapi
 colorlog>=6.7.0
 httpx
+socksio
