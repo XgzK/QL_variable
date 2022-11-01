@@ -40,6 +40,10 @@ Record:
   Token: 9
   Proxy: 11
   TG_API_HOST: 13
-  judge: 21
-  deduplication: 23
-  library: 27
+  Administrator: 15
+  Forward: 17
+  Send_IDs: 19
+  prohibit: 21
+  judge: 29
+  deduplication: 31
+  library: 35
