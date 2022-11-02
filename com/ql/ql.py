@@ -2,6 +2,7 @@
 青龙接口类
 """
 import json
+import time
 
 import requests
 
@@ -54,6 +55,7 @@ class QL:
             # 获取返回的状态码
             if status == 200:
                 logger.write_log("任务执行成功")
+                time.sleep(1)
                 return 0
             else:
                 logger.write_log("任务执行失败:" + str(status))
