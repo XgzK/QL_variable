@@ -3,7 +3,7 @@
 """
 
 import httpx
-from httpx import RemoteProtocolError, ConnectTimeout
+from httpx import RemoteProtocolError, ConnectTimeout, ReadTimeout, ConnectError
 
 from com.gheaders.conn import read_yaml
 
@@ -30,8 +30,10 @@ class GetUpdate:
         :return: 失败返回 {"ok": False,"result": []}
         """
         try:
-            ur = httpx.post(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout=100",
-                            headers=self.headers, timeout=100, proxies=self.proxies)
+            client = httpx.Client(proxies=self.proxies, headers=self.headers)
+            ur = client.post(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout=100",
+                             timeout=100)
+            ur.close()
             # 如果是200表示收到消息
             if ur.status_code == 200:
                 js = ur.json()
@@ -47,6 +49,10 @@ class GetUpdate:
             return {"ok": True, "result": []}
         except ConnectTimeout:
             return {"ok": True, "result": []}
+        except ReadTimeout:
+            return {"ok": True, "result": []}
+        except ConnectError:
+            return {"ok": False, "result": ['无法连接tg请确保使用了反代或者代理或本身就有外网环境']}
         except Exception as e:
             return {"ok": False, "result": [e]}
 
@@ -56,13 +62,14 @@ class GetUpdate:
         :return:
         """
         try:
-            ur = httpx.get(f"{self.url}/sendMessage?chat_id={chat_id if chat_id else self.Send_IDs}&text={tx}",
-                            headers=self.headers, proxies=self.proxies)
-            print(ur.url)
+            client = httpx.Client(proxies=self.proxies, headers=self.headers)
+            ur = client.get(f"{self.url}/sendMessage?chat_id={chat_id if chat_id else self.Send_IDs}&text={tx}")
+            client.close()
             # 如果是200表示收到消息
-            if ur.status_code == 200:
-                js = ur.json()
-            else:
-                pass
+            # if ur.status_code == 200:
+            #     js = ur.json()
+            # else:
+            #     pass
         except Exception as e:
+            print("发送消息异常: ", e)
             pass

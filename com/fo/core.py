@@ -64,7 +64,5 @@ def adaptation():
         if qlv != -1:
             qlv = re.findall('\d+\.(\d+)\.\d+', qlv)
             return qlv[0]
-        logger.write_log(
-            "无法获取版本号,程序无法自动适配,请手动去浏览器查看 青龙IP:端口/api/system 如果返回你青龙版本号请联系开发者修改")
         # n秒检测一次
         time.sleep(20)

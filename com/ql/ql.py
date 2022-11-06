@@ -127,6 +127,7 @@ class QL:
         青龙版本号
         :return:
         """
+        url = ''
         try:
             yam = read_yaml()
             url = yam['ip'] + "/api/system"
@@ -135,6 +136,7 @@ class QL:
             if js['code'] == 200:
                 return js['data']['version']
         except Exception as e:
+            logger.write_log(f"获取版本号异常请到青龙所在服务器执行 curl {url} 命令如果返回 " + '{"code":200,"data":{"isInitialized":true,"version":"2.XX.X"}} 就联系管理员')
             return -1
 
     def disable(self, data):

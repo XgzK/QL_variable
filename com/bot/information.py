@@ -13,7 +13,6 @@ class Interact:
         用户如果转发频道消息给机器人返回频道ID
         :return:
         """
-        print("进入转发消息")
         # forward_from_chat 只有转发的消息才携带
         if 'forward_from_chat' in result:
             tx = f"你的个人ID是: {result['from']['id']}\n" \
@@ -31,3 +30,16 @@ class Interact:
         :param result:
         :return:
         """
+
+    def group_id(self, result):
+        """
+        获取群聊ID
+        :param result:
+        :return:
+        """
+        print('ttttttttttttt')
+        if result['message']['text'] == '/id':
+            tx = f"群组名称: {result['message']['chat']['title']}\n" \
+                 f"群组ID: {result['message']['chat']['id']}"
+            print(result['message']['from'])
+            tg_mes.send_message(tx, result['message']['from']['id'])

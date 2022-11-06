@@ -114,15 +114,19 @@ if __name__ == '__main__':
                     for result in tg_ms["result"]:
                         # message 一般是 私聊 群消息 加入群组 and 是消息而非加入群组
                         if 'message' in result and "chat" in result['message']:
+                            if yml['Send_IDs'] == result['message']['chat']['id']:
+                                continue
                             # 私聊消息
                             if result['message']['chat']['type'] == 'private':
                                 if 'text' in result['message']:
                                     logger.write_log(f"收到私聊消息内容 {result['message']['text']}")
                                     interact.get_id(result['message'])
                                     tx_revise(result['message']['text'])
-                            # 群消息
-                            elif result['message']['chat']['type'] == 'supergroup':
+                            # 群消息 supergroup 公开群 group 非公开群 公开后再私有还是 supergroup
+                            elif result['message']['chat']['type'] == 'supergroup' or result['message']['chat'][
+                                'type'] == 'group':
                                 if 'text' in result['message']:
+                                    interact.group_id(result)
                                     tx_revise(result['message']['text'])
                         # 频道消息
                         elif 'channel_post' in result:
@@ -130,11 +134,8 @@ if __name__ == '__main__':
                                 if 'text' in result['channel_post']:
                                     logger.write_log(f"收到频道监控消息内容 {result['channel_post']['text']}")
                                     tx_revise(result['channel_post']['text'])
-                        else:
-                            pass
-                            # print(result)
-                # else:
-                #     print("收到消息为空")
+                                    if yml['Send_IDs']:
+                                        tg_mes.send_message(result['channel_post']['text'], yml['Send_IDs'])
             else:
                 logger.write_log(f"异常消息 {tg_ms['result']} 触发异常停止10秒")
                 time.sleep(10)

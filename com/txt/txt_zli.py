@@ -30,6 +30,6 @@ def tx_revise(tx1: str):
             ex_tx = re.findall(r'(export [0-9a-zA-Z_]+="?[A-Za-z0-9&_/:\.-]{7,}"?)', i, re.S)
             if ex_tx:
                 ex_t2 += ex_tx[0] + ";"
-        tx_compared(ex_t2) if ex_t2 else ''
+        tx_compared(ex_t2) if len(ex_t2) > 10 else ''
     except Exception as e:
         logger.write_log(f"分类型异常问题: {e}")

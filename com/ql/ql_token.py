@@ -111,7 +111,7 @@ def contrast(str12):
                 break
         inquire = conn.selectTopone(table=conn.surface[1], where=f"jd_value1='{str1}'")
         if inquire:
-            logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数 {str12} 之前执行的参数关键字 {inquire[0]}')
+            # logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数 {str12} 之前执行的参数关键字 {inquire[0]}')
             return [-1]
         else:
             return [0, str1]

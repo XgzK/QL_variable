@@ -13,11 +13,11 @@ Proxy: ""
 TG_API_HOST: ""
 #用户ID 保留关键字
 Administrator: ''
-# 要转发消息的群组或者频道ID
+# 要转发消息的群组或者频道ID 保留关键字
 Forward: ''
-# 转发到群组或者频道的ID
+# 转发到群组或者频道的ID,
 Send_IDs: ''
-# 不执行脚本名称,保留关键字
+# 不执行脚本名称 保留关键字
 prohibit: []
 # 日志文件
 log: 'log/ql.log'
