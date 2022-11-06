@@ -37,6 +37,7 @@ http://IP:5008/log 日志页面
 没有代理的把下面连接填写反代里
 https://thingproxy.freeboard.io/fetch/https://api.telegram.org
 因TG群组限制机器人数量需要有人用机器人转发线报，如果都想着白嫖哪就算了
+准备转发给其他机器人用的联系我拉群
 ```
 
 ### 非adm64系统的问题
