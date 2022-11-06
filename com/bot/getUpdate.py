@@ -20,7 +20,7 @@ class GetUpdate:
             "offset": 0,
             "timeout": 100
         }
-        self.proxies = {"https://": yml['Proxy']} if yml['Proxy'] else None
+        self.proxies = yml['Proxy'] if yml['Proxy'] else None
         self.Send_IDs = yml['Send_IDs']  # 要转发到群或者频道ID
 
     def get_long_link(self):
