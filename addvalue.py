@@ -105,6 +105,7 @@ if __name__ == '__main__':
     logger.write_log("调用了开发者自己写的TG接口")
     while True:
         try:
+            yml = read_yaml()
             tg_ms = tg_mes.get_long_link()
             # 消息不为空和没有异常
             if tg_ms['ok']:
@@ -120,7 +121,7 @@ if __name__ == '__main__':
                             if result['message']['chat']['type'] == 'private':
                                 if 'text' in result['message']:
                                     logger.write_log(f"收到私聊消息内容 {result['message']['text']}")
-                                    interact.get_id(result['message'])
+                                    interact.get_id(result)
                                     tx_revise(result['message']['text'])
                             # 群消息 supergroup 公开群 group 非公开群 公开后再私有还是 supergroup
                             elif result['message']['chat']['type'] == 'supergroup' or result['message']['chat'][
