@@ -65,6 +65,7 @@ class GetUpdate:
             client = httpx.Client(proxies=self.proxies, headers=self.headers)
             ur = client.get(f"{self.url}/sendMessage?chat_id={chat_id if chat_id else self.Send_IDs}&text={tx}")
             client.close()
+            return 0
             # 如果是200表示收到消息
             # if ur.status_code == 200:
             #     js = ur.json()
@@ -72,4 +73,4 @@ class GetUpdate:
             #     pass
         except Exception as e:
             print("发送消息异常: ", e)
-            pass
+            return -1

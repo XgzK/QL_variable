@@ -102,7 +102,7 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=run_web)
     t1.start()
     mai()
-    logger.write_log("调用了开发者自己写的TG接口")
+    # logger.write_log("调用了开发者自己写的TG接口")
     while True:
         try:
             yml = read_yaml()
@@ -122,19 +122,19 @@ if __name__ == '__main__':
                                 if 'text' in result['message']:
                                     logger.write_log(f"收到私聊消息内容 {result['message']['text']}")
                                     interact.get_id(result)
-                                    tx_revise(result['message']['text'])
+                                    # tx_revise(result['message']['text'])
                             # 群消息 supergroup 公开群 group 非公开群 公开后再私有还是 supergroup
                             elif result['message']['chat']['type'] == 'supergroup' or result['message']['chat'][
                                 'type'] == 'group':
                                 if 'text' in result['message']:
                                     interact.group_id(result)
-                                    tx_revise(result['message']['text'])
+                                    # tx_revise(result['message']['text'])
                         # 频道消息
                         elif 'channel_post' in result:
                             if result['channel_post']['chat']['type'] == 'channel':
                                 if 'text' in result['channel_post']:
                                     logger.write_log(f"收到频道监控消息内容 {result['channel_post']['text']}")
-                                    tx_revise(result['channel_post']['text'])
+                                    # tx_revise(result['channel_post']['text'])
                                     if yml['Send_IDs']:
                                         tg_mes.send_message(result['channel_post']['text'], yml['Send_IDs'])
             else:

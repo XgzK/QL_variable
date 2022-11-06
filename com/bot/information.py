@@ -18,16 +18,21 @@ class Interact:
         用户如果转发频道消息给机器人返回频道ID
         :return:
         """
+        print(result['message'])
         # forward_from_chat 只有转发的消息才携带
         if 'forward_from_chat' in result['message']:
+            print(result['message']['from']['id'])
             tx = f"你的个人ID是: {result['message']['from']['id']}\n" \
-                 f"用户名: {result['message']['from']['first_name']} {result['from']['last_name']}\n" \
+                 f"用户名: {result['message']['from']['first_name']} {result['message']['from']['last_name']}\n" \
                  f"个人链接: @{result['message']['from']['username']}\n" \
                  f"下面是转发频道消息\n" \
                  f"转发频道名称: {result['message']['forward_from_chat']['title']}\n" \
                  f"转发频道ID: {result['message']['forward_from_chat']['id']}\n" \
                  f"频道链接: @{result['message']['forward_from_chat']['username']}"
-            tg_mes.send_message(tx, result['message']['from']['id'])
+            for i in range(4):
+                tgid = tg_mes.send_message(tx, result['message']['from']['id'])
+                if tgid == 0:
+                    return
         else:
             idfor = re.findall('/forward ([0-9-]+)', result['message']['text'])
             if idfor:
@@ -46,9 +51,10 @@ class Interact:
         :param result:
         :return:
         """
-        print('ttttttttttttt')
         if result['message']['text'] == '/id':
             tx = f"群组名称: {result['message']['chat']['title']}\n" \
                  f"群组ID: {result['message']['chat']['id']}"
-            print(result['message']['from'])
-            tg_mes.send_message(tx, result['message']['from']['id'])
+            for i in range(4):
+                tgid = tg_mes.send_message(tx, result['message']['from']['id'])
+                if tgid == 0:
+                    return
