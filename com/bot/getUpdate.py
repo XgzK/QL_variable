@@ -3,6 +3,7 @@
 """
 
 import httpx
+from httpx import RemoteProtocolError
 
 from com.gheaders.conn import read_yaml
 
@@ -42,6 +43,8 @@ class GetUpdate:
             else:
                 # 遇到其他未知状态码打印出来
                 return {"ok": False, "result": [ur.status_code]}
+        except RemoteProtocolError:
+            return {"ok": True, "result": []}
         except Exception as e:
             return {"ok": False, "result": [e]}
 
