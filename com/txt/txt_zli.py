@@ -21,15 +21,18 @@ def tx_revise(tx1: str):
             return
         ht_tx = re.findall(r'(https://.*?-isv.*?\.com/[a-zA-z0-9-&\?=_/].*)"?', tx1)
         if ht_tx:
-            https_txt(ht_tx[0])
+            for i in ht_tx:
+                https_txt(i)
             return
         # 对多个参数支持
         ex_t1 = tx1.split('\n')
         ex_t2 = ''
         for i in ex_t1:
             ex_tx = re.findall(r'(export [0-9a-zA-Z_]+="?[A-Za-z0-9&_/:\.-]{7,}"?)', i, re.S)
-            if ex_tx:
-                ex_t2 += ex_tx[0] + ";"
-        tx_compared(ex_t2) if len(ex_t2) > 10 else ''
+            for i in ex_tx:
+                ex_t2 += i + ";"
+        if len(ex_t2) > 10:
+            ex_t2 += 'export NOT_TYPE="no";'
+            tx_compared(ex_t2)
     except Exception as e:
         logger.write_log(f"分类型异常问题: {e}")

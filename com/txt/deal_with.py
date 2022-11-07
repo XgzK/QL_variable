@@ -59,7 +59,10 @@ def https_txt(http):
             for i in tx:
                 st2 += ink[3 + sun] + "=" + f'"{i}";'
                 sun += 1
-            tx_compared(st2)
+            if st2:
+                TYPE = re.findall("https://(\w{2})", http)[0]
+                st2 += f'export NOT_TYPE="{TYPE}";'
+                tx_compared(st2)
         return 0
     except Exception as e:
         logger.write_log("https_txt,异常问题: " + str(e))

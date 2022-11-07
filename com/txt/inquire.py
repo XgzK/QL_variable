@@ -15,7 +15,6 @@ def fuzzy_query(url=None):
     :return: 返回数据库 or []
     """
     try:
-        # print(lines)
         li1s = []
         # 遍历数据库正则表达式非空
         if type(lines) == list:

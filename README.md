@@ -37,7 +37,16 @@ http://IP:5008/log 日志页面
 没有代理的把下面连接填写反代里
 https://thingproxy.freeboard.io/fetch/https://api.telegram.org
 因TG群组限制机器人数量需要有人用机器人转发线报，如果都想着白嫖哪就算了
-准备转发给其他机器人用的联系我拉群
+准备转发给其他机器人用的联系我拉群,没人转发愿意转发其他人就吗线报用，转发群只拉愿意转发的进
+```
+### 对一些链接黑处理机制
+```text
+https://cjhydz-isv.isvjcloud.com 提取的是cj
+lz cj ji pr sh tx wq 对非链接类型统一使用 404
+export NOT_TYPE="lz";
+别的怎么根据链接筛掉黑号自己解决
+上面的会被自动当成链接变量添加到参数中
+
 ```
 
 ### 非adm64系统的问题
@@ -96,6 +105,8 @@ docker build -t xgzk/qlvariable:latest: .
     > 取消了官方的额TG库改成统一长连接请求
     > 2022-11-6 添加转发消息功能正式版本即将开始发布使用
     > 频道消息转发给机器人返回频道ID 群组发送 /id 机器人发给用户频道ID
+    > 2022-11-7 修复多个参数漏掉问题
+    > 支持获取链接变量类型 export NOT_TYPE 用户可以自己更改后筛掉黑CK
 ```
 ### 待开发记录
 ```text

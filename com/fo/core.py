@@ -19,33 +19,39 @@ def main_core(data: list):
     if jst['judge'] == 0:
         # 检测是否被执行过
         ctr = contrast(data[1])
-        if ctr[0] == 0:
-            # 传入脚本名称返回任务ID
-            ids = ql_compared(data[0], ql.Version)
-            # 判断是否有脚本
-            if ids[0] != -1:
-                # 处理数据和去判断是否去重复,返回处理过的参数
-                judge = ql_write(data[1], jst, ctr[1])
-                # 返回-1表示有异常
-                if judge != -1:
-                    # 获取配置文件的内容
-                    content = ql.configs_check('config.sh')
-                    # 如果青龙返回200执行
-                    if content["code"] == 200:
-                        # 获取配置文件内容
-                        bytex = content['data']
-                        # 向青龙配置文件添加活动
-                        revise = ql.configs_revise('config.sh', bytex + '\n' + judge)
-                        # 表示添加活动成功
-                        if revise["code"] == 200:
-                            # 根据脚本id，执行脚本
-                            qid = ql.ql_run(ids)
-                            if qid == 0:
-                                logger.write_log(f"执行 {data[0]} 脚本成功 ID {ids[0]}")
-                        # 把原来内容添加回去
-                        ql.configs_revise('config.sh', bytex)
-            else:
-                logger.write_log(f"{data[0]} 脚本没有找到")
+        # 执行过返回-1结束
+        if ctr[0] == -1:
+            q.task_done()
+            return 0
+        # 传入脚本名称返回任务ID
+        ids = ql_compared(data[0], ql.Version)
+        # 判断是否有脚本
+        if ids[0] == -1:
+            logger.write_log(f"{data[0]} 脚本没有找到")
+            q.task_done()
+            return 0
+        # 把执行的参数添加进去当关键字
+        judge = ql_write(data[1], jst, ctr[1])
+        # 返回-1表示有异常
+        if judge == -1:
+            q.task_done()
+            return 0
+        # 获取配置文件的内容
+        content = ql.configs_check('config.sh')
+        # 如果青龙返回200执行
+        if content["code"] == 200:
+            # 获取配置文件内容
+            bytex = content['data']
+            # 向青龙配置文件添加活动
+            revise = ql.configs_revise('config.sh', bytex + '\n' + judge)
+            # 表示添加活动成功
+            if revise["code"] == 200:
+                # 根据脚本id，执行脚本
+                qid = ql.ql_run(ids)
+                if qid == 0:
+                    logger.write_log(f"执行 {data[0]} 脚本成功 ID {ids[0]}")
+                # 把原来内容添加回去
+                ql.configs_revise('config.sh', bytex)
         q.task_done()
         return 0
     else:
