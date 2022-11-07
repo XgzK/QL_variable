@@ -11,8 +11,7 @@ from com.gheaders.conn import read_yaml
 class GetUpdate:
     def __init__(self):
         yml = read_yaml()
-        self.url = ("https://api.telegram.org" if yml['TG_API_HOST'] == "" else yml['TG_API_HOST']) + "/bot" + yml[
-            'Token']
+        self.url = ("https://api.telegram.org" if yml['TG_API_HOST'] == "" else yml['TG_API_HOST']) + "/bot" + yml['Token']
         self.headers = {
             'accept': 'application/json',
             'content-type': 'application/json'
