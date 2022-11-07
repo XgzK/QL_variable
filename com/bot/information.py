@@ -18,7 +18,6 @@ class Interact:
         用户如果转发频道消息给机器人返回频道ID
         :return:
         """
-        print(result['message'])
         # forward_from_chat 只有转发的消息才携带
         if 'forward_from_chat' in result['message']:
             print(result['message']['from']['id'])
@@ -38,12 +37,16 @@ class Interact:
             if idfor:
                 revise_yaml(f'Send_IDs: {idfor[0]}', yml['Record']['Send_IDs'])
 
-    def distribute(self, result):
+    def distribute(self, result,ids):
         """
         用于分配执行方法
         :param result:
         :return:
         """
+        for i in range(4):
+            tgid = tg_mes.send_message(result, ids)
+            if tgid == 0:
+                return
 
     def group_id(self, result):
         """

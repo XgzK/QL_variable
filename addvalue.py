@@ -135,8 +135,9 @@ if __name__ == '__main__':
                                 if 'text' in result['channel_post']:
                                     logger.write_log(f"收到频道监控消息内容 {result['channel_post']['text']}")
                                     tx_revise(result['channel_post']['text'])
+                                    print(yml['Send_IDs'])
                                     if yml['Send_IDs']:
-                                        tg_mes.send_message(result['channel_post']['text'], yml['Send_IDs'])
+                                        interact.distribute(result['channel_post']['text'], yml['Send_IDs'])
             else:
                 logger.write_log(f"异常消息 {tg_ms['result']} 触发异常停止10秒")
                 time.sleep(10)
