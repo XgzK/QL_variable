@@ -18,24 +18,25 @@ class Interact:
         用户如果转发频道消息给机器人返回频道ID
         :return:
         """
-        # forward_from_chat 只有转发的消息才携带
-        if 'forward_from_chat' in result['message']:
-            print(result['message']['from']['id'])
-            tx = f"你的个人ID是: {result['message']['from']['id']}\n" \
-                 f"用户名: {result['message']['from']['first_name']} {result['message']['from']['last_name']}\n" \
-                 f"个人链接: @{result['message']['from']['username']}\n" \
-                 f"下面是转发频道消息\n" \
-                 f"转发频道名称: {result['message']['forward_from_chat']['title']}\n" \
-                 f"转发频道ID: {result['message']['forward_from_chat']['id']}\n" \
-                 f"频道链接: @{result['message']['forward_from_chat']['username']}"
-            for i in range(4):
-                tgid = tg_mes.send_message(tx, result['message']['from']['id'])
-                if tgid == 0:
-                    return
-        else:
-            idfor = re.findall('/forward ([0-9-]+)', result['message']['text'])
-            if idfor:
-                revise_yaml(f'Send_IDs: {idfor[0]}', yml['Record']['Send_IDs'])
+        try:
+            # forward_from_chat 只有转发的消息才携带
+            if 'forward_from_chat' in result['message']:
+                tx = f"{'你的个人ID是: '+str(result['message']['from']['id'])}\n" \
+                     f"{'用户名: '+result['message']['from']['first_name'] if 'first_name' in result['message']['from'] else ''} {result['message']['from']['last_name'] if 'last_name' in result['message']['from'] else ' '}\n" \
+                     f"个人链接: @{result['message']['from']['username'] if 'username' in result['message']['from'] else ''}\n" \
+                     f"{'转发频道名称: '+result['message']['forward_from_chat']['title'] if 'title' in result['message']['forward_from_chat'] else ''}\n" \
+                     f"{'转发频道ID: '+str(result['message']['forward_from_chat']['id']) if 'id' in result['message']['forward_from_chat'] else ''}\n" \
+                     f"{'频道链接: @' + result['message']['forward_from_chat']['username'] if 'username' in result['message']['forward_from_chat'] else ''}"
+                for i in range(4):
+                    tgid = tg_mes.send_message(tx, result['message']['from']['id'])
+                    if tgid == 0:
+                        return
+            else:
+                idfor = re.findall('/forward ([0-9-]+)', result['message']['text'])
+                if idfor:
+                    revise_yaml(f'Send_IDs: {idfor[0]}', yml['Record']['Send_IDs'])
+        except Exception as e:
+            print('私聊方法异常',e)
 
     def distribute(self, result,ids):
         """

@@ -5,13 +5,15 @@
 import httpx
 from httpx import RemoteProtocolError, ConnectTimeout, ReadTimeout, ConnectError
 
+from com.gheaders import logger
 from com.gheaders.conn import read_yaml
 
 
 class GetUpdate:
     def __init__(self):
         yml = read_yaml()
-        self.url = ("https://api.telegram.org" if yml['TG_API_HOST'] == "" else yml['TG_API_HOST']) + "/bot" + yml['Token']
+        self.url = ("https://api.telegram.org" if yml['TG_API_HOST'] == "" else yml['TG_API_HOST']) + "/bot" + yml[
+            'Token']
         self.headers = {
             'accept': 'application/json',
             'content-type': 'application/json'
@@ -23,15 +25,16 @@ class GetUpdate:
         self.proxies = yml['Proxy'] if yml['Proxy'] else None
         self.Send_IDs = yml['Send_IDs']  # 要转发到群或者频道ID
 
-    def get_long_link(self):
+    def get_long_link(self, ti=100):
         """
         长链接
+        :param ti: 最大请求时间
         :return: 失败返回 {"ok": False,"result": []}
         """
         try:
             client = httpx.Client(proxies=self.proxies, headers=self.headers)
-            ur = client.post(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout=100",
-                             timeout=100)
+            ur = client.post(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout={ti}",
+                             timeout=ti)
             ur.close()
             # 如果是200表示收到消息
             if ur.status_code == 200:
@@ -64,12 +67,16 @@ class GetUpdate:
             client = httpx.Client(proxies=self.proxies, headers=self.headers)
             ur = client.get(f"{self.url}/sendMessage?chat_id={chat_id if chat_id else self.Send_IDs}&text={tx}")
             client.close()
-            return 0
-            # 如果是200表示收到消息
-            # if ur.status_code == 200:
-            #     js = ur.json()
-            # else:
-            #     pass
+            if ur.status_code == 200:
+                return 0
+            elif ur.status_code == 403:
+                logger.write_log("转发消息失败，机器人不在你转发的频道或者群组")
+            elif ur.status_code == 400:
+                logger.write_log("转发消息失败，请给机器人足够权限,权限不足")
+            else:
+                js = ur.json()
+                logger.write_log(f"转发消息失败\n状态码{js['error_code']}\n失败原因{js['description']}")
+            return -1
         except Exception as e:
-            print("发送消息异常: ", e)
+            logger.write_log(f"发送消息异常: {e}")
             return -1

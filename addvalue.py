@@ -20,7 +20,7 @@ scheduler = APScheduler()
 yml = read_yaml()
 
 
-@scheduler.task('interval', id='ti_ck', days=1)
+@scheduler.task('interval', id='ti_ck', hours=11)
 def ti_ck():
     """
     定时清空数据库
@@ -103,6 +103,10 @@ if __name__ == '__main__':
     t1.start()
     mai()
     # logger.write_log("调用了开发者自己写的TG接口")
+    # 先执行清理掉之前的记录
+    tg_ms = tg_mes.get_long_link(ti=1)
+    if tg_ms['ok'] and tg_ms['result']:
+        tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
     while True:
         try:
             yml = read_yaml()
@@ -115,7 +119,8 @@ if __name__ == '__main__':
                     for result in tg_ms["result"]:
                         # message 一般是 私聊 群消息 加入群组 and 是消息而非加入群组
                         if 'message' in result and "chat" in result['message']:
-                            if yml['Send_IDs'] == result['message']['chat']['id']:
+                            if 'sender_chat' in result['message'] and yml['Send_IDs'] == \
+                                    result['message']['sender_chat']['id']:
                                 continue
                             # 私聊消息
                             if result['message']['chat']['type'] == 'private':
