@@ -33,3 +33,40 @@ def fuzzy_query(url=None):
     except Exception as e:
         logger.write_log("inquire.fuzzy_query,异常问题: " + str(e) + "异常的值是: " + url)
         return []
+
+
+def turn_url(export: str):
+    """
+    参数转连接
+    :param export: 活动参数
+    :return:
+    """
+    export = export.replace('"', '').replace(';', '')
+    ex = re.findall('(export \w+)=', export)
+    sq = conn.selectTopone(table=conn.surface[2], where=f"export1='{ex[0]}'")
+    # 返回的有数组 并且参数1有值参数2没有
+    if sq and sq[1] and sq[2] is None:
+        ex = export.split('=')
+        # 把值和活动隔开
+        # 如果 export jd_cjhy_sevenDay_ids 就按&分隔
+        if ex[0][-1] == 's':
+            stli = []
+            # 转换多个链接,全部当成@0位
+            st = ex[1].split('&')
+            for i in range(len(st)):
+                stli.append(str(sq[0]).replace('@0', st[i]))
+            return stli
+        else:
+            # 如果没有占位符无法添加
+            st1 = ''
+            # 如果没有s再按&分隔,填充占位
+            st = ex[1].split('&')
+            for i in range(len(st)):
+                # 如果 st1 is None 则使用 sq[0]
+                if st1:
+                    st1 = st1.replace('@' + str(i), st[i])
+                else:
+                    st1 = str(sq[0]).replace('@' + str(i), st[i])
+            return [st1]
+    else:
+        return []

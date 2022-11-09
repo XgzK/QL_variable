@@ -2,6 +2,7 @@ import re
 
 from com.gheaders import LoggerClass
 from com.txt.deal_with import https_txt
+from com.txt.inquire import turn_url
 from com.txt.txt_compared import tx_compared
 
 logger = LoggerClass('debug')
@@ -19,6 +20,7 @@ def tx_revise(tx1: str):
         jdht = re.findall(r'(https://u\.jd\.com/.*?)', tx1, re.S)
         if len(jdht) > 0:
             return
+        # 获取链接
         ht_tx = re.findall(r'(https://.*?-isv.*?\.com/[a-zA-z0-9-&\?=_/].*)"?', tx1)
         if ht_tx:
             for i in ht_tx:
@@ -32,7 +34,14 @@ def tx_revise(tx1: str):
             for i in ex_tx:
                 ex_t2 += i + ";"
         if len(ex_t2) > 10:
-            ex_t2 += 'export NOT_TYPE="no";'
-            tx_compared(ex_t2)
+            ur = turn_url(ex_t2)
+            if ur:
+                for i in ur:
+                    print('---------------------------')
+                    print(i)
+                    https_txt(i)
+            else:
+                ex_t2 += 'export NOT_TYPE="no";'
+                tx_compared(ex_t2)
     except Exception as e:
         logger.write_log(f"分类型异常问题: {e}")

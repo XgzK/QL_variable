@@ -18,7 +18,7 @@ class Sql:
         # 172.17.0.2 localhost
         self.conn = sqlite3.connect(yam["repeat"], timeout=10, check_same_thread=False)
         self.cursor = self.conn.cursor()
-        self.surface = ['JdQl', 'repeat']
+        self.surface = ['JdQl', 'repeat', 'turn_url']
 
     def execute(self, sql):
         """

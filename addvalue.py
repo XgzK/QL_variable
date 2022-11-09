@@ -104,9 +104,14 @@ if __name__ == '__main__':
     mai()
     # logger.write_log("调用了开发者自己写的TG接口")
     # 先执行清理掉之前的记录
-    tg_ms = tg_mes.get_long_link(ti=1)
-    if tg_ms['ok'] and tg_ms['result']:
-        tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
+    ids = True
+    while ids:
+        tg_ms = tg_mes.get_long_link(ti=1)
+        if tg_ms['ok'] and tg_ms['result']:
+            tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
+            print(tg_mes.data['offset'])
+        else:
+            ids = False
     while True:
         try:
             yml = read_yaml()

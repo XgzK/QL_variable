@@ -66,15 +66,15 @@ class GetUpdate:
         try:
             client = httpx.Client(proxies=self.proxies, headers=self.headers)
             ur = client.get(f"{self.url}/sendMessage?chat_id={chat_id if chat_id else self.Send_IDs}&text={tx}")
+            js = ur.json()
             client.close()
             if ur.status_code == 200:
                 return 0
             elif ur.status_code == 403:
-                logger.write_log("转发消息失败，机器人不在你转发的频道或者群组")
+                logger.write_log(f"转发消息失败，机器人不在你转发的频道或者群组\n失败原因{js['description']}")
             elif ur.status_code == 400:
-                logger.write_log("转发消息失败，请给机器人足够权限,权限不足")
+                logger.write_log(f"转发消息失败，可能问题权限不足\n失败原因{js['description']}")
             else:
-                js = ur.json()
                 logger.write_log(f"转发消息失败\n状态码{js['error_code']}\n失败原因{js['description']}")
             return -1
         except Exception as e:
