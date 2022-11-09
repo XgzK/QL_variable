@@ -51,8 +51,8 @@ def turn_url(export: str):
         # 如果 export jd_cjhy_sevenDay_ids 就按&分隔
         if ex[0][-1] == 's':
             stli = []
-            # 转换多个链接,全部当成@0位
-            st = ex[1].split('&')
+            # 转换多个链接,全部当成@0位,因为有的有@分隔,统一把@替换成&
+            st = ex[1].replace("@", '&').split('&')
             for i in range(len(st)):
                 stli.append(str(sq[0]).replace('@0', st[i]))
             return stli

@@ -113,6 +113,8 @@ docker build -t xgzk/qlvariable:latest: .
         > 支持单参数活动变量转成伪活动链接(不清楚有没有问题)
         > 重复线报不再提示
         > 禁用活动脚本暂时没修复
+    > 2022-11-9 17:21
+        > 修复匹配船长库中 jd_wxCompleteInfo.py jd_joinCommon_opencard.py 的活动链接参数缺少问题
 ```
 ### 待开发记录
 ```text
