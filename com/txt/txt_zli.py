@@ -37,8 +37,6 @@ def tx_revise(tx1: str):
             ur = turn_url(ex_t2)
             if ur:
                 for i in ur:
-                    print('---------------------------')
-                    print(i)
                     https_txt(i)
             else:
                 ex_t2 += 'export NOT_TYPE="no";'
