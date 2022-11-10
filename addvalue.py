@@ -109,7 +109,6 @@ if __name__ == '__main__':
         tg_ms = tg_mes.get_long_link(ti=1)
         if tg_ms['ok'] and tg_ms['result']:
             tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
-            print(tg_mes.data['offset'])
         else:
             ids = False
     while True:

@@ -31,7 +31,8 @@ http://IP:5008/
 群里发送 /id 机器人会返回群组ID
 频道消息转发给机器人会返回 频道信息
 私聊机器人发送 /forward ID 会把东西转发到这个频道或者群组 暂时只能使用一个ID
-找 https://t.me/BotFather 发送 /setprivacy 选择自己使用的机器人名称
+私聊机器人发生 /prohibit 名称 会吧脚本加入黑名单有这个脚本的线报会跳过执行
+找 https://t.me/BotFather 发送 /setprivacy 选择自己使用的机器人名称 选择D开头的
 怎么申请机器人自己百度
 没有代理的把下面连接填写反代里
 https://thingproxy.freeboard.io/fetch/https://api.telegram.org
@@ -115,6 +116,9 @@ docker build -t xgzk/qlvariable:latest: .
         > 禁用活动脚本暂时没修复
     > 2022-11-9 17:21
         > 修复匹配船长库中 jd_wxCompleteInfo.py jd_joinCommon_opencard.py 的活动链接参数缺少问题
+    > 2022-11-10 19:03
+        > 添加脚本黑名单 /prohibit 名称
+        > 修复链接转换参数 https_txt,异常问题: missing ), unterminated subpattern at position 0 报错
 ```
 ### 待开发记录
 ```text

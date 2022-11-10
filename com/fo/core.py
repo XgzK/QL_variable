@@ -15,6 +15,10 @@ def main_core(data: list):
     :return:
     """
     jst = read_yaml()
+    if data[0] in jst['prohibit']:
+        logger.write_log(f'检测到脚本 {data[0]} 在黑名单中,跳过执行')
+        q.task_done()
+        return 0
     # 判断运行必备参数是否发送了异常
     if jst['judge'] == 0:
         # 检测是否被执行过

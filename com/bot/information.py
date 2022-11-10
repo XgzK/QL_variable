@@ -35,6 +35,14 @@ class Interact:
                 idfor = re.findall('/forward ([0-9-]+)', result['message']['text'])
                 if idfor:
                     revise_yaml(f'Send_IDs: {idfor[0]}', yml['Record']['Send_IDs'])
+                    return
+                add_js = re.findall('/prohibit ([0-9a-zA-Z_\.]+)', result['message']['text'])
+                if add_js:
+                    ym = read_yaml()
+                    revise_yaml(f'prohibit: {ym["prohibit"] + add_js}', ym['Record']['prohibit'])
+                    return
+
+
         except Exception as e:
             print('私聊方法异常',e)
 
