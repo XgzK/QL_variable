@@ -53,7 +53,7 @@ def main_core(data: list):
                 # 根据脚本id，执行脚本
                 qid = ql.ql_run(ids)
                 if qid == 0:
-                    logger.write_log(f"执行 {data[0]} 脚本成功 ID {ids[0]} \n执行参数: {data[1]}")
+                    logger.write_log(f"执行 {data[0]} 脚本成功 ID {ids[0]} 执行参数: {data[1]}")
                 # 把原来内容添加回去
                 ql.configs_revise('config.sh', bytex)
         q.task_done()
