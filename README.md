@@ -3,7 +3,6 @@
 ## 特别声明
 
 ```text
-
 有问题可以加InteIJ外部群 https://t.me/InteIJ (已经在封群的InteIJ的请不要加入,外部群只能使用活动参数的权限)
 需要其他功能的可以反馈添加，或者反馈脚本BUG问题
 有如果有其他获取参数的可以反馈给我添加
@@ -28,13 +27,13 @@ http://IP:5008/
 容器里面没有代码需要等待1-4分钟让程序跑起来
 ```text
 机器人指令
-群里发送 /id 机器人会返回群组ID
+机器人所在群组发送 /id 机器人会返回群组ID (转发线报的机器人别啦自己群会循环发送)
 频道消息转发给机器人会返回 频道信息
 私聊机器人发送 /forward ID 会把东西转发到这个频道或者群组 暂时只能使用一个ID
 私聊机器人发生 /prohibit 名称 会吧脚本加入黑名单有这个脚本的线报会跳过执行
 找 https://t.me/BotFather 发送 /setprivacy 选择自己使用的机器人名称 选择D开头的
 怎么申请机器人自己百度
-没有代理的把下面连接填写反代里
+没有代理的把下面连接填写反代里 (反代不能转发，会乱码)
 https://thingproxy.freeboard.io/fetch/https://api.telegram.org
 因TG群组限制机器人数量需要有人用机器人转发线报，如果都想着白嫖哪就算了
 准备转发给其他机器人用的联系我拉机器人进转发线报群,没人愿意转发，那就等有人愿意给你们白嫖再使用，转发群只拉愿意转发的进,可以github或者邮箱联系
@@ -119,6 +118,8 @@ docker build -t xgzk/qlvariable:latest: .
     > 2022-11-10 19:03
         > 添加脚本黑名单 /prohibit 名称
         > 修复链接转换参数 https_txt,异常问题: missing ), unterminated subpattern at position 0 报错
+    > 2022-11-11 16:46
+        > 修复重复参数标记物和线报出现 https://cjhydz-isv.isvjcloud.com&a7de573f565848dab15be18bae764aedexport 问题
 ```
 ### 待开发记录
 ```text

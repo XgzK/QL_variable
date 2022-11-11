@@ -54,7 +54,6 @@ class QL:
             status = ss.status_code
             # 获取返回的状态码
             if status == 200:
-                logger.write_log("任务执行成功")
                 time.sleep(0.3)
                 return 0
             else:

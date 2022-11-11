@@ -54,7 +54,7 @@ def turn_url(export: str):
             # 转换多个链接,全部当成@0位,因为有的有@分隔,统一把@替换成&
             st = ex[1].replace("@", '&').split('&')
             for i in range(len(st)):
-                stli.append(str(sq[0]).replace('@0', st[i]))
+                stli.append(str(sq[0]).replace('#' + str(i), st[i]))
             return stli
         else:
             # 如果没有占位符无法添加
@@ -64,9 +64,9 @@ def turn_url(export: str):
             for i in range(len(st)):
                 # 如果 st1 is None 则使用 sq[0]
                 if st1:
-                    st1 = st1.replace('@' + str(i), st[i])
+                    st1 = st1.replace('#' + str(i), st[i])
                 else:
-                    st1 = str(sq[0]).replace('@' + str(i), st[i])
+                    st1 = str(sq[0]).replace('#' + str(i), st[i])
             return [st1]
     else:
         return []

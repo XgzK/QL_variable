@@ -56,13 +56,17 @@ def https_txt(http):
             # 往后推
             sun = 0
             # 拼接数组
-            for i in tx:
-                if type(list) and len(i) == 2:
+            for i in tx[0] if type(tx[0]) == tuple else tx:
+                if type(list) and len(i) == 2 and ink[4] is None:
                     st2 += ink[3 + sun] + "=" + f'"{i[0]}&{i[1]}";'
                     sun += 1
                 else:
-                    st2 += ink[3 + sun] + "=" + f'"{i}";'
-                    sun += 1
+                    if ink[3 + sun] is None:
+                        st2 = st2.replace('";', '')
+                        st2 += '&' + str(i) + '";'
+                    else:
+                        st2 += ink[3 + sun] + "=" + f'"{i}";'
+                        sun += 1
             if st2:
                 TYPE = re.findall("https://(\w{2})", http)[0]
                 st2 += f'export NOT_TYPE="{TYPE}";'

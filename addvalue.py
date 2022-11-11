@@ -141,7 +141,6 @@ if __name__ == '__main__':
                                     interact.group_id(result)
                                     if 'sender_chat' in result['message'] and yml['Send_IDs']:
                                         interact.distribute(result['message']['text'], yml['Send_IDs'])
-
                         # 频道消息
                         elif 'channel_post' in result:
                             if result['channel_post']['chat']['type'] == 'channel':

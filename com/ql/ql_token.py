@@ -103,11 +103,11 @@ def contrast(str12):
         # 提取脚本关键部分,并且不提取链接
         str0 = re.findall('export .*?="(.*?=?\w+)"', str12)
         str1 = ''
-        for i in str0:
-            aa = re.findall('^https://\w+-isv\.is\w+\.com$', i)
+        for i in range(len(str0) - 1):
+            aa = re.findall('^https://\w+-isv\.is\w+\.com$', str0[i])
             if len(aa) == 0:
                 # 把提取到的关键内容
-                str1 = i.split('=')[-1]
+                str1 = str0[i].split('=')[-1]
                 break
         inquire = conn.selectTopone(table=conn.surface[1], where=f"jd_value1='{str1}'")
         if inquire:
