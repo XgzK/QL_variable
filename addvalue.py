@@ -38,7 +38,6 @@ def timing_ck():
     for i in range(3):
         ck = token_main()
         if ck == 0:
-            logger.write_log("新的Bearer添加成功token_main")
             return 0
         logger.write_log("新的Bearer添加失败, 30s后再次获取")
         time.sleep(30)
