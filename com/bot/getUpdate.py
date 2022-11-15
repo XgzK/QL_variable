@@ -44,17 +44,15 @@ class GetUpdate:
             # 502 和409表示没有消息
             elif ur.status_code == 502 or ur.status_code == 409:
                 return {"ok": True, "result": []}
+            elif ur.status_code == 404:
+                return {"ok": False, "result": [f'404: {ur.text}']}
             else:
                 # 遇到其他未知状态码打印出来
                 return {"ok": False, "result": [ur.status_code]}
-        except RemoteProtocolError:
+        except RemoteProtocolError or ConnectTimeout or ReadTimeout:
             return {"ok": True, "result": []}
-        except ConnectTimeout:
-            return {"ok": True, "result": []}
-        except ReadTimeout:
-            return {"ok": True, "result": []}
-        except ConnectError:
-            return {"ok": False, "result": ['无法连接tg请确保使用了反代或者代理或本身就有外网环境']}
+        except ConnectError as e:
+            return {"ok": False, "result": [f'链接网络异常可能没有外网环境: {e}']}
         except Exception as e:
             return {"ok": False, "result": [e]}
 
