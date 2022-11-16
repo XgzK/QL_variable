@@ -25,7 +25,7 @@ class GetUpdate:
         self.proxies = yml['Proxy'] if yml['Proxy'] else None
         self.Send_IDs = yml['Send_IDs']  # 要转发到群或者频道ID
 
-    def get_long_link(self, ti=100):
+    def get_long_link(self, ti=105):
         """
         长链接
         :param ti: 最大请求时间

@@ -59,35 +59,22 @@ def ql_write(str12, yal, essential):
         return -1
 
 
-def ql_compared(jst: str, va: int) -> list:
+def ql_compared(jst: str) -> list:
     """
     遍历青龙任务来对比,获取任务ID
     :param jst: 脚本名称
-    :param va: 版本号
     :return: ID or -1
     """
     try:
         jstx = read_yaml(yam['json'])
-        va1 = jstx if int(va) < 14 else jstx['data']
-        #  task 库/脚本.js
-        if yam['library'] != '/':
-            ku = yam['library'] + jst
-            for i in va1:
-                # 直接不分隔用最完整的格式百分之百匹配
-                if i['command'] == ku:
-                    # 适配版本10
-                    if int(va) == 10:
-                        return [i['_id']]
-                    else:
-                        return [i['id']]
-        for i in va1:
-            if i['command'].split('/')[-1] == jst:
-                # 适配版本10
-                if int(va) == 10:
-                    return [i['_id']]
-                else:
-                    return [i['id']]
-        return [-1]
+        # 判断脚本时否存在,不存在直接返回
+        if not (jst in jstx):
+            return [-1]
+        va1 = jstx[jst]
+        # 判断用户时否需要优先执行特定库 task 库/脚本.js
+        ta = yam['library'] + jst
+        lis = list(va1.keys())
+        return [va1[ta]['id'] if ta in lis else va1[lis[0]]['id']]
     except Exception as e:
         logger.write_log(f'查询任务异常信息: {e}')
         return [-1]

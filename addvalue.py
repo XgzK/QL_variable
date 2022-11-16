@@ -1,4 +1,5 @@
 import json
+import re
 import threading
 import time
 
@@ -14,19 +15,40 @@ from com.ql.ql_token import token_main
 from com.sql import conn
 from com.txt.txt_zli import tx_revise
 from com.web.ql_web import run_web
-from com.fo.core import adaptation
 
 scheduler = APScheduler()
 yml = read_yaml()
 
 
-@scheduler.task('interval', id='ti_ck', hours=11)
+@scheduler.task('interval', id='ti_ck', hours=12)
 def ti_ck():
     """
     定时清空数据库
     :return:
     """
     conn.delete(table=conn.surface[1])
+    try:
+        js_ql = ql.crons()
+        js = dict()
+        # 如果青龙里面有层data就解包
+        for i in js_ql['data'] if 'data' in js_ql else js_ql:
+            aa = re.findall('task .*?/([a-zA-Z0-9&=_/-]+\.\w+)', i['command'])
+            if aa:
+                if not (aa[0] in js):
+                    js[aa[0]] = {}
+                # 用来区分 版本json格式差异
+                if 'id' in i:
+                    js[aa[0]].setdefault(i['command'], {'id': i['id'], "name": i["name"], "isDisabled": i["isDisabled"]})
+                else:
+                    js[aa[0]].setdefault(i['command'], {'id': i['_id'], "name": i["name"], "isDisabled": i["isDisabled"]})
+            else:
+                logger.write_log(f"跳过录入: {i['command']}")
+        with open(yml['json'], mode='w+', encoding='utf-8') as f:
+            json.dump(js, f, ensure_ascii=False)
+        return 0
+    except Exception as e:
+        logger.write_log(f'获取列表异常,{e}')
+        return -1
 
 
 @scheduler.task('interval', id='timing_ck', days=15)
@@ -45,23 +67,6 @@ def timing_ck():
     return -1
 
 
-@scheduler.task('interval', id='list', minutes=30)
-def ql_crons():
-    """
-    获取青龙任务列表
-    :return: 0 or -1
-    """
-    try:
-        js = ql.crons()
-        with open(yml['json'], mode='wt', encoding='utf-8') as f:
-            json.dump(js, f, ensure_ascii=False)
-            f.close()
-        return 0
-    except Exception as e:
-        logger.write_log(f'获取列表异常,{e}')
-        return -1
-
-
 def mai():
     """
     执行主要程序
@@ -73,11 +78,9 @@ def mai():
         if ym['ip'] != '' and ym['Client ID'] != '' and ym['Client Secret'] != '':
             # 创建一些路径和数据库
             Check().cpath()
-            # 把版本号传递给青龙
-            ql.Version = adaptation()
             # 获取必备青龙参数
             ck = timing_ck()
-            cr = ql_crons()
+            cr = ti_ck()
             if ck == 0 and cr == 0:
                 logger.write_log("连接青龙端成功")
                 # 结束循环
@@ -101,7 +104,6 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=run_web)
     t1.start()
     mai()
-    # logger.write_log("调用了开发者自己写的TG接口")
     # 先执行清理掉之前的记录
     ids = True
     while ids:

@@ -112,7 +112,6 @@ docker build -t xgzk/qlvariable:latest: .
         > 超时线报没有清理问题
         > 支持单参数活动变量转成伪活动链接(不清楚有没有问题)
         > 重复线报不再提示
-        > 禁用活动脚本暂时没修复
     > 2022-11-9 17:21
         > 修复匹配船长库中 jd_wxCompleteInfo.py jd_joinCommon_opencard.py 的活动链接参数缺少问题
     > 2022-11-10 19:03
@@ -120,13 +119,11 @@ docker build -t xgzk/qlvariable:latest: .
         > 修复链接转换参数 https_txt,异常问题: missing ), unterminated subpattern at position 0 报错
     > 2022-11-11 16:46
         > 修复重复参数标记物和线报出现 https://cjhydz-isv.isvjcloud.com&a7de573f565848dab15be18bae764aedexport 问题
-```
-### 待开发记录
-```text
-3.0版本缓慢开发中
-抛弃原来主动获取参数的方法，改用TG官方机器人进入特殊处理参数的监控群
-格式 脚本名称\n活动参数
-对没国外环境的将使用 websocket 方法进行广播推送
-    添加黑名单脚本,不执行在黑名单的脚本
-因公益服务器被攻击 websocket 不再开发
+版本3.1
+    > 禁用活动脚本暂时没修复
+    > 取消自动适配改用对任务列表解包统一json文件格式
+    > 减少循环次数,优化了程序执行所需要的时间损耗
+    > 同步脚本更改每12个小时同步一次
+    > 清理重复参数更改12个小时清理一次
+    > 合并清理和获取为一个函数
 ```

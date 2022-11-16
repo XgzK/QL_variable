@@ -17,7 +17,7 @@ Administrator: ''
 Forward: ''
 # 接收转发到群组或者频道的ID,
 Send_IDs:
-# 不执行脚本名称 保留关键字
+# 不执行脚本名称
 prohibit: []
 # 日志文件
 log: 'log/ql.log'
