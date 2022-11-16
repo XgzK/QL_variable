@@ -47,7 +47,7 @@ def ql_write(str12, yal, essential):
         # 针对某些不需要去重复的数据，如果不是exp则不去重复
         if str12[:3] == "exp":
             # 判断是否去重数据
-            if yal['deduplication'] == 0:
+            if yal['deduplication'] == 0 and len(essential) > 5:
                 # 添加到数据库，如果成功添加表示之前没有运行过
                 conn.insert(table=conn.surface[1], jd_value1=f"{essential}",
                             jd_data=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -95,12 +95,17 @@ def contrast(str12):
         str0 = re.findall('^export .*?="(.*?=?\w+)"', str12)
         if str0:
             str1 = ''
-            for i in range(len(str0) - 1):
-                aa = re.findall('^https://\w+-isv\.is\w+\.com$', str0[i])
-                if len(aa) == 0:
-                    # 把提取到的关键内容
-                    str1 = str0[i].split('=')[-1]
-                    break
+            for i in range(len(str0)):
+                print(re.findall('^export NOT_TYPE=', str0[i]) == [])
+                if re.findall('^export NOT_TYPE=', str0[i]) == []:
+                    aa = re.findall('^https://\w+-isv\.is\w+\.com$', str0[i])
+                    print('-------------')
+                    print(aa)
+                    print(len(aa))
+                    if len(aa) == 0:
+                        # 把提取到的关键内容
+                        str1 = str0[i].split('=')[-1]
+                        break
             inquire = conn.selectTopone(table=conn.surface[1], where=f"jd_value1='{str1}'")
             if inquire:
                 # logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数 {str12} 之前执行的参数关键字 {inquire[0]}')
