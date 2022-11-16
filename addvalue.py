@@ -32,15 +32,20 @@ def ti_ck():
         js = dict()
         # 如果青龙里面有层data就解包
         for i in js_ql['data'] if 'data' in js_ql else js_ql:
-            aa = re.findall('task .*?/([a-zA-Z0-9&=_/-]+\.\w+)', i['command'])
+            if len(i['command'].split('/')) == 2:
+                aa = re.findall('task .*?/([a-zA-Z0-9&=_/-]+\.\w+)', i['command'])
+            else:
+                aa = re.findall('task ([a-zA-Z0-9&=_/-]+\.\w+)', i['command'].split('/')[-1])
             if aa:
                 if not (aa[0] in js):
                     js[aa[0]] = {}
                 # 用来区分 版本json格式差异
                 if 'id' in i:
-                    js[aa[0]].setdefault(i['command'], {'id': i['id'], "name": i["name"], "isDisabled": i["isDisabled"]})
+                    js[aa[0]].setdefault(i['command'],
+                                         {'id': i['id'], "name": i["name"], "isDisabled": i["isDisabled"]})
                 else:
-                    js[aa[0]].setdefault(i['command'], {'id': i['_id'], "name": i["name"], "isDisabled": i["isDisabled"]})
+                    js[aa[0]].setdefault(i['command'],
+                                         {'id': i['_id'], "name": i["name"], "isDisabled": i["isDisabled"]})
             else:
                 logger.write_log(f"跳过录入: {i['command']}")
         with open(yml['json'], mode='w+', encoding='utf-8') as f:

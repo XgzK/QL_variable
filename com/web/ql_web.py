@@ -83,7 +83,7 @@ def pare():
     禁用活动任务
     :return:
     """
-    res = to_stop()
+    res = to_stop(request.values.get('sun'))
     flash(res)
     return redirect(url_for('under'))
 

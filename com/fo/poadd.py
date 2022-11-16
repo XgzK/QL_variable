@@ -78,25 +78,32 @@ def upgrade(sun: int):
         os.system("sh /root/UpdateAll.sh 1")
 
 
-def to_stop():
+def to_stop(sun: int):
     """
     禁止活动任务脚本
+    根据sun的值不同采用不同的方式禁用
+    :param sun: 1 禁用所有 别的禁用活动
     :return:
     """
     try:
-        lis = []
+        lis = set()
         lines = conn.selectAll(table=conn.surface[0])
         js = read_yaml(yml['json'])
+        if sun == 0:
+            for i in js.keys():
+                if js[i] == 1:
+                    continue
+                for j in range(len(js[i]) - 1):
+                    lis.add(js[i][list(js[i])[j]]['id'])
         # 循环数据库
         for i in lines:
-            print(i[2])
             # 跳过不在json文件的脚本
             if not (i[2] in js):
                 continue
             for j in js[i[2]].keys():
                 if js[i[2]][j]['isDisabled'] == 0:
-                    lis.append(js[i[2]][j]['id'])
-        ql.disable(lis)
-        return f'禁止任务成功禁用ID: {lis}'
+                    lis.add(js[i[2]][j]['id'])
+        ql.disable(list(lis))
+        return f'禁止任务成功禁用ID: {list(lis)}'
     except Exception as e:
         return '异常信息' + str(e)
