@@ -97,11 +97,8 @@ def contrast(str12):
             str1 = ''
             for i in range(len(str0)):
                 print(re.findall('^export NOT_TYPE=', str0[i]) == [])
-                if re.findall('^export NOT_TYPE=', str0[i]) == []:
+                if not re.findall('^export NOT_TYPE=', str0[i]):
                     aa = re.findall('^https://\w+-isv\.is\w+\.com$', str0[i])
-                    print('-------------')
-                    print(aa)
-                    print(len(aa))
                     if len(aa) == 0:
                         # 把提取到的关键内容
                         str1 = str0[i].split('=')[-1]
