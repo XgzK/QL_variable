@@ -85,23 +85,18 @@ def to_stop():
     """
     try:
         lis = []
-        yml = read_yaml()
         lines = conn.selectAll(table=conn.surface[0])
-        jstx = read_yaml(yml['json'])
-        va1 = jstx if int(ql.Version) < 14 else jstx['data']
-        # 循环脚本库
-        for i in va1:
-            # 遍历数据库
-            for j in lines:
-                if i['command'].split('/')[-1] == j[2]:
-                    # 适配版本10
-                    if int(va1) == 10:
-                        lis.append(i['_id'])
-                    else:
-                        lis.append(i['id'])
+        js = read_yaml(yml['json'])
+        # 循环数据库
+        for i in lines:
+            print(i[2])
+            # 跳过不在json文件的脚本
+            if not (i[2] in js):
+                continue
+            for j in js[i[2]].keys():
+                if js[i[2]][j]['isDisabled'] == 0:
+                    lis.append(js[i[2]][j]['id'])
         ql.disable(lis)
-        return '禁止任务成功'
+        return f'禁止任务成功禁用ID: {lis}'
     except Exception as e:
         return '异常信息' + str(e)
-
-
