@@ -41,8 +41,6 @@ class Interact:
                     ym = read_yaml()
                     revise_yaml(f'prohibit: {ym["prohibit"] + add_js}', ym['Record']['prohibit'])
                     return
-
-
         except Exception as e:
             print('私聊方法异常',e)
 
