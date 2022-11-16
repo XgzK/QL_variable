@@ -1,6 +1,7 @@
 import datetime
 import re
 
+from com.bot import tg_mes
 from com.gheaders.conn import read_yaml
 from com.gheaders.log import LoggerClass
 from com.ql import ql
@@ -52,6 +53,9 @@ def ql_write(str12, yal, essential):
                             jd_data=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             return str12
         else:
+            js = re.findall('(.*?)export NOT_TYPE=', str12)
+            if yal['Administrator'] and js:
+                tg_mes.send_message(f"NOT开头表示此活动参数需要连续几天执行: \n{js[0]}", yal['Administrator'])
             # 把后端添加的NOT不去重标记去掉
             return str12[3:]
     except Exception as e:
@@ -88,20 +92,23 @@ def contrast(str12):
     """
     try:
         # 提取脚本关键部分,并且不提取链接
-        str0 = re.findall('export .*?="(.*?=?\w+)"', str12)
-        str1 = ''
-        for i in range(len(str0) - 1):
-            aa = re.findall('^https://\w+-isv\.is\w+\.com$', str0[i])
-            if len(aa) == 0:
-                # 把提取到的关键内容
-                str1 = str0[i].split('=')[-1]
-                break
-        inquire = conn.selectTopone(table=conn.surface[1], where=f"jd_value1='{str1}'")
-        if inquire:
-            # logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数 {str12} 之前执行的参数关键字 {inquire[0]}')
-            return [-1]
+        str0 = re.findall('^export .*?="(.*?=?\w+)"', str12)
+        if str0:
+            str1 = ''
+            for i in range(len(str0) - 1):
+                aa = re.findall('^https://\w+-isv\.is\w+\.com$', str0[i])
+                if len(aa) == 0:
+                    # 把提取到的关键内容
+                    str1 = str0[i].split('=')[-1]
+                    break
+            inquire = conn.selectTopone(table=conn.surface[1], where=f"jd_value1='{str1}'")
+            if inquire:
+                # logger.write_log(f'检测到活动已经执行过本次跳过执行本次参数 {str12} 之前执行的参数关键字 {inquire[0]}')
+                return [-1]
+            else:
+                return [0, str1]
         else:
-            return [0, str1]
+            return [0, '']
     except Exception as e:
         logger.write_log('去掉相同活动异常: ', e)
         return -1

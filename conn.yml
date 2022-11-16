@@ -11,7 +11,7 @@ Token: ""
 Proxy: ""
 # 反代域名,
 TG_API_HOST: ""
-#用户ID 保留关键字
+#用户ID
 Administrator: ''
 # 转发消息的群组或者频道ID 保留关键字
 Forward: ''

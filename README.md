@@ -131,4 +131,8 @@ docker build -t xgzk/qlvariable:latest: .
         > 添加禁用重复任务
         > 修补 task 脚本 这种没有库的无法匹配问题
         > 不支持中文(此问题后期不会修复)
+    > 2022-11-16 22:30
+        > 修复NOT开头重复执行参数不执行问题
+        > Administrator 用户ID正式启用 自己去配置文件填写,填写Administrator 的用户需要重启容器，暂时不能动态获取Administrator的值
+        > 添加 Administrator 的用户遇到 NOT重复执行参数将会发送TG消息通知,一般七日签到等长期活动
 ```
