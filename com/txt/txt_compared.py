@@ -24,17 +24,10 @@ def tx_compared(tx1):
                 q.put([value1[2], "NOT" + tx1])
             else:
                 # 先查询这个值在不在jd_value1中
-                value1 = conn.selectTopone(table=conn.surface[0], where=f'jd_value1="{tx[0]}"')
-                # 再查询这个值在不在jd_value2中
-                value2 = conn.selectTopone(table=conn.surface[0], where=f'jd_value2="{tx[0]}"')
-                # 再查询这个值在不在jd_value3中
-                value3 = conn.selectTopone(table=conn.surface[0], where=f'jd_value3="{tx[0]}"')
+                value1 = conn.selectTopone(table=conn.surface[0], where=f'jd_value1="{tx[0]}" or jd_value3="{tx[0]}" '
+                                                          f'or jd_value3="{tx[0]}"')
                 if value1:
                     q.put([value1[2], tx1])
-                if value2:
-                    q.put([value2[2], tx1])
-                if value3:
-                    q.put([value3[2], tx1])
             if value1 == value2 == value3 is None:
                 logger.write_log(f"在数据库中没有找到: {tx1}")
         else:
@@ -44,6 +37,8 @@ def tx_compared(tx1):
             value1 = conn.selectTopone(table=conn.surface[0], where=f'jd_value1="{tx[0]}"')
             if len(tx) == 3 and value1:
                 q.put([value1[2], tx1])
+            else:
+                logger.write_log(f"在数据库中没有找到: {tx1}")
         tx1 = q.get()
         main_core(tx1)
     except Exception as e:

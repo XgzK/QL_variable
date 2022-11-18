@@ -4,8 +4,7 @@ from com.gheaders import LoggerClass
 from com.sql import conn
 
 logger = LoggerClass('debug')
-# 读取数据库中活动全部链接的数据
-lines = conn.selectAll(table=conn.surface[0], where=f'jd_url != "" and jd_re != ""')
+li = ['jd', 'pr''co', 'ji', 'sh', 'tx', 'pr', 'wq']
 
 
 def fuzzy_query(url=None):
@@ -16,6 +15,10 @@ def fuzzy_query(url=None):
     """
     try:
         li1s = []
+        TYPE = re.findall("https://(\w{2})", url)[0]
+        # 读取数据库中活动全部链接的数据
+        lines = conn.selectAll(table=conn.surface[0], where=f'jd_type == "{TYPE}"') if TYPE in li else conn.selectAll(
+            table=conn.surface[0], where=f'jd_type == "{TYPE}" or jd_type == "cl"')
         # 遍历数据库正则表达式非空
         if type(lines) == list:
             for i in lines:
