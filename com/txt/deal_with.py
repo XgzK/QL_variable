@@ -52,6 +52,9 @@ def https_txt(http):
         # 遍历数组
         for ink in li:
             tx = re.findall(f'{ink[7]}', http)
+            if not tx:
+                logger.write_log(f"https_txt,匹配不到内容: {ink[7]} 链接是: {http}")
+                continue
             st2 = ''
             # 往后推
             sun = 0

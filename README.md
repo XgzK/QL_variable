@@ -146,4 +146,6 @@ docker build -t xgzk/qlvariable:latest: .
     > 2022-11-18 18:30
         > 修改数据库表
         > 优化了之前无脑使用查询sql
+    > 2022-11-18 21:00
+        > 修补export yhyauthorCode 转换链接引起的https_txt,异常问题
 ```
