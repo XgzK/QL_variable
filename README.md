@@ -148,4 +148,6 @@ docker build -t xgzk/qlvariable:latest: .
         > 优化了之前无脑使用查询sql
     > 2022-11-18 21:00
         > 修补export yhyauthorCode 转换链接引起的https_txt,异常问题
+    > 2022-11-18 21:40
+        > 新增加对 jd_lzkj_loreal_invite.js == 邀请入会有礼（lzkj_loreal）和 jd_jinggeng_showInviteJoin.js == 邀请入会赢好礼（京耕）脚本支持
 ```
