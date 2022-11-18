@@ -16,7 +16,7 @@ Administrator: ''
 # 转发消息的群组或者频道ID 保留关键字
 Forward: ''
 # 接收转发到群组或者频道的ID,
-Send_IDs:
+Send_IDs: ''
 # 不执行脚本名称
 prohibit: []
 # 日志文件

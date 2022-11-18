@@ -11,8 +11,8 @@ from com.gheaders.conn import read_yaml
 
 class GetUpdate:
     def __init__(self):
-        yml = read_yaml()
-        self.url = ("https://api.telegram.org" if yml['TG_API_HOST'] == "" else yml['TG_API_HOST']) + "/bot" + yml[
+        self.yml = read_yaml()
+        self.url = ("https://api.telegram.org" if self.yml['TG_API_HOST'] == "" else self.yml['TG_API_HOST']) + "/bot" + self.yml[
             'Token']
         self.headers = {
             'accept': 'application/json',
@@ -22,8 +22,8 @@ class GetUpdate:
             "offset": 0,
             "timeout": 100
         }
-        self.proxies = yml['Proxy'] if yml['Proxy'] else None
-        self.Send_IDs = yml['Send_IDs']  # 要转发到群或者频道ID
+        self.proxies = self.yml['Proxy'] if self.yml['Proxy'] else None
+        self.Send_IDs = self.yml['Send_IDs']  # 要转发到群或者频道ID
 
     def get_long_link(self, ti=105):
         """
@@ -77,4 +77,26 @@ class GetUpdate:
             return -1
         except Exception as e:
             logger.write_log(f"发送消息异常: {e}")
+            return -1
+
+    def leaveChat(self, chat_id):
+        """
+        使用此方法让您的机器人离开组、超级组或频道。成功返回True
+        :return:
+        """
+        try:
+            client = httpx.Client(proxies=self.proxies, headers=self.headers)
+            ur = client.get(f"{self.url}/leaveChat?chat_id={chat_id}")
+            js = ur.json()
+            client.close()
+            if self.yml['Administrator']:
+                if ur.status_code == 200 and js['ok']:
+                    self.send_message(f"退出 {chat_id} 群聊成功", self.yml['Administrator'])
+                    return 0
+                else:
+                    self.send_message(f"退出 {chat_id} 失败 {js['description'] if 'description' in js else ''}", self.yml['Administrator'])
+                    return 400
+            else:
+                return 404
+        except Exception as e:
             return -1
