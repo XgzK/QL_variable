@@ -41,7 +41,7 @@ class Interact:
                 if add_js:
                     revise_yaml(f'prohibit: {read_yaml()["prohibit"] + add_js}', yml['Record']['prohibit'])
                     return
-                quit = re.findall('/quit ([0-9a-zA-Z_@\.-]+)', result['message']['text'])
+                quit = re.findall('/quit (.*)', result['message']['text'])
                 # 退出群聊
                 if quit:
                     tg_mes.leaveChat(quit[0])
