@@ -96,7 +96,6 @@ def contrast(str12):
         if str0:
             str1 = ''
             for i in range(len(str0)):
-                print(re.findall('^export NOT_TYPE=', str0[i]) == [])
                 if not re.findall('^export NOT_TYPE=', str0[i]):
                     aa = re.findall('^https://\w+-isv\.is\w+\.com$', str0[i])
                     if len(aa) == 0:

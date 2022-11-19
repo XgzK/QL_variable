@@ -12,8 +12,9 @@ from com.gheaders.conn import read_yaml
 class GetUpdate:
     def __init__(self):
         self.yml = read_yaml()
-        self.url = ("https://api.telegram.org" if self.yml['TG_API_HOST'] == "" else self.yml['TG_API_HOST']) + "/bot" + self.yml[
-            'Token']
+        self.url = ("https://api.telegram.org" if self.yml['TG_API_HOST'] == "" else self.yml['TG_API_HOST']) + "/bot" + \
+                   self.yml[
+                       'Token']
         self.headers = {
             'accept': 'application/json',
             'content-type': 'application/json'
@@ -25,7 +26,7 @@ class GetUpdate:
         self.proxies = self.yml['Proxy'] if self.yml['Proxy'] else None
         self.Send_IDs = self.yml['Send_IDs']  # 要转发到群或者频道ID
 
-    def get_long_link(self, ti=105):
+    def get_long_link(self, ti=99):
         """
         长链接
         :param ti: 最大请求时间
@@ -35,6 +36,7 @@ class GetUpdate:
             client = httpx.Client(proxies=self.proxies, headers=self.headers)
             ur = client.post(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout={ti}",
                              timeout=ti)
+            print('收到tg消息')
             ur.close()
             # 如果是200表示收到消息
             if ur.status_code == 200:
@@ -94,9 +96,33 @@ class GetUpdate:
                     self.send_message(f"退出 {chat_id} 群聊成功", self.yml['Administrator'])
                     return 0
                 else:
-                    self.send_message(f"退出 {chat_id} 失败 {js['description'] if 'description' in js else ''}", self.yml['Administrator'])
+                    self.send_message(f"退出 {chat_id} 失败 {js['description'] if 'description' in js else ''}",
+                                      self.yml['Administrator'])
                     return 400
             else:
                 return 404
         except Exception as e:
             return -1
+
+    def banChatMember(self, result, chat_id, user_id):
+        """
+        踢出群聊
+        :param result:
+        :param chat_id: 群标识
+        :param user_id: 踢出标识
+        :return:
+        """
+        try:
+            client = httpx.Client(proxies=self.proxies, headers=self.headers)
+            ur = client.get(f"{self.url}/banChatMember?chat_id={chat_id}&user_id={user_id}").json()
+            if ur['ok']:
+                self.send_message(f"{result['message']['from']['first_name'] if 'first_name' in result['message']['from'] else ''} {result['message']['from']['last_name'] if 'last_name' in result['message']['from'] else ''} 不在群组开放期间加入,特请出群聊", chat_id)
+            else:
+                self.send_message(
+                    f"{'用户名: ' + result['message']['from']['first_name'] if 'first_name' in result['message']['from'] else ''}\n"
+                    f"{'ID是: ' + str(result['message']['from']['id'])}\n"
+                    f"退出群聊失败",
+                    chat_id)
+        except:
+            pass
+

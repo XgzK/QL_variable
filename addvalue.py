@@ -147,6 +147,10 @@ if __name__ == '__main__':
                                     interact.group_id(result)
                                     if 'sender_chat' in result['message'] and yml['Send_IDs']:
                                         interact.distribute(result['message']['text'], yml['Send_IDs'])
+                                # 加入群聊
+                                # elif 'new_chat_participant' in result['message']:
+                                #     tg_mes.banChatMember(result, '',
+                                #                          result['message']['new_chat_participant']['id'])
                         # 频道消息
                         elif 'channel_post' in result:
                             if result['channel_post']['chat']['type'] == 'channel':

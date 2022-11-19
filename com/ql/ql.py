@@ -52,7 +52,7 @@ class QL:
             status = ss.status_code
             # 获取返回的状态码
             if status == 200:
-                time.sleep(0.3)
+                time.sleep(90) if int(time.strftime('%H')) == 0 else time.sleep(0.3)
                 return 0
             else:
                 logger.write_log("任务执行失败:" + str(status))

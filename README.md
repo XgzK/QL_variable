@@ -150,4 +150,7 @@ docker build -t xgzk/qlvariable:latest: .
         > 修补export yhyauthorCode 转换链接引起的https_txt,异常问题
     > 2022-11-18 21:40
         > 新增加对 jd_lzkj_loreal_invite.js == 邀请入会有礼（lzkj_loreal）和 jd_jinggeng_showInviteJoin.js == 邀请入会赢好礼（京耕）脚本支持
+    > 2022-11-19 21:00
+        > 因多任务并发出现493问题暂时在零点设置延迟90秒(后面会优化)
+        > 添加管理员权限请出群聊(未启用,只是开放了接口)
 ```
