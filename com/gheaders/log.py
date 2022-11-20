@@ -137,10 +137,9 @@ def rz():
             # 如果就\n则跳过
             if i == '\n':
                 continue
-            #  把末尾的\n换成<br>
-            j = re.findall(r"\[\d+m(.*)\x1b", i)
+            j = i.replace("[35m", "").replace("[0m", "")
             if j:
-                st.append(j[0])
+                st.append(j)
                 continue
         return st
     except Exception as e:
