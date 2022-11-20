@@ -24,11 +24,8 @@ def token_main():
         if ck != -1:
             str1 = 'Authorization:' + f" '{ck}'"
             yml_file(str1, read_yaml()['Record']['Authorization'])
-            yml_file("judge: 0", read_yaml()['Record']['judge'])
             return 0
         else:
-            # 如果异常就向conn.yml添加一个值 1
-            yml_file("judge: 1", read_yaml()['Record']['judge'])
             return -1
     except Exception as e:
         logger.write_log("token_main败，请检查conn.yml文件，异常信息：" + str(e))

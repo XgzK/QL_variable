@@ -34,9 +34,8 @@ class GetUpdate:
         """
         try:
             client = httpx.Client(proxies=self.proxies, headers=self.headers)
-            ur = client.post(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout={ti}",
-                             timeout=ti)
-            print('收到tg消息')
+            ur = client.get(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout={ti}",
+                            timeout=ti)
             ur.close()
             # 如果是200表示收到消息
             if ur.status_code == 200:
@@ -51,11 +50,14 @@ class GetUpdate:
             else:
                 # 遇到其他未知状态码打印出来
                 return {"ok": False, "result": [ur.status_code]}
-        except RemoteProtocolError or ConnectTimeout or ReadTimeout:
+        except RemoteProtocolError or ConnectTimeout or ReadTimeout as e:
+            print(e)
             return {"ok": True, "result": []}
         except ConnectError as e:
+            print(e)
             return {"ok": False, "result": [f'链接网络异常可能没有外网环境: {e}']}
         except Exception as e:
+            print(e)
             return {"ok": False, "result": [e]}
 
     def send_message(self, tx, chat_id=None):
@@ -116,13 +118,14 @@ class GetUpdate:
             client = httpx.Client(proxies=self.proxies, headers=self.headers)
             ur = client.get(f"{self.url}/banChatMember?chat_id={chat_id}&user_id={user_id}").json()
             if ur['ok']:
-                self.send_message(f"{result['message']['from']['first_name'] if 'first_name' in result['message']['from'] else ''} {result['message']['from']['last_name'] if 'last_name' in result['message']['from'] else ''} 不在群组开放期间加入,特请出群聊", chat_id)
+                self.send_message(
+                    f"{result['message']['new_chat_member']['first_name'] if 'first_name' in result['message']['new_chat_member'] else ''} {result['message']['new_chat_member']['last_name'] if 'last_name' in result['message']['new_chat_member'] else ''} 不在群组开放期间加入,特请出群聊",
+                    chat_id)
             else:
                 self.send_message(
-                    f"{'用户名: ' + result['message']['from']['first_name'] if 'first_name' in result['message']['from'] else ''}\n"
+                    f"{result['message']['new_chat_member']['first_name'] if 'first_name' in result['message']['new_chat_member'] else ''} {result['message']['new_chat_member']['last_name'] if 'last_name' in result['message']['new_chat_member'] else ''}\n"
                     f"{'ID是: ' + str(result['message']['from']['id'])}\n"
                     f"退出群聊失败",
                     chat_id)
         except:
             pass
-

@@ -6,7 +6,7 @@ import time
 
 import requests
 
-from com.gheaders.conn import read_yaml, revise_yaml
+from com.gheaders.conn import read_yaml
 from com.gheaders.get_headers import ql_header, qlck_header
 from com.gheaders.log import LoggerClass
 
@@ -36,7 +36,6 @@ class QL:
         except Exception as e:
             logger.write_log("ql_tk异常信息，请检查conn.yml文件，异常信息: " + str(e))
             logger.write_log(f"请求的参数是 {url}?client_id:{data['client_id']}&client_secret:{data['client_secret']}")
-            revise_yaml('judge: 1', yam['Record']['judge'])
             return -1
 
     def ql_run(self, data):
@@ -75,7 +74,6 @@ class QL:
                 return li['data']
             return -1
         except Exception as e:
-            revise_yaml('judge: 1', yam['Record']['judge'])
             logger.write_log("获取青龙任务列表失败", e)
             return -1
 

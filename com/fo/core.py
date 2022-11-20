@@ -11,13 +11,10 @@ def main_core(data: list):
     :param data: [脚本名称,活动参数]
     :return:
     """
+    print("进入执行main_core方法")
     jst = read_yaml()
     if data[0] in jst['prohibit']:
         logger.write_log(f'检测到脚本 {data[0]} 在黑名单中,跳过执行')
-        q.task_done()
-        return 0
-    # 判断运行必备参数是否发送了异常
-    if jst['judge'] != 0:
         q.task_done()
         return 0
     # 检测是否被执行过
@@ -49,15 +46,16 @@ def main_core(data: list):
         revise = ql.configs_revise('config.sh', bytex + '\n' + judge)
         # 表示添加活动成功
         if revise["code"] == 200:
+            print("准备执行任务")
             # 根据脚本id，执行脚本
             qid = ql.ql_run(ids)
             if qid == 0:
                 logger.write_log(f"执行 {data[0]} 脚本成功 ID {ids[0]} 执行参数: {data[1]}")
             # 把原来内容添加回去
             ql.configs_revise('config.sh', bytex)
+        print("青龙相关操作完毕")
         q.task_done()
         return 0
-    else:
-        logger.write_log("异常问题,检测到程序非正常状态,不再执行")
-        q.task_done()
-        return -1
+    logger.write_log("异常问题,检测到程序非正常状态,不再执行")
+    q.task_done()
+    return -1

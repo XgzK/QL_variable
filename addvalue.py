@@ -112,6 +112,7 @@ if __name__ == '__main__':
     # 先执行清理掉之前的记录
     ids = True
     while ids:
+        print("删除之前旧线报")
         tg_ms = tg_mes.get_long_link(ti=1)
         if tg_ms['ok'] and tg_ms['result']:
             tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
@@ -121,6 +122,7 @@ if __name__ == '__main__':
         try:
             yml = read_yaml()
             tg_ms = tg_mes.get_long_link()
+            print(tg_ms)
             # 消息不为空和没有异常
             if tg_ms['ok']:
                 if tg_ms["result"]:
@@ -148,9 +150,9 @@ if __name__ == '__main__':
                                     if 'sender_chat' in result['message'] and yml['Send_IDs']:
                                         interact.distribute(result['message']['text'], yml['Send_IDs'])
                                 # 加入群聊
-                                # elif 'new_chat_participant' in result['message']:
-                                #     tg_mes.banChatMember(result, '',
-                                #                          result['message']['new_chat_participant']['id'])
+                                elif 'new_chat_member' in result['message']:
+                                    tg_mes.banChatMember(result, '-1001565778760',
+                                                         result['message']['new_chat_member']['id'])
                         # 频道消息
                         elif 'channel_post' in result:
                             if result['channel_post']['chat']['type'] == 'channel':
