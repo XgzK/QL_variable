@@ -128,6 +128,7 @@ if __name__ == '__main__':
             if not tg_ms['ok']:
                 logger.write_log(f"异常消息 {tg_ms['result']} 触发异常停止10秒")
                 time.sleep(10)
+                continue
             if tg_ms["result"]:
                 # 确认收到消息
                 tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
