@@ -158,4 +158,6 @@ docker build -t xgzk/qlvariable:latest: .
         > 修改获取脚本的sql执行逻辑
         > 不清楚什么原因造成卡任务添加无关紧要输出
         > 卡任务未知
+    > 2022-11-20 19:30
+        > main_core方法使用多线程,不阻塞tg机器人交互
 ```

@@ -4,7 +4,7 @@ from com.gheaders import LoggerClass
 from com.sql import conn
 
 logger = LoggerClass('debug')
-li = ['jd', 'pr''co', 'ji', 'sh', 'tx', 'pr', 'wq']
+li = ['jd', 'pr','co', 'ji', 'sh', 'tx', 'wq']
 
 
 def fuzzy_query(url=None):

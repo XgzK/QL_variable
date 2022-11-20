@@ -4,6 +4,7 @@
 import re
 
 from . import tg_mes
+from ..gheaders import logger
 from ..gheaders.conn import read_yaml, revise_yaml
 
 yml = read_yaml()
@@ -19,7 +20,8 @@ class Interact:
         :return:
         """
         try:
-            if int(yml['Administrator']) != int(result['message']['from']['id']):
+            if len(yml['Administrator']) == 0 or int(yml['Administrator']) != int(result['message']['from']['id']):
+                logger.write_log("没有设置 Administrator 或 不是机器人主人无法交互")
                 return
             # forward_from_chat 只有转发的消息才携带
             if 'forward_from_chat' in result['message']:
