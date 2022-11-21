@@ -126,7 +126,7 @@ if __name__ == '__main__':
             tg_ms = tg_mes.get_long_link()
             # 消息不为空和没有异常
             if not tg_ms['ok']:
-                logger.write_log(f"异常消息 {tg_ms['result']} 触发异常停止10秒")
+                logger.write_log(f"异常消息 {tg_ms['result'][0]} 触发异常停止10秒")
                 time.sleep(10)
                 continue
             if tg_ms["result"]:
