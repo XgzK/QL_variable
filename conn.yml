@@ -1,49 +1,32 @@
-# 设置自己青龙的IP:端口
-ip: ""
-# 下面和青龙有关 系统设置-->应用设置-->新建应用-->权限选择所有自己配置
-Client ID: ""
-Client Secret: ""
-# 青龙类似于cookie，登录后自动获取，不用管,不能移动行
-Authorization: ""
+# 用户ID
+Administrator: ""
 # 机器人的 token
 Token: ""
-# 代理 如果不能访问TG需要设置代理 支持协议 http https socks socks4 socks5 格式 协议://ip:端口
-Proxy: ""
-# 反代域名,
-TG_API_HOST: ""
-#用户ID
-Administrator: ""
-# 转发消息的群组或者频道ID 保留关键字
-Forward: ""
 # 接收转发到群组或者频道的ID,
 Send_IDs: ""
 # 不执行脚本名称
 prohibit: []
+# 代理 如果不能访问TG需要设置代理 支持协议 http https socks socks4 socks5 格式 协议://ip:端口
+Proxy: ""
+# 反代域名,
+TG_API_HOST: ""
+# 优先根据特定库执行脚本
+library: ""
+# 是否去重复数据，0表示去重复，1表示不去重复，默认去重复
+deduplication: 0
 # 日志文件
 log: log/ql.log
 # 用于去重复的任务，的数据库，不用修改
 repeat: com/sql/repeat.sqlite
-# 青龙任务保存路径
-json: date/ql.json
-# 弃用
-judge: 0
-# 是否去重复数据，0表示去重复，1表示不去重复，默认去重复
-deduplication: 0
 # 杀死程序指令
 kill: kill -9 $(netstat -nlp | grep :5008 | awk '{print $7}' | awk -F"/" '{ print $1 }')
-# 优先根据特定库执行脚本
-library: /
 # 记录path行，这个不用管，方便以后添加和更改代码
 Record:
-  ql: [2, 4, 5]
-  Authorization: 7
-  Token: 9
-  Proxy: 11
-  TG_API_HOST: 13
-  Administrator: 15
-  Forward: 17
-  Send_IDs: 19
-  prohibit: 21
-  judge: 29
-  deduplication: 31
-  library: 35
+  Administrator: 2
+  Token: 4
+  Send_IDs: 6
+  prohibit: 8
+  Proxy: 10
+  TG_API_HOST: 12
+  library: 14
+  deduplication: 16

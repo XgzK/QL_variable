@@ -12,7 +12,7 @@ from com.gheaders.Inspector import Check
 from com.gheaders.conn import read_yaml
 from com.ql import ql
 from com.gheaders import logger
-from com.ql.ql_token import token_main
+# from com.ql.ql_token import token_main
 from com.sql import conn
 from com.txt.txt_zli import tx_revise
 from com.web.ql_web import run_web
@@ -29,31 +29,33 @@ def ti_ck():
     """
     conn.delete(table=conn.surface[1])
     try:
-        js_ql = ql.crons()
-        js = dict()
-        # 如果青龙里面有层data就解包
-        for i in js_ql['data'] if 'data' in js_ql else js_ql:
-            if len(i['command'].split('/')) == 2:
-                aa = re.findall('task .*?/([a-zA-Z0-9&=_/-]+\.\w+)', i['command'])
-            else:
-                aa = re.findall('task ([a-zA-Z0-9&=_/-]+\.\w+)', i['command'].split('/')[-1])
-            if aa:
-                if not (aa[0] in js):
-                    js[aa[0]] = {}
-                # 用来区分 版本json格式差异
-                if 'id' in i:
-                    js[aa[0]].setdefault(i['command'],
-                                         {'id': i['id'], "name": i["name"], "isDisabled": i["isDisabled"]})
+        value1 = conn.selectAll(table=conn.surface[3], where=f"state=0")
+        for ql_tk in value1:
+            js_ql = ql.crons(ql_tk)
+            js = dict()
+            # 如果青龙里面有层data就解包
+            for i in js_ql['data'] if 'data' in js_ql else js_ql:
+                if len(i['command'].split('/')) == 2:
+                    aa = re.findall('task .*?/([a-zA-Z0-9&=_/-]+\.\w+)', i['command'])
                 else:
-                    js[aa[0]].setdefault(i['command'],
-                                         {'id': i['_id'], "name": i["name"], "isDisabled": i["isDisabled"]})
-            else:
-                logger.write_log(f"跳过录入: {i['command']}")
-        with open(yml['json'], mode='w+', encoding='utf-8') as f:
-            json.dump(js, f, ensure_ascii=False)
-        return 0
+                    aa = re.findall('task ([a-zA-Z0-9&=_/-]+\.\w+)', i['command'].split('/')[-1])
+                if aa:
+                    if not (aa[0] in js):
+                        js[aa[0]] = {}
+                    # 用来区分 版本json格式差异
+                    if 'id' in i:
+                        js[aa[0]].setdefault(i['command'],
+                                             {'id': i['id'], "name": i["name"], "isDisabled": i["isDisabled"]})
+                    else:
+                        js[aa[0]].setdefault(i['command'],
+                                             {'id': i['_id'], "name": i["name"], "isDisabled": i["isDisabled"]})
+                else:
+                    logger.write_log(f"跳过录入: {i['command']}")
+            with open(js_ql[5], mode='w+', encoding='utf-8') as f:
+                json.dump(js, f, ensure_ascii=False)
+            return 0
     except Exception as e:
-        logger.write_log(f'获取列表异常,{e}')
+        logger.write_log(f'获取列表异常: {e}')
         return -1
 
 
@@ -63,14 +65,20 @@ def timing_ck():
     设置每半个月获取一次新的ck,青龙作者是的是一个月保质期，不过这里设置为半个月
     :return: 0 or -1
     """
-    for i in range(3):
-        ck = token_main()
-        if ck == 0:
-            return 0
-        logger.write_log("新的Bearer添加失败, 30s后再次获取")
-        time.sleep(30)
-    logger.write_log("新的Bearer添加失败停止执行后面步骤")
-    return -1
+    value1 = conn.selectAll(table=conn.surface[3], where=f"state=0")
+    for ql_tk in value1:
+        for i in range(3):
+            ck = ql.ql_tk(ql_tk)
+            if ck != 0 or ck != -1:
+                conn.update(table=conn.surface[3], Authorization=ck, where=f"name='{ql_tk[0]}'")
+                break
+            elif ck == -1 or i == 2:
+                logger.write_log(f"{ql_tk[0]}容器的 Bearer添加失败, 30s后再次获取")
+                time.sleep(30)
+            elif ck == 0:
+                # state = 1 表示异常
+                conn.update(table=conn.surface[3], state=1, where=f"name='{ql_tk[0]}'")
+    return 0
 
 
 def mai():

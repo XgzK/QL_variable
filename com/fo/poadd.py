@@ -18,24 +18,12 @@ def ym_change(li: list):
     """
     tf = 0  # 记录是否需要重启
     st = ''
-    if len(li) == 7:
+    if len(li) == 4:
         revise_yaml(f"deduplication: 1", yml['Record']['deduplication'])
         st += '任务不去重复'
-    elif len(li) == 8:
+    elif len(li) == 5:
         revise_yaml(f"deduplication: 0", yml['Record']['deduplication'])
         st += '任务去重复'
-    # 判断用户输入的值如果返回的列表是先判断0-3是不是为空,如果为空则表示用户并不是提交青龙URL这里直接判断0位是不是空
-    if li[0] != '' and li[1] != '' and li[2] != '':
-        # 判断url是否符合要求
-        ur = re.findall('^(http.*?:\d+)', li[0])
-        # 如果不符合要求则进入
-        if len(ur) == 0:
-            return [0, "URL不符合格式要求,请复制浏览器上完整的青龙URL"]
-        # 把用户提交的青龙相关提交到配置文件
-        revise_yaml(f"ip: '{ur[0]}'", yml['Record']['ql'][0])
-        revise_yaml(f"Client ID: '{li[1]}'", yml['Record']['ql'][1])
-        revise_yaml(f"Client Secret: '{li[2]}'", yml['Record']['ql'][2])
-        st += '青龙URL提交成功 '
     # 表示用户输入了自己优先执行的库了
     if li[3] != '':
         k = li[3].split('/')[0] + '/'

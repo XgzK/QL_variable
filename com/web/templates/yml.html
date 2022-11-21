@@ -3,19 +3,6 @@
     <h1>{% block title %}配置文件控制台{% endblock %}</h1>
     <form method="post" action="/">
         <div class="mb-3">
-            <label for="title">青龙URL</label>
-            {#   request.from['title'] 如果提交失败获取到提交的内容         #}
-            <input class="form-control form-control-lg" type="url" name="books[]" placeholder="青龙URL,直接复制浏览器完整URL必须带端口" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
-        </div>
-        <div class="mb-3">
-            <label for="title">Client ID</label>
-            <input class="form-control form-control-lg" type="text" name="books[]" placeholder="请输入青龙的Client ID" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
-        </div>
-        <div class="mb-3">
-            <label for="title">Client Secret</label>
-            <input class="form-control form-control-lg" type="text" name="books[]" placeholder="请输入青龙的Client Secret" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
-        </div>
-        <div class="mb-3">
             <label for="title">优先执行的库 提交格式 task 库名/任意脚本</label>
             {#   request.from['title'] 如果提交失败获取到提交的内容         #}
             <input class="form-control form-control-lg" type="text" name="books[]" placeholder="请输入优先执行的库" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
@@ -24,10 +11,10 @@
             <label for="title">机器人Token</label>
             <input class="form-control form-control-lg" type="text" name="books[]" placeholder="https://t.me/BotFather 给的Token" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
         </div>
-        <p>反代和代理只能使用一个,如果填写代理就不检测反代</p>
+        <p>反代和代理只能使用一个,如果代理和反代都填写将优先使用代理</p>
         <div class="mb-3">
             <label for="title">代理</label>
-            <input class="form-control form-control-lg" type="text" name="books[]" placeholder="如果没有外网环境填写格式 协议:ip:端口" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
+            <input class="form-control form-control-lg" type="text" name="books[]" placeholder="如果没有外网环境填写格式 协议//:账户:密码@ip:端口" aria-label=".form-control-lg example" value="{{ request.form['title'] }}">
         </div>
         <div class="mb-3">
             <label for="title">反代</label>

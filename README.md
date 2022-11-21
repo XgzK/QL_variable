@@ -42,11 +42,10 @@ https://thingproxy.freeboard.io/fetch/https://api.telegram.org
 ### 对一些链接黑处理机制
 ```text
 https://cjhydz-isv.isvjcloud.com 提取的是cj
-lz cj ji pr sh tx wq 对非链接类型统一使用 404
+lz cj ji pr sh tx wq 对非链接类型统一使用 no
 export NOT_TYPE="lz";
 别的怎么根据链接筛掉黑号自己解决
 上面的会被自动当成链接变量添加到参数中
-
 ```
 
 ### 非adm64系统的问题
@@ -162,4 +161,16 @@ docker build -t xgzk/qlvariable:latest: .
         > main_core方法使用多线程,不阻塞tg机器人交互
     > 2022-11-21 10:30
         > 对长连接以知异常明细划分 [Errno -3] Try again 异常不会再暂停10s
+3.2版本
+    > 多容器框架已经具备
+```
+
+```
+3.2版本
+    > 修改青龙存储密钥存储路径
+    > 多容器支持(开放用户待定)
+    > 前端页面提交修改
+    > 机器人指令添加
+    > 登录页面
+    > 解决493问题
 ```

@@ -17,7 +17,6 @@ do
     if [ "$stillRunning" ]
     then
       echo 程序死亡开始执行
-      sleep 3s
       # 判断文件是否存在不存在则拉取
       if [ ! -f "/val/addvalue.py" ]
       then
@@ -26,7 +25,6 @@ do
       else
         echo "检测到文件存在不再拉取新项目"
       fi
-      sleep 3s
       cd /val && python3 addvalue.py
     fi
 done

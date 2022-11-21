@@ -11,14 +11,14 @@ yam = read_yaml()
 
 class Sql:
     """
-    授权数据库类
+    数据库类
     """
 
     def __init__(self):
         # 172.17.0.2 localhost
         self.conn = sqlite3.connect(yam["repeat"], timeout=10, check_same_thread=False)
         self.cursor = self.conn.cursor()
-        self.surface = ['JdQl', 'repeat', 'turn_url']
+        self.surface = ['JdQl', 'repeat', 'turn_url', 'QL']
 
     def execute(self, sql):
         """
