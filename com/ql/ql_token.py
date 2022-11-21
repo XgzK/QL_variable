@@ -89,8 +89,10 @@ def contrast(str12):
     :return: 有返回[-1] 没有返回[0,活动的关键字]
     """
     try:
+        if str12[0:3:] == "NOT":
+            return [0, '']
         # 提取脚本关键部分,并且不提取链接
-        str0 = re.findall('^export .*?="(.*?=?\w+)"', str12)
+        str0 = re.findall('export .*?="(.*?=?\w+)"', str12)
         if str0:
             str1 = ''
             for i in range(len(str0)):
