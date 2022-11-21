@@ -22,13 +22,9 @@ def tx_compared(tx1):
                                          f'or jd_value2="{tx[0][0]}" '
                                          f'or jd_value3="{tx[0][0]}"')
         if value1 and value1[3] is None and value1[4] is None:
-            q.put([value1[2], value1[3] + '=' + tx[0][0]])
-            # tx1 = q.get()
-            # main_core(tx1)
+            q.put([value1[2], value1[3] + '=' + tx[0][0]], block=True, timeout=None)
         elif value1:
-            q.put([value1[2], tx1])
-            # tx1 = q.get()
-            # main_core(tx1)
+            q.put([value1[2], tx1], block=True, timeout=None)
         else:
             logger.write_log(f"在数据库中没有找到: {tx1}")
     except Exception as e:

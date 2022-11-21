@@ -22,7 +22,7 @@ class QL:
         """
         用于获取登录用的ck,ck有效期一个月
         :param ql_tk: 青龙数据库
-        :return: 返回登录用的Bearer XXXXXXXXXXX，0表示没有权限 -1表示异常
+        :return: 返回登录用的Bearer XXXXXXXXXXX，[状态码,内容]
         """
         url = ql_tk[1] + "/open/auth/token"
         data = {
@@ -33,13 +33,13 @@ class QL:
             cs = requests.get(url=url, params=data, timeout=10, headers=qlck_header())
             jstx = cs.json()
             if jstx['code'] == 200:
-                return jstx['data']['token_type'] + " " + jstx['data']['token']
+                return [jstx['code'], jstx['data']['token_type'] + " " + jstx['data']['token']]
             else:
                 logger.write_log(f"{ql_tk[0]} 获取青龙Authorization异常 状态码: {jstx['code']} 原因: {jstx['data']}")
-                return 0
+                return [403]
         except Exception as e:
             logger.write_log(f"{ql_tk[0]} 请求青龙异常: {e}")
-            return -1
+            return [500]
 
     def ql_run(self, data, ql_tk: tuple):
         """
@@ -68,18 +68,19 @@ class QL:
         """
         获取任务列表
         :param ql_tk: 青龙数据库的列表
-        :return:
+        :return: [状态码, 列表]
         """
         try:
             url = ql_tk[1] + '/open/crons'
             lis = requests.get(url=url, headers=self.headers(ql_tk[4]))
             li = lis.json()
             if li['code'] == 200:
-                return li['data']
-            return -1
+                return [li['code'], li['data']]
+            logger.write_log(f"状态码: {li['code']} 请给相应权限")
+            return li['code']
         except Exception as e:
-            logger.write_log("获取青龙任务列表失败", e)
-            return -1
+            logger.write_log(f"获取青龙任务列表失败: {e}")
+            return [403]
 
     def configs_check(self, path, ql_tk: tuple):
         """
