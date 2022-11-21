@@ -89,7 +89,7 @@ class Sql:
         except IntegrityError:
             # 发生错误时回滚
             self.conn.rollback()
-            return "请不要重复获取授权"
+            return -1
         except Exception as e:
             # 发生错误时回滚
             self.conn.rollback()

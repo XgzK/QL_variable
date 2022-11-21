@@ -6,13 +6,13 @@ import re
 from . import tg_mes
 from ..gheaders import logger
 from ..gheaders.conn import read_yaml, revise_yaml
-
-yml = read_yaml()
+from ..sql import conn
 
 
 class Interact:
     def __init__(self):
-        pass
+        self.conn = conn
+        self.yml = read_yaml()
 
     def get_id(self, result):
         """
@@ -20,8 +20,9 @@ class Interact:
         :return:
         """
         try:
-            if len(yml['Administrator']) == 0 or int(yml['Administrator']) != int(result['message']['from']['id']):
-                logger.write_log("没有设置 Administrator 或 不是机器人主人无法交互")
+            if len(self.yml['Administrator']) == 0 or int(self.yml['Administrator']) != int(
+                    result['message']['from']['id']):
+                logger.write_log(f"没有设置 Administrator 或 不是机器人主人无法交互 ID: {result['message']['from']['id']}")
                 return
             # forward_from_chat 只有转发的消息才携带
             if 'forward_from_chat' in result['message']:
@@ -37,16 +38,32 @@ class Interact:
             else:
                 idfor = re.findall('/forward ([0-9-]+)', result['message']['text'])
                 if idfor:
-                    revise_yaml(f'Send_IDs: {idfor[0]}', yml['Record']['Send_IDs'])
-                    return
+                    return revise_yaml(f'Send_IDs: {idfor[0]}', self.yml['Record']['Send_IDs'])
                 add_js = re.findall('/prohibit ([0-9a-zA-Z_\.]+)', result['message']['text'])
                 if add_js:
-                    revise_yaml(f'prohibit: {read_yaml()["prohibit"] + add_js}', yml['Record']['prohibit'])
-                    return
+                    return revise_yaml(f'prohibit: {read_yaml()["prohibit"] + add_js}', self.yml['Record']['prohibit'])
                 quit = re.findall('/quit (.*)', result['message']['text'])
                 # 退出群聊
                 if quit:
-                    tg_mes.leaveChat(quit[0])
+                    return tg_mes.leaveChat(quit[0])
+                putk = re.findall("/putk (.*)", result['message']['text'])
+                if putk:
+                    puts = putk[0].split("@")
+                    st = re.findall('^(http.*:\d+)', puts[1]) if len(puts) == 4 else False
+                    if st:
+                        inst = self.conn.insert(table=conn.surface[3], name=f"{puts[0]}", ip=f"{st[0]}",
+                                                Client_ID=f"{puts[2]}", Client_Secret=f"{puts[3]}", Authorization="",
+                                                json=f"{self.yml['json']}{puts[0]}.json", state=1)
+                        if inst > 0:
+                            return tg_mes.send_message(f"提交 {puts[0]} 成功", self.yml['Administrator'])
+                        elif inst == -1:
+                            return tg_mes.send_message(f"提交 {puts[0]} 失败,提交的内容和之前提交的内容冲突",
+                                                       self.yml['Administrator'])
+                        else:
+                            return tg_mes.send_message(f"提交 {puts[0]} 失败,失败原因: {inst}",
+                                                       self.yml['Administrator'])
+                    else:
+                        return tg_mes.send_message(f"提交{puts[0]}失败", self.yml['Administrator'])
         except Exception as e:
             print('私聊方法异常', e)
 

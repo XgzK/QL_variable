@@ -33,6 +33,7 @@ http://IP:5008/
     /forward ID 会把东西转发到这个频道或者群组 暂时只能使用一个ID
     /prohibit 名称 脚本加入黑名单会不执行
     /quit 频道ID或者@唯一名称 退出群聊或频道
+    /putk 别名@青龙URL@Client_ID@Client_Secret 提交青龙相关执行参数 别名不能相同否则无法提交成功 3.2版本指令
 机器人交互设置
     找 https://t.me/BotFather 发送 /setprivacy 选择自己使用的机器人名称 选择D开头的
     怎么申请机器人自己百度
@@ -165,6 +166,7 @@ docker build -t xgzk/qlvariable:latest: .
     > 多容器参数正常执行
     > 修改青龙存储密钥存储路径
     > 前端页面提交修改
+    > 添加提交青龙指令
 ```
 
 ```
@@ -172,4 +174,5 @@ docker build -t xgzk/qlvariable:latest: .
     > 机器人指令添加
     > 登录页面
     > 解决493问题
+    > 页面重新排版
 ```
