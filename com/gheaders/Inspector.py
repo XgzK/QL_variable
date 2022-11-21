@@ -20,12 +20,10 @@ class Check:
         :return: -1 or 0
         """
         # 检测目录是否存在
-        pa = re.findall('(.*?)/\w+\.\w+', yml['json'])
+        pa = re.findall('(.*?)/', yml['json'])
         if pa:
             if not os.path.exists(pa[0]):
                 os.makedirs(pa[0])
-        # db = os.path.isfile(yml['repeat'])
-        # if not db:
 
 
 

@@ -27,7 +27,8 @@ class Timing(object):
             for i in range(3):
                 ck = self.ql.ql_tk(ql_tk)
                 if ck[0] == 200:
-                    self.conn.update(table=self.conn.surface[3], Authorization=ck[1], where=f"name='{ql_tk[0]}'")
+                    self.conn.update(table=self.conn.surface[3], Authorization=ck[1], state=0,
+                                     where=f"name='{ql_tk[0]}'")
                     break
                 elif ck[0] == 500 or i == 2:
                     self.logger.write_log(f"{ql_tk[0]}容器的 Bearer添加失败, 30s后再次获取")
@@ -53,9 +54,12 @@ class Timing(object):
                     self.logger.write_log(f'{ql_tk[0]} 获取列表异常')
                     self.conn.update(table=self.conn.surface[3], state=1, where=f"name='{ql_tk[0]}'")
                     continue
+                # 执行到这里把异常的改为正常
+                if state == 1:
+                    self.conn.update(table=self.conn.surface[3], state=0, where=f"name='{ql_tk[0]}'")
                 js = dict()
                 # 如果青龙里面有层data就解包
-                for i in js_ql['data'] if 'data' in js_ql else js_ql:
+                for i in js_ql[1]['data'] if 'data' in js_ql[1] else js_ql[1]:
                     if len(i['command'].split('/')) == 2:
                         aa = re.findall('task .*?/([a-zA-Z0-9&=_/-]+\.\w+)', i['command'])
                     else:
@@ -71,9 +75,10 @@ class Timing(object):
                             js[aa[0]].setdefault(i['command'],
                                                  {'id': i['_id'], "name": i["name"], "isDisabled": i["isDisabled"]})
                     else:
-                        self.logger.write_log(f"跳过录入: {i['command']}")
-                with open(js_ql[5], mode='w+', encoding='utf-8') as f:
+                        self.logger.write_log(f"{ql_tk[0]}  跳过录入任务: {i['command']}")
+                with open(ql_tk[5], mode='w+', encoding='utf-8') as f:
                     json.dump(js, f, ensure_ascii=False)
+                    self.logger.write_log(f"{ql_tk[0]} 获取任务列表成功")
                 return 0
         except Exception as e:
             self.logger.write_log(f'获取列表异常: {e}')
