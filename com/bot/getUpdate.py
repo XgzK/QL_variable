@@ -50,14 +50,15 @@ class GetUpdate:
             else:
                 # 遇到其他未知状态码打印出来
                 return {"ok": False, "result": [ur.status_code]}
-        except RemoteProtocolError or ConnectTimeout or ReadTimeout as e:
-            print(e)
+        except RemoteProtocolError:
             return {"ok": True, "result": []}
-        except ConnectError as e:
-            print(e)
-            return {"ok": False, "result": [f'链接网络异常可能没有外网环境: {e}']}
+        except ConnectTimeout as e:
+            return {"ok": False, "result": [f"链接网络异常请确保服务器网络可以访问https://api.telegram.org 官方异常信息: {e}"]}
+        except ReadTimeout:
+            return {"ok": True, "result": []}
+        except ConnectError:
+            return {"ok": True, "result": []}
         except Exception as e:
-            print(e)
             return {"ok": False, "result": [e]}
 
     def send_message(self, tx, chat_id=None):

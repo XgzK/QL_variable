@@ -160,4 +160,6 @@ docker build -t xgzk/qlvariable:latest: .
         > 卡任务未知
     > 2022-11-20 19:30
         > main_core方法使用多线程,不阻塞tg机器人交互
+    > 2022-11-21 10:30
+        > 对长连接以知异常明细划分 [Errno -3] Try again 异常不会再暂停10s
 ```
