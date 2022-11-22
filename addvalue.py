@@ -43,6 +43,8 @@ if __name__ == '__main__':
     t1.start()
     # 启动定时任务
     scheduler.start()
+    timing_ck()
+    ti_ck()
     t2 = threading.Thread(target=main_core)
     t2.start()
     # 先执行清理掉之前的记录
