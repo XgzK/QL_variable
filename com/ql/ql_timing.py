@@ -31,6 +31,7 @@ class Timing(object):
                 if ck[0] == 200:
                     self.conn.update(table=self.conn.surface[3], Authorization=ck[1], state=0,
                                      where=f"name='{ql_tk[0]}'")
+                    logger.write_log(f"{ql_tk[0]} 获取tk成功")
                     break
                 # 两次获取不到删除
                 elif i == 2 or ck[0] == 403:

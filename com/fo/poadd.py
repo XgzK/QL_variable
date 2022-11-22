@@ -78,24 +78,31 @@ def to_stop(sun: int):
     :return:
     """
     try:
+        st = ""
         lis = set()
         lines = conn.selectAll(table=conn.surface[0])
-        js = read_yaml(yml['json'])
-        if sun == 0:
-            for i in js.keys():
-                if js[i] == 1:
+        value1 = conn.selectAll(table=conn.surface[3], where=f"state=0")
+        if not value1:
+            return f'没有可正常执行的青龙'
+        # 循环所有青龙
+        for ql_tk in value1:
+            js = read_yaml(ql_tk[5])
+            st += ql_tk[0]
+            if sun == 0:
+                for i in js.keys():
+                    if js[i] == 1:
+                        continue
+                    for j in range(len(js[i]) - 1):
+                        lis.add(js[i][list(js[i])[j]]['id'])
+            # 循环数据库
+            for i in lines:
+                # 跳过不在json文件的脚本
+                if not (i[2] in js):
                     continue
-                for j in range(len(js[i]) - 1):
-                    lis.add(js[i][list(js[i])[j]]['id'])
-        # 循环数据库
-        for i in lines:
-            # 跳过不在json文件的脚本
-            if not (i[2] in js):
-                continue
-            for j in js[i[2]].keys():
-                if js[i[2]][j]['isDisabled'] == 0:
-                    lis.add(js[i[2]][j]['id'])
-        ql.disable(list(lis))
-        return f'禁止任务成功禁用ID: {list(lis)}'
+                for j in js[i[2]].keys():
+                    if js[i[2]][j]['isDisabled'] == 0:
+                        lis.add(js[i[2]][j]['id'])
+            st += f": 禁止任务成功禁用ID{list(lis)}\n" if ql.disable(list(lis), ql_tk) == 0 else f": 禁止任务失败\n"
+        return st
     except Exception as e:
         return '异常信息' + str(e)

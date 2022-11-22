@@ -69,8 +69,9 @@ class Interact:
                 start = re.findall("/start", result['message']['text'])
                 # 启动青龙
                 if start:
-                    lis1 = self.timing.check_ct(1) + self.timing.clear_list()
-                    tg_mes.send_message(lis1 + "执行异常已经被删除", self.yml['Administrator']) if lis1 else ""
+                    lis1 = self.timing.check_ct(1)
+                    list2 = self.timing.clear_list()
+                    tg_mes.send_message(f"{lis1}\n{list2}\n执行异常已经被删除", self.yml['Administrator']) if lis1 else ""
         except Exception as e:
             print('私聊方法异常', e)
 
