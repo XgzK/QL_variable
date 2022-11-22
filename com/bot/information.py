@@ -6,6 +6,7 @@ import re
 from . import tg_mes
 from ..gheaders import logger
 from ..gheaders.conn import read_yaml, revise_yaml
+from ..ql.ql_timing import Timing
 from ..sql import conn
 
 
@@ -13,6 +14,7 @@ class Interact:
     def __init__(self):
         self.conn = conn
         self.yml = read_yaml()
+        self.timing =  Timing()
 
     def get_id(self, result):
         """
@@ -64,6 +66,11 @@ class Interact:
                                                        self.yml['Administrator'])
                     else:
                         return tg_mes.send_message(f"提交{puts[0]}失败", self.yml['Administrator'])
+                start = re.findall("/start", result['message']['text'])
+                # 启动青龙
+                if start:
+                    lis1 = self.timing.check_ct(1) + self.timing.clear_list()
+                    tg_mes.send_message(lis1 + "执行异常已经被删除", self.yml['Administrator']) if lis1 else ""
         except Exception as e:
             print('私聊方法异常', e)
 
