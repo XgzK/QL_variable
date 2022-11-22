@@ -3,8 +3,10 @@ from com.gheaders.conn import read_yaml
 from com.gheaders import logger
 from com.ql import ql
 from com.ql.ql_token import ql_compared, ql_write, contrast
-from com.sql import conn
+from com.sql import Sql
 
+# from com.sql import conn
+conn = Sql()
 
 def main_core():
     """
@@ -19,7 +21,7 @@ def main_core():
             logger.write_log(f'检测到脚本 {data[0]} 在黑名单中,跳过执行')
             q.task_done()
             continue
-        value1 = conn.selectAll(table=conn.surface[3], where=f"state=0")
+        value1 = conn.selectAll(table=conn.surface[3], where="state=0")
         if not value1:
             q.task_done()
             logger.write_log("没有提交青龙参数或者没有可以正常使用的青龙参数")

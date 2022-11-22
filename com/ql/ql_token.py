@@ -4,10 +4,9 @@ import re
 from com.bot import tg_mes
 from com.gheaders.conn import read_yaml
 from com.gheaders.log import LoggerClass
-# from com.ql import ql
-# from com.gheaders.conn import yml_file
 
-from com.sql import conn
+from com.sql import Sql
+conn = Sql()
 
 logger = LoggerClass('debug')
 yam = read_yaml()

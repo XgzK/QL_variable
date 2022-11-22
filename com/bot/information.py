@@ -7,7 +7,8 @@ from . import tg_mes
 from ..gheaders import logger
 from ..gheaders.conn import read_yaml, revise_yaml
 from ..ql.ql_timing import Timing
-from ..sql import conn
+from ..sql import Sql
+conn = Sql()
 
 
 class Interact:
@@ -71,7 +72,7 @@ class Interact:
                 if start:
                     lis1 = self.timing.check_ct(1)
                     list2 = self.timing.clear_list()
-                    tg_mes.send_message(f"{lis1}\n{list2}\n执行异常已经被删除", self.yml['Administrator']) if lis1 else ""
+                    tg_mes.send_message(f"{lis1}\n{list2}\n上面已经被删除,如需使用重新提交", self.yml['Administrator']) if lis1 else ""
         except Exception as e:
             print('私聊方法异常', e)
 

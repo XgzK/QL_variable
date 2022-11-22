@@ -5,8 +5,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from com.gheaders.conn import read_yaml
 from com.gheaders.log import rz
 from com.fo.poadd import ym_change, upgrade, to_stop
-from com.sql import conn
-
+from com.sql import Sql
+conn = Sql()
 app = Flask(__name__)
 app._static_folder = "./templates/"
 # 给这个网站设置密钥

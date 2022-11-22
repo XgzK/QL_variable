@@ -24,7 +24,9 @@ def ti_ck():
     定时清空数据库
     :return:
     """
-    timing.clear_list()
+    st = timing.clear_list()
+    if st:
+        tg_mes.send_message(f"{st}\n上面已经被删除,如需使用重新提交", yml["Administrator"])
 
 
 @scheduler.task('interval', id='timing_ck', days=15)
@@ -33,7 +35,9 @@ def timing_ck():
     设置每半个月获取一次新的ck,青龙作者是的是一个月保质期，不过这里设置为半个月
     :return: 0 or -1
     """
-    timing.check_ct()
+    st = timing.check_ct()
+    if st:
+        tg_mes.send_message(f"{st}\n上面已经被删除,如需使用重新提交", yml["Administrator"])
 
 
 if __name__ == '__main__':

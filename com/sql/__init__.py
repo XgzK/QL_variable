@@ -1,6 +1,5 @@
 from com.sql.va_sql import Sql
 
-conn = Sql()
 # conn = SqlIp()
 # print(conn)
 

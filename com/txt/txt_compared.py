@@ -3,8 +3,9 @@ import re
 from com import q
 # from com.fo.core import main_core
 from com.gheaders import LoggerClass
-from com.sql import conn
+from com.sql import Sql
 
+conn = Sql()
 logger = LoggerClass('debug')
 
 

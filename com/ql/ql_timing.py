@@ -8,7 +8,9 @@ import time
 
 from com.gheaders import logger
 from com.ql import ql
-from com.sql import conn
+from com.sql import Sql
+
+conn = Sql()
 
 
 class Timing(object):
@@ -62,7 +64,7 @@ class Timing(object):
                     # self.conn.update(table=self.conn.surface[3], state=1, where=f"name='{ql_tk[0]}'")
                     self.conn.delete(table=self.conn.surface[3], where=f"name='{ql_tk[0]}'")
                     os.remove(ql_tk[5]) if os.path.isfile(ql_tk[5]) else "没有文件跳过"
-                    li += ql_tk[0] + "\n"
+                    li += ql_tk[0] + "获取列表异常\n"
                     continue
                 # 执行到这里把异常的改为正常
                 if state == 1:
@@ -89,7 +91,7 @@ class Timing(object):
                 with open(ql_tk[5], mode='w+', encoding='utf-8') as f:
                     json.dump(js, f, ensure_ascii=False)
                     self.logger.write_log(f"{ql_tk[0]} 获取任务列表成功")
-                return li
+            return li
         except Exception as e:
             self.logger.write_log(f'获取列表异常: {e}')
-            return []
+            return ""
