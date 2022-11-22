@@ -18,28 +18,32 @@ def ym_change(li: list):
     """
     tf = 0  # 记录是否需要重启
     st = ''
-    if len(li) == 4:
+    # 任务是否去重复
+    if len(li) == 5:
         revise_yaml(f"deduplication: 1", yml['Record']['deduplication'])
         st += '任务不去重复'
-    elif len(li) == 5:
+    elif len(li) == 6:
         revise_yaml(f"deduplication: 0", yml['Record']['deduplication'])
         st += '任务去重复'
+    if li[0] != '':
+        revise_yaml(f'Administrator: {li[0]}', yml['Record']['Administrator'])
+        st += f' 你设置机器人的管理员是: {li[0]} '
+        tf = 1
     # 表示用户输入了自己优先执行的库了
-    if li[3] != '':
-        k = li[3].split('/')[0] + '/'
+    if li[1] != '':
+        k = li[1].split('/')[0] + '/'
         revise_yaml(f'library: {k}', yml['Record']['library'])
         st += f' 你优先执行的库是: {k}'
-    if li[4] != '':
-        revise_yaml(f'Token: {li[4]}', yml['Record']['Token'])
+    if li[2] != '':
+        revise_yaml(f'Token: {li[2]}', yml['Record']['Token'])
         st += f' 机器人密钥添加成功'
         tf = 1
-    if li[5] != '':
-        revise_yaml(f'Proxy: {li[5]}', yml['Record']['Proxy'])
+    if li[3] != '':
+        revise_yaml(f'Proxy: {li[3]}', yml['Record']['Proxy'])
         st += f'代理添加成功'
         tf = 1
-    if li[6] != '':
-        tg_url = re.findall('^(http.*)', li[6])
-        print(tg_url)
+    if li[4] != '':
+        tg_url = re.findall('^(http.*)', li[4])
         if tg_url:
             revise_yaml(f'TG_API_HOST: {tg_url[0]}', yml['Record']['TG_API_HOST'])
             st += f'反代添加成功'

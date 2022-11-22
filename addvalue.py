@@ -48,11 +48,16 @@ if __name__ == '__main__':
     # 先执行清理掉之前的记录
     ids = True
     while ids:
-        tg_ms = tg_mes.get_long_link(ti=1)
-        if tg_ms['ok'] and tg_ms['result']:
-            tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
+        yml = read_yaml()
+        if yml['Token']:
+            tg_ms = tg_mes.get_long_link(ti=1)
+            if tg_ms['ok'] and tg_ms['result']:
+                tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
+            else:
+                ids = False
         else:
-            ids = False
+            time.sleep(5)
+            logger.write_log("没有提交必要参数机器人Token,不进行下一步执行")
     while True:
         try:
             yml = read_yaml()

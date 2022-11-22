@@ -14,6 +14,8 @@ TG_API_HOST: ""
 library: ""
 # 是否去重复数据，0表示去重复，1表示不去重复，默认去重复
 deduplication: 0
+# 青龙任务列表保持路径
+json: data/
 # 日志文件
 log: log/ql.log
 # 用于去重复的任务，的数据库，不用修改

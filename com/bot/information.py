@@ -22,7 +22,7 @@ class Interact:
         :return:
         """
         try:
-            if len(self.yml['Administrator']) == 0 or int(self.yml['Administrator']) != int(
+            if len(str(self.yml['Administrator'])) == 0 or int(self.yml['Administrator']) != int(
                     result['message']['from']['id']):
                 logger.write_log(f"没有设置 Administrator 或 不是机器人主人无法交互 ID: {result['message']['from']['id']}")
                 return
