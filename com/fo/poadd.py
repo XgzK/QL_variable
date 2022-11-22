@@ -102,7 +102,7 @@ def to_stop(sun: int):
                 for j in js[i[2]].keys():
                     if js[i[2]][j]['isDisabled'] == 0:
                         lis.add(js[i[2]][j]['id'])
-            st += f": 禁止任务成功禁用ID{list(lis)}\n" if ql.disable(list(lis), ql_tk) == 0 else f": 禁止任务失败\n"
+            st += f": 禁止任务成功禁用ID{list(lis)}\n" if ql.disable(list(lis), ql_tk) == 0 else f": 禁止任务失败或没有可禁用任务\n"
         return st
     except Exception as e:
         return '异常信息' + str(e)

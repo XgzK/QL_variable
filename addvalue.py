@@ -89,7 +89,7 @@ if __name__ == '__main__':
                         elif result['message']['chat']['type'] == 'supergroup' or result['message']['chat'][
                             'type'] == 'group':
                             if 'text' in result['message']:
-                                logger.write_log(f"收到群消息内容 {result['message']['text']}")
+                                # logger.write_log(f"收到群消息内容 {result['message']['text']}")
                                 tx_revise(result['message']['text'])
                                 interact.group_id(result)
                                 if 'sender_chat' in result['message'] and yml['Send_IDs']:
@@ -102,7 +102,7 @@ if __name__ == '__main__':
                     elif 'channel_post' in result:
                         if result['channel_post']['chat']['type'] == 'channel':
                             if 'text' in result['channel_post']:
-                                logger.write_log(f"收到频道监控消息内容 {result['channel_post']['text']}")
+                                # logger.write_log(f"收到频道监控消息内容 {result['channel_post']['text']}")
                                 tx_revise(result['channel_post']['text'])
                                 if yml['Send_IDs']:
                                     interact.distribute(result['channel_post']['text'], yml['Send_IDs'])

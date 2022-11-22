@@ -10,17 +10,15 @@ if test "$1" = "1"
 then
    echo "保留配置文件更新项目"
    # 把配置文件复制出来
-   cp -r /val/conn.yml /
+   \cp -r /val/conn.yml /
+   \cp -r /val/com/sql/repeat.sqlite /
    # 删除ip下所有文件
    rm -rf /val/*
    # 移动文件
    cp -r /root/QL_variable/* /val
-   # 删除复制过来的配置文件
-   rm -rf /val/conn.yml
    # 把配置文件移动到项目目录
-   cp -r /conn.yml /val
-   # 删除复制出去的文件
-   rm -rf /conn.yml
+   \cp -r /conn.yml /val
+   \cp -r /repeat.sqlite /val/com/sql
 else
   echo "删除配置文件更新项目"
   # 删除ip下所有文件
