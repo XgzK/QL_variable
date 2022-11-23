@@ -62,4 +62,4 @@ def pare():
     """
     res = to_stop(request.values.get('sun'))
     flash(res)
-    return redirect(url_for('under'))
+    return redirect(url_for('apg.under'))
