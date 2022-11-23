@@ -171,6 +171,7 @@ docker build -t xgzk/qlvariable:latest: .
     > 添加自动删除异常青龙功能
     > 登陆页面
     > 更换容器和启动文件名称容器自动编译
+    > 修复log显示不出来问题和js和css部分404问题
 ```
 
 ```
