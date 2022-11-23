@@ -1,8 +1,8 @@
 {% extends 'module.html' %}
 {% block content %}
-    <h1>{% block title %}待分类功能{% endblock %}</h1>
+    <h1>{% block title %}菜单{% endblock %}</h1>
 {#    <a href="{{ url_for('pare') }}" class="link-info">禁用重复任务</a>#}
-    <form action="{{ url_for('pare') }}" method="get">
+    <form action="{{ url_for('apg.pare') }}" method="get">
         <label>
             <select name="sun"  class="form-select" aria-label="Default select example">
                 <option value="0" selected = "selected">禁用活动脚本</option>
@@ -11,7 +11,7 @@
         </label>
         <button type="submit" class="btn btn-info">禁用</button>
     </form>
-    <form action="/gi" method="post">
+    <form action="{{ url_for('apg.gi') }}" method="post">
         <label>
             <select name="gi"  class="form-select" aria-label="Default select example">
                 <option value="0" selected = "selected">不保留配置文件更新</option>
