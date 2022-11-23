@@ -4,9 +4,9 @@
 requests > 1
 PyYAML > 1
 Flask > 1
-aiohttp
+aiohttp >= 3.8.3
 Flask-APScheduler > 1
-pytelegrambotapi
-colorlog>=6.7.0
+colorlog >= 6.7.0
 httpx
-socksio
+socksio >= 1.0.0
+Flask-Cors
