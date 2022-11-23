@@ -63,5 +63,8 @@ def login():
                 session['username'] = username
                 session.permanent = True
                 return redirect(url_for('ind.index'))
+            else:
+                flash("输入的密码或账户不正确")
+                return redirect(url_for('ind.login'))
     else:
         return render_template('login.html')
