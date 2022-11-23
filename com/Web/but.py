@@ -40,9 +40,9 @@ def gi():
         t1 = threading.Thread(target=upgrade, args=(int(git),))
         t1.start()
     # 提示语
-    flash('10秒后刷新浏览器')
+    flash('20秒后刷新浏览器')
     # 重定向到首页
-    return redirect(url_for('under'))
+    return redirect(url_for('apg.under'))
 
 
 @apg.route('/under')

@@ -10,3 +10,4 @@ colorlog >= 6.7.0
 httpx
 socksio >= 1.0.0
 Flask-Cors
+pyinstaller

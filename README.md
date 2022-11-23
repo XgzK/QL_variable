@@ -170,6 +170,7 @@ docker build -t xgzk/qlvariable:latest: .
     > 添加提交青龙指令
     > 添加自动删除异常青龙功能
     > 登陆页面
+    > 更换容器和启动文件名称容器自动编译
 ```
 
 ```

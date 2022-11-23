@@ -52,7 +52,7 @@ def ym_change(li: list):
     if tf == 1:
         t1 = threading.Thread(target=upgrade, args=(1,))
         t1.start()
-        st += f' 正在重启请10秒后手动刷新浏览器'
+        st += f' 正在重启请20秒后手动刷新浏览器'
     return [0, st]
 
 

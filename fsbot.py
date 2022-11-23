@@ -11,7 +11,7 @@ from com.gheaders.conn import read_yaml
 from com.gheaders import logger
 from com.ql.ql_timing import Timing
 from com.txt.txt_zli import tx_revise
-from com.web import run_web
+from com.Web import run_web
 
 scheduler = APScheduler()
 interact = Interact()
