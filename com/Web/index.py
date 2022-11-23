@@ -19,7 +19,7 @@ def index():
         # 把表单传递给方法添加到conn.yml
         q = ym_change(books)
         flash(q[1])
-        return redirect(url_for('index'))
+        return redirect(url_for('ind.index'))
     else:
         yml = read_yaml()
         if yml['deduplication'] == 1:
