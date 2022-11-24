@@ -62,7 +62,7 @@ if __name__ == '__main__':
             else:
                 ids = False
         else:
-            time.sleep(5)
+            time.sleep(10)
             logger.write_log("没有提交必要参数机器人Token,不进行下一步执行")
     while True:
         try:
