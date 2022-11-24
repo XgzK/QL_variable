@@ -31,19 +31,20 @@ yam = read_yaml()
 #         return -1
 
 
-def ql_write(str12, yal, essential):
+def ql_write(str12, yal, essential, tk_id):
     """
     写入青龙任务配置文件
     :param str12: 传入内容
     :param yal: conn.yml配置文件内容
     :param essential: 添加进重复数据库的关键字
+    :param tk_id: 青龙的数量
     :return: 如果没有执行过返回0，如果执行过返回-1
     """
     try:
         # 针对某些不需要去重复的数据，如果不是exp则不去重复
         if str12[:3] == "exp":
             # 判断是否去重数据
-            if yal['deduplication'] == 0 and len(essential) > 5:
+            if tk_id == 0 and yal['deduplication'] == 0 and len(essential) > 5:
                 # 添加到数据库，如果成功添加表示之前没有运行过
                 conn.insert(table=conn.surface[1], jd_value1=f"{essential}",
                             jd_data=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))

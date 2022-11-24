@@ -38,12 +38,10 @@ def main_core():
             continue
         # 遍历青龙容器
         for j in range(len(ql_ck)):
-            if j == 0:
-                # 把执行的参数添加进去当关键字
-                judge = ql_write(data[1], jst, ctr[1])
-                # 返回-1表示有异常
-                if judge == -1:
-                    continue
+            judge = ql_write(data[1], jst, ctr[1], j)
+            # 返回-1表示有异常
+            if judge == -1:
+                break
             # 传入脚本名称返回任务ID
             ids = ql_compared(data[0], ql_ck[j])
             # 判断是否有脚本
@@ -70,5 +68,5 @@ def main_core():
                     tf = True
             else:
                 logger.write_log(f"{ql_ck[j][0]}异常问题,检测到程序非正常状态,不再执行")
-        time.sleep(60) if int(time.strftime('%H')) == 0 and tf else time.sleep(0.3)
+        time.sleep(60) if int(time.strftime('%H')) == 0 and tf else ""
         q.task_done()
