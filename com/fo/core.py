@@ -54,19 +54,18 @@ def main_core():
             if content["code"] == 200:
                 # 获取配置文件内容
                 bytex = content['data']
-                logger.write_log(f"{ql_ck[j][0]} 执行 {data[0]} 脚本成功 ID {ids[0]} 执行参数: {data[1]}")
                 # 向青龙配置文件添加活动
-                # revise = ql.configs_revise('config.sh', bytex + '\n' + judge, ql_ck[j])
+                revise = ql.configs_revise('config.sh', bytex + '\n' + judge, ql_ck[j])
                 # 表示添加活动成功
-                # if revise["code"] == 200:
+                if revise["code"] == 200:
                     # 根据脚本id，执行脚本
-                    # qid = ql.ql_run(ids, ql_ck[j])
-                    # if qid == 0:
-                    #     logger.write_log(f"{ql_ck[j][0]} 执行 {data[0]} 脚本成功 ID {ids[0]} 执行参数: {data[1]}")
-                    #     time.sleep(3)
-                    # # 把原来内容添加回去
-                    # ql.configs_revise('config.sh', bytex, ql_ck[j])
-                    # tf = True
+                    qid = ql.ql_run(ids, ql_ck[j])
+                    if qid == 0:
+                        logger.write_log(f"{ql_ck[j][0]} 执行 {data[0]} 脚本成功 ID {ids[0]} 执行参数: {data[1]}")
+                        time.sleep(3)
+                    # 把原来内容添加回去
+                    ql.configs_revise('config.sh', bytex, ql_ck[j])
+                    tf = True
             else:
                 logger.write_log(f"{ql_ck[j][0]}异常问题,检测到程序非正常状态,不再执行")
         time.sleep(60) if int(time.strftime('%H')) == 0 and tf else ""
