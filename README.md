@@ -57,7 +57,7 @@ export NOT_TYPE="lz";
 请手动构架
 第一步 下载docker目录下的UpdateAll.sh detect.sh dockerfile
 上传到Linux系统进入这三个文件的目录,如果你是arm64直接执行
-docker build -t xgzk/qlvariable:latest: .
+docker build -t xgzk/qlvariable:latest .
 就行,然后重新执行容器构建命令
 如果你不是arm64和adm64再反馈吧
 ```
@@ -176,11 +176,10 @@ docker build -t xgzk/qlvariable:latest: .
     > 修复在任务不执行而标记物添加问题
     2022-11-24 20:30
     > 修复群聊下非Administrator用户发送/id触发异常问题
+    > 零点延迟 23秒 平常延迟 3秒
 ```
 
 ```
 3.2版本 (测试版本)
-    > 机器人指令添加
-    > 解决493问题
-    > 页面重新排版
+    > 解决493问题代解决
 ```

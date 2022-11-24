@@ -68,5 +68,5 @@ def main_core():
                     tf = True
             else:
                 logger.write_log(f"{ql_ck[j][0]}异常问题,检测到程序非正常状态,不再执行")
-        time.sleep(60) if int(time.strftime('%H')) == 0 and tf else ""
+        time.sleep(20) if int(time.strftime('%H')) == 0 and tf else ""
         q.task_done()
