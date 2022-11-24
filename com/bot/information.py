@@ -93,6 +93,9 @@ class Interact:
         :param result:
         :return:
         """
+        if len(str(self.yml['Administrator'])) == 0 or int(self.yml['Administrator']) != int(
+                result['message']['from']['id']):
+            return
         if result['message']['text'] == '/id':
             tx = f"群组名称: {result['message']['chat']['title']}\n" \
                  f"群组ID: {result['message']['chat']['id']}"
