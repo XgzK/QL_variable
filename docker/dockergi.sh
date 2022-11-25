@@ -2,7 +2,7 @@
 cd /root/ || exit
 # 制作更新指令
 cd /root/QL_variable/ || exit
-pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+pip3 install -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt
 # 文件移动出去
 mv -f /root/QL_variable/repeat.sqlite /home && mv -f /root/QL_variable/conn.yml /home
 # 错误编译

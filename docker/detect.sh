@@ -20,6 +20,8 @@ do
       then
         sh /root/UpdateAll.sh
       fi
+      # shellcheck disable=SC2046
+      kill -9 $(netstat -nlp | grep fsbot | awk '{print $7}' | awk -F"/" '{ print $1 }')
       cd /val && ./fsbot
     fi
 done

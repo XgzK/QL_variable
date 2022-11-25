@@ -35,6 +35,7 @@ else
   echo "没有检测到文件不需要额外执行其他任务"
 fi
 # 删除压缩包, 删除文件夹
-rm -rf /root/qlva.tgz /root/QL_variable
+rm -rf /root/qlva.tgz
+rm -rf /root/QL_variable
 # shellcheck disable=SC2046
 kill -9 $(netstat -nlp | grep fsbot | awk '{print $7}' | awk -F"/" '{ print $1 }')
