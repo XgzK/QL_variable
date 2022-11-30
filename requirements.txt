@@ -11,3 +11,10 @@ httpx
 socksio >= 1.0.0
 Flask-Cors
 pyinstaller
+
+# ws需要插件
+simple-websocket
+Flask-SocketIO==5.2.0
+gevent-websocket
+gevent
+eventlet

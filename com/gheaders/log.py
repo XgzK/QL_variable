@@ -1,6 +1,6 @@
 import logging
 import re
-import time
+from datetime import datetime
 from sys import stdout
 
 import colorlog
@@ -8,6 +8,7 @@ import os
 
 from logging.handlers import RotatingFileHandler
 
+from com.Web.ws_send import send_message
 from com.gheaders.conn import read_yaml, read_txt, delete_first_lines
 
 yml = read_yaml()
@@ -24,7 +25,7 @@ class LoggerClass:
     }
 
     def __init__(self, level='info', fmt=None):
-        # [%(name)s] \t
+        self.level = level
         self.norm_fomatter = colorlog.ColoredFormatter(f'%(log_color)s[%(asctime)s]\t'
                                                        '%(message)s',
                                                        log_colors=self.log_colors_config)
@@ -57,7 +58,7 @@ class LoggerClass:
             self.logger.addHandler(self.norm_hdl_std)
             self.logger.addHandler(self.filelogger)
 
-    def write_log(self, message, level="info"):
+    def write_log(self, message, level=""):
         """
        #日志输出到控制台
        console=logging.StreamHandler()
@@ -69,23 +70,37 @@ class LoggerClass:
         # funcName = frame.f_code.co_name
         # lineNumber = frame.f_lineno
         # fileName = frame.f_code.co_filename
-
-        lev = level.lower()
+        lev = level.lower() if level else self.level.lower()
         # msg_format = f'{pre_format_str} [{lev}]-\t{message}'
         msg_format = f'[{lev}]-\t{message}'
         try:
             if lev == 'debug':
                 self.logger.debug(msg=msg_format)
+                send_message(f"{self.TimeStampToTime()}\t{msg_format}")
             elif lev == 'info':
                 self.logger.info(msg=msg_format)
+                send_message(f"{self.TimeStampToTime()}\t{msg_format}")
             elif lev == 'warning':
                 self.logger.warning(msg=msg_format)
+                send_message(f"{self.TimeStampToTime()}\t{msg_format}")
             elif lev == 'error':
                 self.logger.error(msg=msg_format)
+                send_message(f"{self.TimeStampToTime()}\t{msg_format}")
             else:
                 self.logger.critical(msg=msg_format)
+                send_message(f"{self.TimeStampToTime()}\t{msg_format}")
         except Exception as e:
             print("日志写入权限错误：", e)
+
+    # class LogHandleError(Exception):
+    #     print("日志级别错误")
+    #     # "日志级别错误"
+    #     pass
+
+    # def del_log():
+    #     # 当文件大于1M时，删除文件
+    #     if os.path.getsize(path) > 1242880:
+    #         os.remove(path)
 
     def get_file_sorted(self, file_path):
         """最后修改时间顺序升序排列 os.path.getmtime()->获取文件最后修改时间"""
@@ -96,10 +111,8 @@ class LoggerClass:
             dir_list = sorted(dir_list, key=lambda x: os.path.getmtime(os.path.join(file_path, x)))
             return dir_list
 
-    def TimeStampToTime(self, timestamp):
-        """格式化时间"""
-        timeStruct = time.localtime(timestamp)
-        return str(time.strftime('%Y-%m-%d', timeStruct))
+    def TimeStampToTime(self):
+        return str("[" + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S,%f]')[:-4] + "]")
 
     def handle_logs(self):
         """
@@ -132,15 +145,29 @@ def rz():
             return []
         if len(rz1) > 100:
             delete_first_lines(yml['log'], -100)
+        sun = 0
+        # 颠倒数组顺序
+        rz1.reverse()
         # 遍历所有行
         for i in rz1:
+            if sun < 100:
+                sun += 1
+            else:
+                break
             # 如果就\n则跳过
             if i == '\n':
                 continue
-            j = i.replace("[35m", "").replace("[0m", "")
+            j = i.replace("[35m", "") \
+                .replace("[0m", "") \
+                .replace("[33m", "") \
+                .replace("[36m", "") \
+                .replace("[31m", "") \
+                .replace("\n", "")
             if j:
                 st.append(j)
                 continue
+        # 把颠倒的顺序颠倒回来
+        st.reverse()
         return st
     except Exception as e:
         return [f'日志文件异常: {e}']

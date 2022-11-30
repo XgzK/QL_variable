@@ -21,7 +21,7 @@ log: log/ql.log
 # 用于去重复的任务，的数据库，不用修改
 repeat: repeat.sqlite
 # 杀死程序指令
-kill: kill -9 $(netstat -nlp | grep :5008 | awk '{print $7}' | awk -F"/" '{ print $1 }')
+kill: kill -9 $(netstat -nlp | grep fsbot | awk '{print $7}' | awk -F"/" '{ print $1 }')
 # 记录path行，这个不用管，方便以后添加和更改代码
 Record:
   Administrator: 2

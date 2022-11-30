@@ -2,6 +2,7 @@ import threading
 import time
 
 from flask_apscheduler import APScheduler
+from engineio.async_drivers import gevent
 
 from com.bot import tg_mes
 from com.bot.information import Interact
@@ -11,7 +12,7 @@ from com.gheaders.conn import read_yaml
 from com.gheaders import logger
 from com.ql.ql_timing import Timing
 from com.txt.txt_zli import tx_revise
-from com.Web import run_web
+from com.Web.htws import app, socketio
 
 scheduler = APScheduler()
 interact = Interact()
@@ -38,6 +39,14 @@ def timing_ck():
     st = timing.check_ct()
     if st:
         tg_mes.send_message(f"{st}\n上面已经被删除,如需使用重新提交", yml["Administrator"])
+
+
+def run_web():
+    socketio.run(app,
+                 debug=False,
+                 log_output=False,
+                 host='0.0.0.0',
+                 port=5008)
 
 
 if __name__ == '__main__':

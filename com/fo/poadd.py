@@ -27,9 +27,12 @@ def ym_change(li: list):
         revise_yaml(f"deduplication: 0", yml['Record']['deduplication'])
         st += '任务去重复'
     if li[0] != '':
-        revise_yaml(f'Administrator: {li[0]}', yml['Record']['Administrator'])
-        st += f' 你设置机器人的管理员是: {li[0]} '
-        tf = 1
+        if str(li[0]).isdigit():
+            revise_yaml(f'Administrator: {li[0]}', yml['Record']['Administrator'])
+            st += f' 你设置机器人的管理员是: {li[0]} '
+            tf = 1
+        else:
+            return [0, "机器人交互的ID必须是数字,如果不知道请 https://t.me/InteIJ 群回复/id@KinhRoBot 查看自己ID，所有内容请重新填写"]
     # 表示用户输入了自己优先执行的库了
     if li[1] != '':
         k = li[1].split('/')[0] + '/'

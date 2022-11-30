@@ -1,8 +1,21 @@
 {% extends 'module.html' %}
 {% block content %}
     <h1>{% block title %}日志{% endblock %}</h1>
-    <h1>3.2版本 2022-11-24 20:30</h1>
-    {% for rz in rz  %}
-        <p>{{ rz }}</p>
-    {% endfor %}
+    <h1>3.2版本 2022-12-01 03:40</h1>
+    <div id="log">
+        {% for rz in rz  %}
+            {% if rz.split("\t")[1].replace("-", "").startswith("[info]") %}
+                <p><span style="color: rgba(138,43,226,0.68); ">{{ rz }}</span></p>
+            {% elif rz.split("\t")[1].replace("-", "").startswith("[warning]") %}
+                <p><span style="color: rgba(255,204,0,0.89); ">{{ rz }}</span></p>
+            {% elif rz.split("\t")[1].replace("-", "").startswith("[debug]") %}
+                <p><span style="color: rgba(0,255,255,0.73); ">{{ rz }}</span></p>
+            {% elif rz.split("\t")[1].replace("-", "").startswith("[error]") %}
+                <p><span style="color: rgba(255,0,0,0.75); ">{{ rz }}</span></p>
+            {% else %}
+                <p>{{ rz }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <script src="{{ url_for('static', filename='js/ws.js') }}"></script>
 {% endblock %}
