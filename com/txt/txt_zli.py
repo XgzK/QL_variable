@@ -21,7 +21,7 @@ def tx_revise(tx1: str):
         if len(jdht) > 0:
             return
         # 获取链接
-        ht_tx = re.findall(r'(https://.*?isv.*?\.com/[a-zA-Z0-9&\?=_/-].*)"?', tx1)
+        ht_tx = re.findall(r'(https://.*?isv.*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tx1)
         if ht_tx:
             for i in ht_tx:
                 https_txt(i)
@@ -30,7 +30,7 @@ def tx_revise(tx1: str):
         ex_t1 = tx1.split('\n')
         ex_t2 = ''
         for i in ex_t1:
-            ex_tx = re.findall(r'(export [0-9a-zA-Z_]+="?[A-Za-z0-9&_/:\.-]{7,}"?)', i, re.S)
+            ex_tx = re.findall(r'(export [0-9a-zA-Z_]+="?[A-Za-z0-9&_/:.-]{7,}"?)', i, re.S)
             for i in ex_tx:
                 ex_t2 += i + ";"
         if len(ex_t2) > 10:

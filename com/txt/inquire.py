@@ -64,13 +64,20 @@ def turn_url(export: str):
             # 如果没有占位符无法添加
             st1 = ''
             # 如果没有s再按&分隔,填充占位
-            st = ex[1].split('&')
-            for i in range(len(st)):
-                # 如果 st1 is None 则使用 sq[0]
-                if st1:
-                    st1 = st1.replace('#' + str(i), st[i])
-                else:
-                    st1 = str(sq[0]).replace('#' + str(i), st[i])
-            return [st1]
+            if len(sq[0].split('#')) > 2:
+                st = ex[1].split('&')
+                for i in range(len(st)):
+                    # 如果 st1 is None 则使用 sq[0]
+                    if st1:
+                        st1 = st1.replace('#' + str(i), st[i])
+                    else:
+                        st1 = str(sq[0]).replace('#' + str(i), st[i])
+                return [st1]
+            else:
+                lis = []
+                st = ex[1].split('&')
+                for i in range(len(st)):
+                    lis.append(str(sq[0]).replace('#0', st[i]))
+                return lis
     else:
         return []
