@@ -107,8 +107,6 @@ if __name__ == '__main__':
                                 # logger.write_log(f"收到群消息内容 {result['message']['text']}")
                                 tx_revise(result['message']['text'])
                                 interact.group_id(result)
-                                if 'sender_chat' in result['message'] and yml['Send_IDs']:
-                                    interact.distribute(result['message']['text'], yml['Send_IDs'])
                             # 加入群聊
                             elif 'new_chat_member' in result['message']:
                                 tg_mes.banChatMember(result, '-1001565778760',
@@ -119,7 +117,5 @@ if __name__ == '__main__':
                             if 'text' in result['channel_post']:
                                 # logger.write_log(f"收到频道监控消息内容 {result['channel_post']['text']}")
                                 tx_revise(result['channel_post']['text'])
-                                if yml['Send_IDs']:
-                                    interact.distribute(result['channel_post']['text'], yml['Send_IDs'])
         except Exception as e:
             logger.write_log(f"个人开发类异常: {e}")
