@@ -96,7 +96,8 @@ if __name__ == '__main__':
                         # 私聊消息
                         if result['message']['chat']['type'] == 'private':
                             if 'text' in result['message']:
-                                logger.write_log(f"收到私聊消息内容 {result['message']['text']}")
+                                ss = result['message']['text'].replace('\n', '\t')
+                                logger.write_log(f"收到私聊消息内容 {ss}")
                                 interact.get_id(result)
                                 tx_revise(result['message']['text'])
                         # 群消息 supergroup 公开群 group 非公开群 公开后再私有还是 supergroup
