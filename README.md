@@ -185,6 +185,8 @@ docker build -t xgzk/qlvariable:latest .
     2022-12-01 14:00
     > 对 jd_wdz.js jd_wdzfd.js jd_wdz.py 进行不去重复处理
     > 修复线报jd_wdzfd.js中掺杂export问题
+    2022-12-01 16:00(不保留文件更新)
+    > 适配保护环境库脚本
 ```
 
 ```
