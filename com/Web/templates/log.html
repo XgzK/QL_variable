@@ -1,7 +1,7 @@
 {% extends 'module.html' %}
 {% block content %}
     <h1>{% block title %}日志{% endblock %}</h1>
-    <h1>3.2版本 2022-12-01 20:00 转发的修复</h1>
+    <h1>3.2版本 2022-12-01 21:00 不保留更新数据库有改动</h1>
     <div id="log">
         {% for rz in rz  %}
             {% if rz.split("\t")[1].replace("-", "").startswith("[info]") %}
