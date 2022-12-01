@@ -6,11 +6,12 @@ import os
 import re
 import time
 
-from com.gheaders import logger
+from com.gheaders.log import LoggerClass
 from com.ql import ql
 from com.sql import Sql
 
 conn = Sql()
+logger = LoggerClass('debug')
 
 
 class Timing(object):

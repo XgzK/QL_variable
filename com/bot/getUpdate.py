@@ -5,9 +5,9 @@
 import httpx
 from httpx import RemoteProtocolError, ConnectTimeout, ReadTimeout, ConnectError
 
-from com.gheaders import logger
+from com.gheaders.log import LoggerClass
 from com.gheaders.conn import read_yaml
-
+logger = LoggerClass('debug')
 
 class GetUpdate:
     def __init__(self):

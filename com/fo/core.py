@@ -2,13 +2,14 @@ import time
 
 from com import q
 from com.gheaders.conn import read_yaml
-from com.gheaders import logger
+from com.gheaders.log import LoggerClass
 from com.ql import ql
 from com.ql.ql_token import ql_compared, ql_write, contrast
 from com.sql import Sql
 
 # from com.sql import conn
 conn = Sql()
+logger = LoggerClass()
 
 
 def main_core():

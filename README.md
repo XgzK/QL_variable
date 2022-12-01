@@ -182,6 +182,9 @@ docker build -t xgzk/qlvariable:latest .
     > 修复一些BUG
     > 检测用户提交的是否为ID
     > 更新数据库内容
+    2022-12-01 14:00
+    > 对 jd_wdz.js jd_wdzfd.js jd_wdz.py 进行不去重复处理
+    > 修复线报jd_wdzfd.js中掺杂export问题
 ```
 
 ```

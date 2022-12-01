@@ -1,11 +1,11 @@
 import re
 
-from com.gheaders import LoggerClass
+from com.gheaders.log import LoggerClass
 from com.txt.deal_with import https_txt
 from com.txt.inquire import turn_url
 from com.txt.txt_compared import tx_compared
 
-logger = LoggerClass('debug')
+logger = LoggerClass()
 
 
 def tx_revise(tx1: str):
@@ -30,9 +30,12 @@ def tx_revise(tx1: str):
         ex_t1 = tx1.split('\n')
         ex_t2 = ''
         for i in ex_t1:
-            ex_tx = re.findall(r'(export [0-9a-zA-Z_]+="?[A-Za-z0-9&_/:.-]{7,}"?)', i, re.S)
-            for i in ex_tx:
-                ex_t2 += i + ";"
+            ex_tx = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.-]{5,})"?', i, re.S)
+            # 如果为空跳过
+            if not ex_tx:
+                continue
+            for j in ex_tx:
+                ex_t2 += j[0][0] + '="' + str(j[0][1]).replace("export", '') + '";'
         if len(ex_t2) > 10:
             ur = turn_url(ex_t2)
             if ur:

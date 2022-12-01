@@ -3,13 +3,14 @@
 """
 import re
 
-from com.gheaders import LoggerClass
+from com.gheaders.log import LoggerClass
 from com.sql import Sql
 from com.txt.inquire import fuzzy_query
 from com.txt.txt_compared import tx_compared
 
 logger = LoggerClass('debug')
 conn = Sql()
+
 
 def export_txt(extx):
     """
@@ -78,4 +79,3 @@ def https_txt(http):
     except Exception as e:
         logger.write_log("https_txt,异常问题: " + str(e))
         return -1
-

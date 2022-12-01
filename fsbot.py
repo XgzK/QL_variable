@@ -9,7 +9,7 @@ from com.bot.information import Interact
 from com.fo.core import main_core
 from com.gheaders.Inspector import Check
 from com.gheaders.conn import read_yaml
-from com.gheaders import logger
+from com.gheaders.log import LoggerClass
 from com.ql.ql_timing import Timing
 from com.txt.txt_zli import tx_revise
 from com.Web.htws import app, socketio
@@ -17,7 +17,7 @@ from com.Web.htws import app, socketio
 scheduler = APScheduler()
 interact = Interact()
 timing = Timing()
-
+logger = LoggerClass('debug')
 
 @scheduler.task('interval', id='ti_ck', hours=12)
 def ti_ck():

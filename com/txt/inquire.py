@@ -1,6 +1,6 @@
 import re
 
-from com.gheaders import LoggerClass
+from com.gheaders.log import LoggerClass
 from com.sql import Sql
 
 conn = Sql()
