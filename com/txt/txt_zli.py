@@ -31,11 +31,9 @@ def tx_revise(tx1: str):
         ex_t2 = ''
         for i in ex_t1:
             ex_tx = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.-]{5,})"?', i, re.S)
-            # 如果为空跳过
-            if not ex_tx:
-                continue
+
             for j in ex_tx:
-                ex_t2 += j[0][0] + '="' + str(j[0][1]).replace("export", '') + '";'
+                ex_t2 += j[0] + '="' + str(j[1]).replace("export", '') + '";'
         if len(ex_t2) > 10:
             ur = turn_url(ex_t2)
             if ur:

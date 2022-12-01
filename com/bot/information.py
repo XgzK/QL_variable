@@ -4,18 +4,20 @@
 import re
 
 from . import tg_mes
-from ..gheaders import logger
+from ..gheaders.log import LoggerClass
 from ..gheaders.conn import read_yaml, revise_yaml
 from ..ql.ql_timing import Timing
 from ..sql import Sql
+
 conn = Sql()
+logger = LoggerClass('debug')
 
 
 class Interact:
     def __init__(self):
         self.conn = conn
         self.yml = read_yaml()
-        self.timing =  Timing()
+        self.timing = Timing()
 
     def get_id(self, result):
         """
@@ -25,7 +27,8 @@ class Interact:
         try:
             if len(str(self.yml['Administrator'])) == 0 or int(self.yml['Administrator']) != int(
                     result['message']['from']['id']):
-                logger.write_log(f"没有设置 Administrator 或 不是机器人主人无法交互 ID: {result['message']['from']['id']}")
+                logger.write_log(
+                    f"没有设置 Administrator 或 不是机器人主人无法交互 ID: {result['message']['from']['id']}")
                 return
             # forward_from_chat 只有转发的消息才携带
             if 'forward_from_chat' in result['message']:
@@ -42,7 +45,7 @@ class Interact:
                 idfor = re.findall('/forward ([0-9-]+)', result['message']['text'])
                 if idfor:
                     return revise_yaml(f'Send_IDs: {idfor[0]}', self.yml['Record']['Send_IDs'])
-                add_js = re.findall('/prohibit ([0-9a-zA-Z_\.]+)', result['message']['text'])
+                add_js = re.findall('/prohibit ([0-9a-zA-Z_.]+)', result['message']['text'])
                 if add_js:
                     return revise_yaml(f'prohibit: {read_yaml()["prohibit"] + add_js}', self.yml['Record']['prohibit'])
                 quit = re.findall('/quit (.*)', result['message']['text'])
@@ -72,7 +75,8 @@ class Interact:
                 if start:
                     lis1 = self.timing.check_ct(1)
                     list2 = self.timing.clear_list()
-                    tg_mes.send_message(f"{lis1}\n{list2}\n上面已经被删除,如需使用重新提交", self.yml['Administrator']) if lis1 else ""
+                    tg_mes.send_message(f"{lis1}\n{list2}\n上面已经被删除,如需使用重新提交",
+                                        self.yml['Administrator']) if lis1 else ""
         except Exception as e:
             print('私聊方法异常', e)
 

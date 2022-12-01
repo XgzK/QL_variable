@@ -20,7 +20,7 @@ docker run -dit \
   xgzk/qlvariable:latest
 ```
 ```http
-http://IP:5008/ 
+http://IP:5008/
 ```
 需要 定时任务 配置文件 权限
 容器里面没有代码需要等待1-4分钟让程序跑起来

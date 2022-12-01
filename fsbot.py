@@ -19,6 +19,7 @@ interact = Interact()
 timing = Timing()
 logger = LoggerClass('debug')
 
+
 @scheduler.task('interval', id='ti_ck', hours=12)
 def ti_ck():
     """
