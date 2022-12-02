@@ -1,16 +1,17 @@
 {% extends 'module.html' %}
 {% block content %}
     <h1>{% block title %}日志{% endblock %}</h1>
-    <h1>3.2版本 2022-12-01 21:00 不保留更新数据库有改动</h1>
+    <h1>3.2版本 2022-12-02 20:00</h1>
     <div id="log">
         {% for rz in rz  %}
-            {% if rz.split("\t")[1].replace("-", "").startswith("[info]") %}
+            <p>{{ rz }}</p>
+            {% if "[info]" in rz %}
                 <p><span style="color: rgba(138,43,226,0.68); ">{{ rz }}</span></p>
-            {% elif rz.split("\t")[1].replace("-", "").startswith("[warning]") %}
+            {% elif "[warning]" in rz %}
                 <p><span style="color: rgba(255,204,0,0.89); ">{{ rz }}</span></p>
-            {% elif rz.split("\t")[1].replace("-", "").startswith("[debug]") %}
+            {% elif "[debug]" in rz %}
                 <p><span style="color: rgba(0,255,255,0.73); ">{{ rz }}</span></p>
-            {% elif rz.split("\t")[1].replace("-", "").startswith("[error]") %}
+            {% elif "[error]" in rz %}
                 <p><span style="color: rgba(255,0,0,0.75); ">{{ rz }}</span></p>
             {% else %}
                 <p>{{ rz }}</p>

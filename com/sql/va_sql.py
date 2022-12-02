@@ -180,3 +180,17 @@ class Sql:
             self.conn.rollback()
             return str(e)
         return data
+
+    def exe_sql(self, sql: str) -> list:
+        """
+        执行多个sql,用于更新表格数据
+        :param sql: 读取sql文件后的
+        :return: 0 or -1
+        """
+        try:
+            self.conn.executescript(sql)
+            return [0]
+        except Exception as e:
+            # 发生错误时回滚
+            self.conn.rollback()
+            return [-1]
