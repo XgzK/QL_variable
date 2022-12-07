@@ -51,13 +51,13 @@ def turn_url(export: str):
     sq = conn.selectTopone(table=conn.surface[2], where=f"{aa}")
     # 返回的有数组 并且参数1有值参数2没有
     if sq and sq[1] and sq[2] is None:
-        ex = export.split('=')
+        ex_tx = export.split('=')
         # 把值和活动隔开
         # 如果 export jd_cjhy_sevenDay_ids 就按&分隔
         if ex[0][-1] == 's':
             stli = []
             # 转换多个链接,全部当成@0位,因为有的有@分隔,统一把@替换成&
-            st = ex[1].replace("@", '&').split('&')
+            st = ex_tx[1].replace("@", '&').split('&')
             for i in range(len(st)):
                 stli.append(str(sq[0]).replace('#' + str(i), st[i]))
             return stli
@@ -66,7 +66,7 @@ def turn_url(export: str):
             st1 = ''
             # 如果没有s再按&分隔,填充占位
             if len(sq[0].split('#')) > 2:
-                st = ex[1].split('&')
+                st = ex_tx[1].split('&')
                 for i in range(len(st)):
                     # 如果 st1 is None 则使用 sq[0]
                     if st1:
@@ -76,9 +76,9 @@ def turn_url(export: str):
                 return [st1]
             else:
                 lis = []
-                st = ex[1].split('&')
+                st = ex_tx[1].split('&')
                 for i in range(len(st)):
-                    lis.append(str(sq[0]).replace('#0', re.findall('"(\w+)"', st[i])[-1]))
+                    lis.append(str(sq[0]).replace('#0', re.findall('(\w+)', st[i])[-1]))
                 return lis
     elif sq and sq[1] and sq[2]:
         try:

@@ -47,7 +47,6 @@ class WhileLong:
         """
         while True:
             try:
-                yml = read_yaml()
                 tg_ms = tg_mes.get_long_link()
                 # 消息不为空和没有异常
                 if not tg_ms['ok']:
@@ -67,8 +66,8 @@ class WhileLong:
                             # 私聊消息
                             if result['message']['chat']['type'] == 'private':
                                 if 'text' in result['message']:
-                                    ss = result['message']['text'].replace('\n', '\t')
-                                    self.logger.write_log(f"收到私聊消息内容 {ss}")
+                                    self.logger.write_log(
+                                        "收到私聊消息内容 " + str(result['message']['text']).replace('\n', '\t'))
                                     self.interact.get_id(result)
                                     tx_revise(result['message']['text'])
                             # 群消息 supergroup 公开群 group 非公开群 公开后再私有还是 supergroup

@@ -34,7 +34,7 @@ class GetUpdate:
         """
         try:
             client = httpx.Client(proxies=self.proxies, headers=self.headers)
-            ur = client.get(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout={ti}",
+            ur = client.get(f"{self.url}/getUpdates?offset={self.data['offset']}&timeout={ti}&allowed_updates=['callback_query']",
                             timeout=ti)
             ur.close()
             # 如果是200表示收到消息
@@ -122,11 +122,11 @@ class GetUpdate:
                 self.send_message(
                     f"{result['message']['new_chat_member']['first_name'] if 'first_name' in result['message']['new_chat_member'] else ''} {result['message']['new_chat_member']['last_name'] if 'last_name' in result['message']['new_chat_member'] else ''} 不在群组开放期间加入,特请出群聊",
                     chat_id)
-            else:
-                self.send_message(
-                    f"{result['message']['new_chat_member']['first_name'] if 'first_name' in result['message']['new_chat_member'] else ''} {result['message']['new_chat_member']['last_name'] if 'last_name' in result['message']['new_chat_member'] else ''}\n"
-                    f"{'ID是: ' + str(result['message']['from']['id'])}\n"
-                    f"退出群聊失败",
-                    chat_id)
+            # else:
+            #     self.send_message(
+            #         f"{result['message']['new_chat_member']['first_name'] if 'first_name' in result['message']['new_chat_member'] else ''} {result['message']['new_chat_member']['last_name'] if 'last_name' in result['message']['new_chat_member'] else ''}\n"
+            #         f"{'ID是: ' + str(result['message']['from']['id'])}\n"
+            #         f"退出群聊失败",
+            #         chat_id)
         except:
             pass
