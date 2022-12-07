@@ -11,6 +11,26 @@ logger = LoggerClass()
 interact = Interact()
 
 
+def forward(ex_t2, yml):
+    """
+    简单的转发和执行
+    :param ex_t2:
+    :param yml:
+    :return:
+    """
+    ur = turn_url(ex_t2)
+    if ur:
+        for j in ur:
+            if yml['Send_IDs']:
+                interact.distribute(ur, yml['Send_IDs'])
+            https_txt(j)
+    else:
+        if yml['Send_IDs']:
+            interact.distribute(ex_t2, yml['Send_IDs'])
+        ex_t2 += 'export NOT_TYPE="no";'
+        tx_compared(ex_t2)
+
+
 def tx_revise(tx1: str):
     """
     用与修改文本,只保留关键字到文本
@@ -42,40 +62,19 @@ def tx_revise(tx1: str):
             if not ex_tx:
                 continue
             # 判断是不是同一任务的变量
-            if not (ex_tx[0][0] in rep):
+            if not (ex_t2 in rep):
                 rep.append(ex_tx[0][0])
                 ex_t2 += ex_tx[0][0] + '="' + str(ex_tx[0][1]) + '";'
             # 如果ex_t2变量的值长度大于4执行，防止为空
-            elif len(ex_t2) > 4:
-                ur = turn_url(ex_t2)
-                if ur:
-                    for j in ur:
-                        if yml['Send_IDs']:
-                            interact.distribute(ur, yml['Send_IDs'])
-                        https_txt(j)
-                else:
-                    if yml['Send_IDs']:
-                        interact.distribute(ex_t2, yml['Send_IDs'])
-                    ex_t2 += 'export NOT_TYPE="no";'
-                    tx_compared(ex_t2)
+            elif ex_t2:
+                forward(ex_t2, yml)
                 # 清空数据库和清空
                 rep.clear()
                 ex_t2 = ex_tx[0][0] + '="' + str(ex_tx[0][1]) + '";'
             else:
                 logger.write_log("长度不符合规范跳过")
-        # ----------------------------
-
+        # 执行后面结尾的内容
         if len(ex_t2) > 4:
-            ur = turn_url(ex_t2)
-            if ur:
-                for j in ur:
-                    if yml['Send_IDs']:
-                        interact.distribute(ur, yml['Send_IDs'])
-                    https_txt(j)
-            else:
-                if yml['Send_IDs']:
-                    interact.distribute(ex_t2, yml['Send_IDs'])
-                ex_t2 += 'export NOT_TYPE="no";'
-                tx_compared(ex_t2)
+            forward(ex_t2, yml)
     except Exception as e:
         logger.write_log(f"分类型异常问题: {e}")
