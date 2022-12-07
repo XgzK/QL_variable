@@ -35,17 +35,43 @@ def tx_revise(tx1: str):
         # 对多个参数支持
         ex_t1 = tx1.split('\n')
         ex_t2 = ''
+        rep = []
         for i in ex_t1:
             ex_tx = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.-]{5,})"?', i, re.S)
-            for j in ex_tx:
-                ex_t2 += j[0] + '="' + str(j[1]) + '";'
-        if len(ex_t2) > 10:
-            ur = turn_url(ex_t2)
-            if ur:
-                for i in ur:
+            # 如果获取数组为空跳过
+            if not ex_tx:
+                continue
+            # 判断是不是同一任务的变量
+            if not (ex_tx[0][0] in rep):
+                rep.append(ex_tx[0][0])
+                ex_t2 += ex_tx[0][0] + '="' + str(ex_tx[0][1]) + '";'
+            # 如果ex_t2变量的值长度大于4执行，防止为空
+            elif len(ex_t2) > 4:
+                ur = turn_url(ex_t2)
+                if ur:
+                    for j in ur:
+                        if yml['Send_IDs']:
+                            interact.distribute(ur, yml['Send_IDs'])
+                        https_txt(j)
+                else:
                     if yml['Send_IDs']:
                         interact.distribute(ex_t2, yml['Send_IDs'])
-                    https_txt(i)
+                    ex_t2 += 'export NOT_TYPE="no";'
+                    tx_compared(ex_t2)
+                # 清空数据库和清空
+                rep.clear()
+                ex_t2 = ex_tx[0][0] + '="' + str(ex_tx[0][1]) + '";'
+            else:
+                logger.write_log("长度不符合规范跳过")
+        # ----------------------------
+
+        if len(ex_t2) > 4:
+            ur = turn_url(ex_t2)
+            if ur:
+                for j in ur:
+                    if yml['Send_IDs']:
+                        interact.distribute(ur, yml['Send_IDs'])
+                    https_txt(j)
             else:
                 if yml['Send_IDs']:
                     interact.distribute(ex_t2, yml['Send_IDs'])
