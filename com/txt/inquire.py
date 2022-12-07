@@ -45,9 +45,10 @@ def turn_url(export: str):
     :param export: 活动参数
     :return:
     """
-    export = export.replace('"', '').replace(';', '')
     ex = re.findall('(export \w+)=', export)
-    sq = conn.selectTopone(table=conn.surface[2], where=f"export1='{ex[0]}'")
+    aa = ''.join(f"{'{0}{1}' + str(ex[i]) + '{1} or ' if i != len(ex) - 1 else '{0}{1}' + str(ex[i]) + '{1}'} " for i in
+                 range(len(ex))).format('export1=', '"')
+    sq = conn.selectTopone(table=conn.surface[2], where=f"{aa}")
     # 返回的有数组 并且参数1有值参数2没有
     if sq and sq[1] and sq[2] is None:
         ex = export.split('=')
@@ -77,7 +78,13 @@ def turn_url(export: str):
                 lis = []
                 st = ex[1].split('&')
                 for i in range(len(st)):
-                    lis.append(str(sq[0]).replace('#0', st[i]))
+                    lis.append(str(sq[0]).replace('#0', re.findall('(\w+)', st[i])[-1]))
                 return lis
+    elif sq and sq[1] and sq[2]:
+        try:
+            return [str(sq[0]).replace('#0', re.findall('activityUrl="([A-Za-z0-9&_/:.-]{5,})"', export)[-1])
+                    .replace('#1', re.findall('activityId="(\w+)"', export)[-1])]
+        except:
+            return []
     else:
         return []

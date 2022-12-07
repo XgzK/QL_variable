@@ -30,7 +30,10 @@ class WhileLong:
                 if tg_ms['ok'] and tg_ms['result']:
                     tg_mes.data['offset'] = tg_ms["result"][len(tg_ms["result"]) - 1]['update_id'] + 1
                 else:
-                    self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n不定期重启项目可以获取最新的线报支持", yml['Administrator'])
+                    self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
+                                             "不定期重启项目可以获取最新的线报支持\n"
+                                             "未经作者允许随意转发者，本项目将从github删库\n"
+                                             "来自开发者的善意警告!!!!!!", yml['Administrator'])
                     return
             else:
                 self.logger.write_log("没有提交必要参数机器人Token或自己ID,不进行下一步执行\t如果不知道怎么获取请 https://t.me/InteIJ 群回复 "

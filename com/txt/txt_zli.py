@@ -10,6 +10,7 @@ from com.txt.txt_compared import tx_compared
 logger = LoggerClass()
 interact = Interact()
 
+
 def tx_revise(tx1: str):
     """
     用与修改文本,只保留关键字到文本
@@ -37,7 +38,7 @@ def tx_revise(tx1: str):
         for i in ex_t1:
             ex_tx = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.-]{5,})"?', i, re.S)
             for j in ex_tx:
-                ex_t2 += j[0] + '="' + str(j[1]).replace("export", '') + '";'
+                ex_t2 += j[0] + '="' + str(j[1]) + '";'
         if len(ex_t2) > 10:
             ur = turn_url(ex_t2)
             if ur:
