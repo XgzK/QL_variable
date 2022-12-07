@@ -112,7 +112,7 @@ class LoggerClass:
             return dir_list
 
     def TimeStampToTime(self):
-        return str("[" + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S,%f]')[:-4] + "]")
+        return str("[" + datetime.now().strftime('%Y-%m-%d %H:%M:%S,%f]')[:-4] + "]")
 
     def handle_logs(self):
         """
