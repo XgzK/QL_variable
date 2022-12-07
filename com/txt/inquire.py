@@ -78,7 +78,7 @@ def turn_url(export: str):
                 lis = []
                 st = ex[1].split('&')
                 for i in range(len(st)):
-                    lis.append(str(sq[0]).replace('#0', re.findall('(\w+)', st[i])[-1]))
+                    lis.append(str(sq[0]).replace('#0', re.findall('"(\w+)"', st[i])[-1]))
                 return lis
     elif sq and sq[1] and sq[2]:
         try:

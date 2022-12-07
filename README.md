@@ -192,6 +192,9 @@ docker build -t xgzk/qlvariable:latest .
     > 修复日志500错误
     2022-12-07 18:30
     > 支持微定制转换URL
+    2022-12-08 00:30
+    > 修复微定制转换URL
+    
 ```
 
 ```
