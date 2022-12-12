@@ -55,11 +55,10 @@ export NOT_TYPE="lz";
 因为不能测试adm64外的版本不清楚其他版本是否正常
 如果拉取三次容器都显示相同错误的
 请手动构架
-第一步 下载docker目录下的UpdateAll.sh detect.sh dockerfile
-上传到Linux系统进入这三个文件的目录,如果你是arm64直接执行
+第一步 下载docker目录下的所有文件
+全部上传到Linux系统进入上传文件的目录执行
 docker build -t xgzk/qlvariable:latest .
 就行,然后重新执行容器构建命令
-如果你不是arm64和adm64再反馈吧
 ```
 
 ## 更新说明
