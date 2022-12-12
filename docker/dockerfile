@@ -1,5 +1,5 @@
-FROM pipelinecomponents/pylint
+FROM python:3.7.15-alpine3.17
 COPY . /root
-RUN apk add --update binutils openssh-client && pip3 install -r /root/requirements.txt
+RUN apk add --update binutils openssh-client && pip3 install -i https://mirrors.aliyun.com/pypi/simple/ -r /root/requirements.txt
 WORKDIR /val
 ENTRYPOINT ["sh", "/root/detect.sh"]
