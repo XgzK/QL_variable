@@ -200,6 +200,10 @@ docker build -t xgzk/qlvariable:latest .
     2022-12-10 02:00
     > 重启后保留1200秒之前的线报
 ```
+### 插件
+```text
+添加解析 店铺抽豆 解析插件 未对接 com.Plugin.lottery
+```
 
 ```
 3.2版本 (测试版本)
