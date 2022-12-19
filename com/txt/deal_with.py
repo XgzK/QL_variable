@@ -67,7 +67,7 @@ def https_txt(http):
                 else:
                     if ink[3 + sun] is None:
                         st2 = st2.replace('";', '')
-                        st2 += '&' + str(i) + '";'
+                        st2 += ink[9] + str(i) + '";'
                     else:
                         st2 += ink[3 + sun] + "=" + f'"{i}";'
                         sun += 1
