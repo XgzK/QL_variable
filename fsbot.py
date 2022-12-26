@@ -9,7 +9,7 @@ from com.bot.whiles import WhileLong
 from com.fo.core import main_core
 from com.gheaders.Inspector import Check
 from com.gheaders.conn import read_yaml
-from com.gheaders.log import LoggerClass
+from com.gheaders.log import LoggerClass, rz
 from com.initialization import Implement
 from com.ql.ql_timing import Timing
 from com.Web.htws import app, socketio
@@ -29,6 +29,7 @@ def ti_ck():
     定时清空数据库
     :return:
     """
+    rz()
     st = timing.clear_list()
     if st:
         tg_mes.send_message(f"{st}\n上面已经被删除,如需使用重新提交", yml["Administrator"])
@@ -65,5 +66,5 @@ if __name__ == '__main__':
     t2 = threading.Thread(target=main_core)
     t2.start()
     whileLong.old_message()
-    logger.write_log("云端数据库同步成功") if implement.sql() == 0 else logger.write_log("云端数据库同步失败")
+    # logger.write_log("云端数据库同步成功") if implement.sql() == 0 else logger.write_log("云端数据库同步失败")
     whileLong.new_message()
