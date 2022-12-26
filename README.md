@@ -199,6 +199,12 @@ docker build -t xgzk/qlvariable:latest .
     > 修复sh类型链接跳过问题
     2022-12-10 02:00
     > 重启后保留1200秒之前的线报
+    2022-12-20 00:40
+    > 修补数据库和转换链接和船长脚本店铺抽豆
+    > 转发线报的保留更新非转发的重启就行
+    2022-12-20 21:21
+    > 对接 jd_convert_json.py 店铺签到 https://github.com/XgzK/JD_annex/blob/master/jd_convert_json.py
+    
 ```
 ### 插件
 ```text

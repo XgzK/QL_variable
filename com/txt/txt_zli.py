@@ -81,6 +81,10 @@ def tx_revise(tx1: str):
             jdsh = re.findall(r'(https://shop\.m\.jd\.com/[a-zA-Z0-9&?=_/-].*)"?', i, re.S)
             if jdsh:
                 https_txt(jdsh[0])
+            # 执行域名是h5 那一块的内容
+            jdh5 = re.findall(r'(https://h5\.m\.jd\.com/babelDiy/Zeus.*?token=\w+)"?', i, re.S)
+            if jdh5:
+                https_txt(jdh5[0])
         # 执行后面结尾的内容
         if len(ex_t2) > 4:
             forward(ex_t2, yml)
