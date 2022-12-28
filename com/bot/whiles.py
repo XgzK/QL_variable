@@ -29,14 +29,25 @@ class WhileLong:
                 tg_ms = self.tg_mes.get_long_link(ti=1)
                 if tg_ms['ok'] and tg_ms['result']:
                     for result in tg_ms["result"]:
-                        if result['message']['date'] < int(time.time()) - 1200:
-                            tg_mes.data['offset'] = result['update_id'] + 1
-                        else:
-                            self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
-                                                     "不定期重启项目可以获取最新的线报支持\n"
-                                                     "未经作者允许随意转发者，本项目将从github删库\n"
-                                                     "来自开发者的善意警告!!!!!!", yml['Administrator'])
-                            return
+                        print(result)
+                        if 'message' in result:
+                            if result['message']['date'] < int(time.time()) - 1200:
+                                tg_mes.data['offset'] = result['update_id'] + 1
+                            else:
+                                self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
+                                                         "不定期重启项目可以获取最新的线报支持\n"
+                                                         "未经作者允许随意转发者，本项目将从github删库\n"
+                                                         "来自开发者的善意警告!!!!!!", yml['Administrator'])
+                                return
+                        elif "channel_post" in result:
+                            if result['channel_post']['date'] < int(time.time()) - 1200:
+                                tg_mes.data['offset'] = result['update_id'] + 1
+                            else:
+                                self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
+                                                         "不定期重启项目可以获取最新的线报支持\n"
+                                                         "未经作者允许随意转发者，本项目将从github删库\n"
+                                                         "来自开发者的善意警告!!!!!!", yml['Administrator'])
+                                return
                 else:
                     self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
                                              "不定期重启项目可以获取最新的线报支持\n"
