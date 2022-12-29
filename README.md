@@ -204,7 +204,10 @@ docker build -t xgzk/qlvariable:latest .
     > 转发线报的保留更新非转发的重启就行
     2022-12-20 21:21
     > 对接 jd_convert_json.py 店铺签到 https://github.com/XgzK/JD_annex/blob/master/jd_convert_json.py
-    
+    > 12个小时自动清理一次日志
+    > 2022-12-30 03:51
+    > 更换容器使用 python10 + nodejs
+    > 使用 nuitka3 编译加密
 ```
 ### 插件
 ```text

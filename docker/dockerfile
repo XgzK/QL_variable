@@ -1,5 +1,5 @@
-FROM python:3.7.15-alpine3.17
+FROM python:3.10.9-alpine3.17
 COPY . /root
-RUN apk add --update binutils openssh-client && pip3 install -i https://mirrors.aliyun.com/pypi/simple/ -r /root/requirements.txt
+RUN pip install -r /root/requirements.txt && apk add --no-cache gcc g++ ccache nodejs && pip install ordered-set && pip install Nuitka
 WORKDIR /val
 ENTRYPOINT ["sh", "/root/detect.sh"]

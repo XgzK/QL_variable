@@ -1,6 +1,4 @@
 #!/bin/bash
-# shellcheck disable=SC2034
-get_arch='arch'
 # 容器保活
 # 判断文件是否存在不存在则拉取
 if [ ! -f "/val/repeat.sqlite" ]; then
@@ -10,39 +8,18 @@ if [ ! -f "/val/repeat.sqlite" ]; then
 fi
 while true
 do
-  if [[ $get_arch =~ "x86_64" ]]; then
-      # 停止返回0 正常返回1
-      # shellcheck disable=SC2009
-      # shellcheck disable=SC2126
-      stillRunning=$(ps -ef |grep fsbot |grep -v "grep" |wc -l)
-      if [ "$stillRunning" ]; then
-        echo 程序死亡开始执行
-        # 判断文件是否存在不存在则拉取
-        if [ ! -f "/val/fsbot" ]; then
-          sh /root/UpdateAll.sh
-        fi
-        # shellcheck disable=SC2046
-        kill -9 $(netstat -nlp | grep fsbot | awk '{print $7}' | awk -F"/" '{ print $1 }')
-        cd /val && ./fsbot
-      fi
-  else
     # 停止返回0 正常返回1
-        # shellcheck disable=SC2009
-        # shellcheck disable=SC2126
-        stillRunning=$(ps -ef |grep fsbot.py |grep -v "grep" |wc -l)
-        if [ "$stillRunning" ]; then
-            echo 程序死亡开始执行
-            # 判断文件是否存在不存在则拉取
-            if [ ! -f "/val/fsbot.py" ]
-            then
-              sh /root/UpdateAll.sh
-            fi
-            # shellcheck disable=SC2046
-            # shellcheck disable=SC2126
-            # shellcheck disable=SC2009
-            stillRunning=$(ps -ef |grep fsbot.py |grep -v "grep" |wc -l)
-            cd /val && python3 fsbot.py
-        fi
-  fi
-
+    # shellcheck disable=SC2009
+    # shellcheck disable=SC2126
+    stillRunning=$(ps -ef |grep fsbot |grep -v "grep" |wc -l)
+    if [ "$stillRunning" ]; then
+      echo 程序死亡开始执行
+      # 判断文件是否存在不存在则拉取
+      if [ ! -f "/val/repeat.sqlite" ]; then
+          sh /root/UpdateAll.sh
+      fi
+      # shellcheck disable=SC2046
+      kill -9 $(netstat -nlp | grep fsbot | awk '{print $7}' | awk -F"/" '{ print $1 }')
+      cd /val && ./fsbot
+    fi
 done

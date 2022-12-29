@@ -1,7 +1,6 @@
 import threading
 
 from flask_apscheduler import APScheduler
-from engineio.async_drivers import gevent
 
 from com.bot import tg_mes
 from com.bot.information import Interact
