@@ -29,9 +29,9 @@ def befores():
             if not new_user:
                 flash("没有检测到账户存在请设置密码和账户")
             return redirect(url_for('ind.login'))
-    else:
-        # 发生未知事件
-        return redirect(url_for('ind.login'))
+    # else:
+    #     # 发生未知事件
+    #     return redirect(url_for('ind.login'))
 
 
 @socketio.on('connect')

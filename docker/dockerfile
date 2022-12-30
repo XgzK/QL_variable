@@ -1,5 +1,5 @@
 FROM python:3.10.9-alpine3.17
 COPY . /root
-RUN pip install -r /root/requirements.txt && apk add --no-cache gcc g++ ccache nodejs && pip install ordered-set && pip install Nuitka
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk add gcc && apk add g++ ccache nodejs &&  pip install -i https://mirrors.aliyun.com/pypi/simple/ -r /root/requirements.txt
 WORKDIR /val
 ENTRYPOINT ["sh", "/root/detect.sh"]

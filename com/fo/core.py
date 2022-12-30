@@ -20,8 +20,6 @@ def main_core():
     """
     while True:
         data = q.get()
-        print('------------------------')
-        print(data)
         jst = read_yaml()
         tf = False
         if data[0] in jst['prohibit']:

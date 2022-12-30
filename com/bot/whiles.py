@@ -29,7 +29,6 @@ class WhileLong:
                 tg_ms = self.tg_mes.get_long_link(ti=1)
                 if tg_ms['ok'] and tg_ms['result']:
                     for result in tg_ms["result"]:
-                        print(result)
                         if 'message' in result:
                             if result['message']['date'] < int(time.time()) - 1200:
                                 tg_mes.data['offset'] = result['update_id'] + 1
