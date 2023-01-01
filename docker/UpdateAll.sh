@@ -1,5 +1,7 @@
 #!/bin/bash
 # 部分更新就是保留配置文件的更新
+# shellcheck disable=SC2034
+get_arch='arch'
 # 进入/root目录
 cd /root/ || exit
 # 下载
@@ -13,7 +15,10 @@ if test "$1" = "1"; then
   cp -f /val/conn.yml /
   cp -f /val/repeat.sqlite /
   rm -rf /val/*
-  source ./dockergi.sh
+  pip3 install -i https://mirrors.aliyun.com/pypi/simple/ -r /root/QL_variable/requirements.txt
+  if [[ $get_arch =~ "x86_64" ]];then
+    source ./dockergi.sh
+  fi
   # 移动文件
   cp -rf /root/QL_variable/* /val
   # 把配置文件移动到项目目录
@@ -23,7 +28,10 @@ else
   echo "删除配置文件更新项目"
   # 删除ip下所有文件
   rm -rf /val/*
-  source ./dockergi.sh
+  pip3 install -i https://mirrors.aliyun.com/pypi/simple/ -r /root/QL_variable/requirements.txt
+  if [[ $get_arch =~ "x86_64" ]];then
+      source ./dockergi.sh
+    fi
   # 移动文件
   cp -rf /root/QL_variable/* /val
 fi
@@ -37,4 +45,8 @@ fi
 rm -rf /root/qlva.tgz
 rm -rf /root/QL_variable
 # shellcheck disable=SC2046
-kill -9 $(netstat -nlp | grep fsbot | awk '{print $7}' | awk -F"/" '{ print $1 }')
+if [[ $get_arch =~ "x86_64" ]];then
+  kill -9 $(netstat -nlp | grep fsbot | awk '{print $7}' | awk -F"/" '{ print $1 }')
+else
+  kill -9 $(netstat -nlp | grep fsbot.py | awk '{print $7}' | awk -F"/" '{ print $1 }')
+fi
