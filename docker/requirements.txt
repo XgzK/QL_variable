@@ -1,0 +1,17 @@
+# pip3 install -r requirements.txt
+
+# 其他库
+PyYAML > 1
+Flask > 1
+aiohttp >= 3.8.3
+Flask-APScheduler > 1
+colorlog >= 6.7.0
+httpx
+socksio >= 1.0.0
+Flask-Cors
+
+# ws需要插件
+Flask-SocketIO
+Nuitka
+ordered-set
+
