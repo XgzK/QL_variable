@@ -8,6 +8,7 @@ aiohttp >= 3.8.3
 Flask-APScheduler > 1
 colorlog >= 6.7.0
 httpx
+httpx[socks]
 socksio >= 1.0.0
 Flask-Cors
 pyinstaller

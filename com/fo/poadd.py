@@ -1,6 +1,5 @@
 import os
 import re
-import threading
 import time
 
 from com.gheaders.conn import read_yaml, revise_yaml
@@ -17,7 +16,6 @@ def ym_change(li: list):
     :param li: 表单返回的数组
     :return:
     """
-    tf = 0  # 记录是否需要重启
     st = ''
     # 任务是否去重复
     if len(li) == 5:
@@ -30,7 +28,6 @@ def ym_change(li: list):
         if str(li[0]).isdigit():
             revise_yaml(f'Administrator: {li[0]}', yml['Record']['Administrator'])
             st += f' 你设置机器人的管理员是: {li[0]} '
-            tf = 1
         else:
             return [0, "机器人交互的ID必须是数字,如果不知道请 https://t.me/InteIJ 群回复/id@KinhRoBot 查看自己ID，所有内容请重新填写"]
     # 表示用户输入了自己优先执行的库了
@@ -41,21 +38,14 @@ def ym_change(li: list):
     if li[2] != '':
         revise_yaml(f'Token: {li[2]}', yml['Record']['Token'])
         st += f' 机器人密钥添加成功'
-        tf = 1
     if li[3] != '':
         revise_yaml(f'Proxy: {li[3]}', yml['Record']['Proxy'])
         st += f'代理添加成功'
-        tf = 1
     if li[4] != '':
         tg_url = re.findall('^(http.*)', li[4])
         if tg_url:
             revise_yaml(f'TG_API_HOST: {tg_url[0]}', yml['Record']['TG_API_HOST'])
             st += f'反代添加成功'
-            tf = 1
-    if tf == 1:
-        t1 = threading.Thread(target=upgrade, args=(1,))
-        t1.start()
-        st += f' 正在重启请20秒后手动刷新浏览器'
     return [0, st]
 
 

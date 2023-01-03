@@ -1,6 +1,7 @@
 # pip3 install -r requirements.txt
 
 # 其他库
+requests
 PyYAML > 1
 Flask > 1
 aiohttp >= 3.8.3
@@ -11,7 +12,10 @@ socksio >= 1.0.0
 Flask-Cors
 
 # ws需要插件
-Flask-SocketIO
+Flask-SocketIO==5.2.0
+simple-websocket
+Werkzeug
+# 加密
 Nuitka
 ordered-set
 

@@ -25,7 +25,16 @@ class WhileLong:
         :return:
         """
         while True:
+            global yml
+            yml = read_yaml()
             if yml['Token'] and yml['Administrator']:
+                # 如果获取到了添加
+                tg_mes.Token = yml['Token']
+                tg_mes.url = ("https://api.telegram.org" if yml['TG_API_HOST'] == "" else yml['TG_API_HOST'])
+                tg_mes.Token = "/bot" + yml['Token']
+                tg_mes.proxies = yml['Proxy'] if yml['Proxy'] else None
+                tg_mes.Send_IDs = yml['Send_IDs']
+
                 tg_ms = self.tg_mes.get_long_link(ti=1)
                 if tg_ms['ok'] and tg_ms['result']:
                     for result in tg_ms["result"]:
@@ -56,7 +65,7 @@ class WhileLong:
             else:
                 self.logger.write_log("没有提交必要参数机器人Token或自己ID,不进行下一步执行\t如果不知道怎么获取请 https://t.me/InteIJ 群回复 "
                                       "/id@KinhRoBot 查看自己ID")
-                time.sleep(60)
+                time.sleep(10)
 
     def new_message(self):
         """
