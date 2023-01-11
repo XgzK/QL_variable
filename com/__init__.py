@@ -1,3 +1,5 @@
 from queue import Queue
 # 创建队列任务
-q = Queue(maxsize=0)
+q = Queue()
+
+Mark = {}

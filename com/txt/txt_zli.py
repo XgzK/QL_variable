@@ -49,7 +49,7 @@ def tx_revise(tx1: str):
         if len(jdht) > 0:
             return
         # 获取链接
-        ht_tx = re.findall(r'(https://.*?isv.*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tx1)
+        ht_tx = re.findall(r'(https://.*?(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tx1)
         if ht_tx:
             for i in ht_tx:
                 https_txt(i)
@@ -61,7 +61,7 @@ def tx_revise(tx1: str):
         ex_t2 = ''
         rep = []
         for i in ex_t1:
-            ex_tx = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.-]{5,})"?', i, re.S)
+            ex_tx = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.?=-]{5,})"?', i, re.S)
             # 如果获取数组为空跳过
             if ex_tx:
                 # 判断是不是同一任务的变量
@@ -77,14 +77,6 @@ def tx_revise(tx1: str):
                     ex_t2 = ex_tx[0][0] + '="' + str(ex_tx[0][1]) + '";'
                 # 跳过本次执行
                 continue
-            # 执行域名是sh 那一块的内容
-            jdsh = re.findall(r'(https://shop\.m\.jd\.com/[a-zA-Z0-9&?=_/-].*)"?', i, re.S)
-            if jdsh:
-                https_txt(jdsh[0])
-            # 执行域名是h5 那一块的内容
-            jdh5 = re.findall(r'(https://h5\.m\.jd\.com/babelDiy/Zeus.*?token=\w+)"?', i, re.S)
-            if jdh5:
-                https_txt(jdh5[0])
         # 执行后面结尾的内容
         if len(ex_t2) > 4:
             forward(ex_t2, yml)

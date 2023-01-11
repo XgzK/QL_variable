@@ -24,6 +24,7 @@ class Interact:
         用户如果转发频道消息给机器人返回频道ID
         :return:
         """
+        self.yml = read_yaml()
         try:
             if len(str(self.yml['Administrator'])) == 0 or int(self.yml['Administrator']) != int(
                     result['message']['from']['id']):

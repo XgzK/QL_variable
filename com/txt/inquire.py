@@ -1,11 +1,27 @@
 import re
 
+from com.Plugin.lottery import Lottery
 from com.gheaders.log import LoggerClass
 from com.sql import Sql
 
 conn = Sql()
 logger = LoggerClass('debug')
 li = ['jd', 'pr', 'co', 'ji', 'sh', 'tx', 'wq']
+lottery = Lottery()
+
+
+def sh_venderId(url=None):
+    """
+
+    :param url:
+    :return:
+    """
+    shVen = re.findall("https://shop\.m\.jd\.com/shop/lottery.*?shopId=(\d+)$", url)
+    if shVen:
+        getvenderId = lottery.get_venderId(shVen[0])
+        return url + getvenderId
+    else:
+        return url
 
 
 def fuzzy_query(url=None):

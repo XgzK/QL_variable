@@ -5,11 +5,12 @@ import re
 
 from com.gheaders.log import LoggerClass
 from com.sql import Sql
-from com.txt.inquire import fuzzy_query
+from com.txt.inquire import fuzzy_query, sh_venderId
 from com.txt.txt_compared import tx_compared
 
 logger = LoggerClass('debug')
 conn = Sql()
+
 
 
 def export_txt(extx):
@@ -45,6 +46,7 @@ def https_txt(http):
     """
     try:
         http = http.replace('"', "")
+        http = sh_venderId(http)
         # 先查询是否存有这个链接
         li = fuzzy_query(http)
         if len(li) == 0:

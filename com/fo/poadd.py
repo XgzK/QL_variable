@@ -39,12 +39,12 @@ def ym_change(li: list):
         revise_yaml(f'Token: {li[2]}', yml['Record']['Token'])
         st += f' 机器人密钥添加成功'
     if li[3] != '':
-        revise_yaml(f'Proxy: {li[3]}', yml['Record']['Proxy'])
+        revise_yaml(f'  Proxy: {li[3]}', yml['Record']['Proxy'])
         st += f'代理添加成功'
     if li[4] != '':
         tg_url = re.findall('^(http.*)', li[4])
         if tg_url:
-            revise_yaml(f'TG_API_HOST: {tg_url[0]}', yml['Record']['TG_API_HOST'])
+            revise_yaml(f'  TG_API_HOST: {tg_url[0]}', yml['Record']['TG_API_HOST'])
             st += f'反代添加成功'
     return [0, st]
 

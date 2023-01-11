@@ -64,6 +64,6 @@ if __name__ == '__main__':
     ti_ck()
     t2 = threading.Thread(target=main_core)
     t2.start()
-    whileLong.old_message()
     logger.write_log("云端数据库同步成功") if implement.sql() == 0 else logger.write_log("云端数据库同步失败")
+    whileLong.old_message()
     whileLong.new_message()

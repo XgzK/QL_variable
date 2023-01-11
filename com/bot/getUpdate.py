@@ -14,7 +14,7 @@ logger = LoggerClass('debug')
 class GetUpdate:
     def __init__(self):
         self.yml = read_yaml()
-        self.url = ("https://api.telegram.org" if self.yml['TG_API_HOST'] == "" else self.yml['TG_API_HOST'])
+        self.url = ("https://api.telegram.org" if self.yml['Proxy']['TG_API_HOST'] == "" else self.yml['Proxy']['TG_API_HOST'])
         self.Token = "/bot" + self.yml['Token']
         self.headers = {"Content-Type": "application/json",
                         "Connection": "close",
@@ -23,7 +23,7 @@ class GetUpdate:
             "offset": 0,
             "timeout": 100
         }
-        self.proxies = self.yml['Proxy'] if self.yml['Proxy'] else None
+        self.proxies = self.yml['Proxy']['Proxy'] if self.yml['Proxy']['Proxy'] else None
         self.Send_IDs = self.yml['Send_IDs']  # 要转发到群或者频道ID
 
     def get_long_link(self, ti=99):
@@ -93,6 +93,7 @@ class GetUpdate:
         使用此方法让您的机器人离开组、超级组或频道。成功返回True
         :return:
         """
+        print(chat_id)
         try:
             with httpx.Client(base_url=self.url, proxies=self.proxies) as client:
                 ur = client.post(f'{self.Token}/sendMessage',

@@ -24,7 +24,7 @@ class LoggerClass:
         'CRITICAL': 'bold_red',
     }
 
-    def __init__(self, level='info', fmt=None):
+    def __init__(self, level='info'):
         self.level = level
         self.norm_fomatter = colorlog.ColoredFormatter(f'%(log_color)s[%(asctime)s]\t'
                                                        '%(message)s',
@@ -64,14 +64,7 @@ class LoggerClass:
        console=logging.StreamHandler()
        self.logger.addHandler(console)
        """
-
-        # 暂不记录在哪行哪个方法，隐藏
-        # frame = sys._getframe().f_back
-        # funcName = frame.f_code.co_name
-        # lineNumber = frame.f_lineno
-        # fileName = frame.f_code.co_filename
-        lev = level.lower() if level else self.level.lower()
-        # msg_format = f'{pre_format_str} [{lev}]-\t{message}'
+        lev = level if level else self.level
         msg_format = f'[{lev}]-\t{message}'
         try:
             if lev == 'debug':
@@ -92,42 +85,15 @@ class LoggerClass:
         except Exception as e:
             print("日志写入权限错误：", e)
 
-    # class LogHandleError(Exception):
-    #     print("日志级别错误")
-    #     # "日志级别错误"
-    #     pass
 
-    # def del_log():
-    #     # 当文件大于1M时，删除文件
-    #     if os.path.getsize(path) > 1242880:
-    #         os.remove(path)
-
-    def get_file_sorted(self, file_path):
-        """最后修改时间顺序升序排列 os.path.getmtime()->获取文件最后修改时间"""
-        dir_list = os.listdir(file_path)
-        if not dir_list:
-            return
-        else:
-            dir_list = sorted(dir_list, key=lambda x: os.path.getmtime(os.path.join(file_path, x)))
-            return dir_list
 
     def TimeStampToTime(self):
+        """
+        伪造日志时间
+        :return:
+        """
         return str("[" + datetime.now().strftime('%Y-%m-%d %H:%M:%S,%f]')[:-4] + "]")
 
-    def handle_logs(self):
-        """
-        因为日志类问题没办法使用天切换只能打开日志文件并且清空
-        """
-        f = open(self.filename, 'w', encoding='utf-8')
-        f.close()
-
-    def delete_logs(self, file_path):
-        try:
-            os.remove(file_path)
-            # print(file_path)
-        except PermissionError as e:
-            # self.norm_log.error('删除日志文件失败：{}'.format(e))
-            pass
 
 
 def rz():

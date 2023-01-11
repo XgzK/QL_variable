@@ -117,3 +117,21 @@ class Lottery:
         if not ur302:
             return ''
         return self.getvenderId(ur302[0])
+
+    def get_venderId(self, shopId) -> str:
+        """
+        获取店铺的 venderId
+        :param shopId: URL中部分参数
+        :return:
+        """
+        try:
+            url = 'https://api.m.jd.com/client.action?functionId=whx_getMShopOutlineInfo&body={"cu":"true",' + f'"shopId":"{shopId}","source":"m-shop"' + '}&' + f't={int(time.time())}337&appid=shop_view&clientVersion=11.0.0&client=wh5&area=1_72_2799_0&uuid="{int(time.time()) - 12121355344}360960026"'
+            vender = requests.get(url, headers=self.headers[1], allow_redirects=False)
+            if vender.status_code == 200:
+                venderId = vender.json()['data']['shopInfo']['venderId']
+                return f"&venderId={venderId}"
+            else:
+                return ""
+        except Exception as e:
+            print(f"获取店铺的 venderId 异常 {e}")
+            return ""
