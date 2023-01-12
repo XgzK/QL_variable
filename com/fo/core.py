@@ -38,28 +38,27 @@ class Main_core(Sql, QL):
         self.Mark = {}
 
     def main_while(self):
-        ql_cks = []
         while True:
             data = self.q.get()
 
             # 表示已经没有任务了,清理配置文件和内容
-            if q.qsize() <= 4 and ql_cks and self.delay < time.time():
+            if q.qsize() <= 4 and self.ql_cks and self.delay < time.time():
                 self.write_log("清空添加的内容")
                 self.bytex = ""
                 self.delay = time.time() + 3600
-                for i in ql_cks:
+                for i in self.ql_cks:
                     # 把原来内容添加回去
-                    self.configs_revise(self.ql_js, '', ql_cks[i])
+                    self.configs_revise(self.ql_js, '', self.ql_cks[i])
 
             # 检测是否需要跳过
             team = self.Team(data)
             if not team:
-                q.task_done()
+                self.q.task_done()
                 continue
 
-            ql_cks = self.selectAll(table=self.surface[3], where="state=0")
-            if not ql_cks:
-                q.task_done()
+            self.ql_cks = self.selectAll(table=self.surface[3], where="state=0")
+            if not self.ql_cks:
+                self.q.task_done()
                 self.write_log("主人你好像没有对接青龙或者没有给我发送 /start")
                 continue
 
@@ -67,20 +66,21 @@ class Main_core(Sql, QL):
             ctr = contrast(data["activities"])
             # 执行过返回-1结束
             if ctr[0] == -1:
-                q.task_done()
+                self.q.task_done()
                 continue
 
             data['time'] = int(time.time()) + int(data['interval'])
             self.Mark.setdefault(data['jd_js'], data)
 
             self.execution_ql(data, ctr)
-            q.task_done()
+            self.q.task_done()
 
     def Team(self, data):
         """
         伪造队列，如果不在规定时间会让任务重新排队
         :return:
         """
+        self.yml = read_yaml()
         # 检测是否值1小黑屋
         if data['jd_js'] in self.yml['prohibit']:
             self.write_log(f'脚本 {data["jd_js"]} 被你的主人狠心的拖进小黑屋关了永久禁闭')
@@ -96,7 +96,7 @@ class Main_core(Sql, QL):
             else:
                 self.q.put(self.Mark[data['jd_js']])
                 self.write_log(f"脚本 {data['jd_js']} 刚刚才出去被扔到后面排队了 号码为 {q.qsize()}")
-                time.sleep(data['interval'] / 2)
+                time.sleep(int(data['interval']) / 2)
                 return False
 
         return True
