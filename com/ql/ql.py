@@ -14,6 +14,7 @@ yam = read_yaml()
 class QL(LoggerClass):
     def __init__(self):
         super().__init__()
+        LoggerClass.__init__(self)
         self.headers = [
             {
                 'Accept': 'application/json',

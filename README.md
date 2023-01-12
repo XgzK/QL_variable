@@ -230,6 +230,8 @@ docker build -t xgzk/qlvariable:latest .
         对同一脚本增加延迟时间
         不再直接修改配置文件,改成引入qlva.sh文件
         对 https://shop.m.jd.com/shop/lottery?shopId=585437 自动获取 venderId值
+    23/1/12 10:08
+        尝试修补队列任务不释放问题
 ```
 ### 插件
 ```text

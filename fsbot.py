@@ -5,7 +5,7 @@ from flask_apscheduler import APScheduler
 from com.bot import tg_mes
 from com.bot.information import Interact
 from com.bot.whiles import WhileLong
-from com.fo.core import main_core
+from com.fo.core import Main_core
 from com.gheaders.Inspector import Check
 from com.gheaders.conn import read_yaml
 from com.gheaders.log import LoggerClass, rz
@@ -20,7 +20,7 @@ logger = LoggerClass('debug')
 whileLong = WhileLong()
 yml = read_yaml()
 implement = Implement()
-
+main_core = Main_core()
 
 @scheduler.task('interval', id='ti_ck', hours=12)
 def ti_ck():
@@ -57,12 +57,12 @@ if __name__ == '__main__':
     Check().cpath()
     # 使用多线程防止任务阻塞
     t1 = threading.Thread(target=run_web)
+    t2 = threading.Thread(target=main_core.main_while)
     t1.start()
     # 启动定时任务
     scheduler.start()
     timing_ck()
     ti_ck()
-    t2 = threading.Thread(target=main_core)
     t2.start()
     logger.write_log("云端数据库同步成功") if implement.sql() == 0 else logger.write_log("云端数据库同步失败")
     whileLong.old_message()
