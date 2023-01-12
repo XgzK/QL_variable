@@ -45,10 +45,10 @@ class Main_core(Sql, QL):
             if q.qsize() <= 4 and self.ql_cks and self.delay < time.time():
                 self.write_log("清空添加的内容")
                 self.bytex = ""
-                self.delay = time.time() + 3600
+                self.delay = int(time.time()) + 3600
                 for i in self.ql_cks:
                     # 把原来内容添加回去
-                    self.configs_revise(self.ql_js, '', self.ql_cks[i])
+                    self.configs_revise(self.ql_js, '', i)
 
             # 检测是否需要跳过
             team = self.Team(data)
