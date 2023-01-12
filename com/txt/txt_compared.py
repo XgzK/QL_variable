@@ -9,7 +9,7 @@ conn = Sql()
 logger = LoggerClass('debug')
 
 
-def tx_compared(tx1):
+def tx_compared(tx1, value1=None):
     """
     用于对比数据，由TG获取的文本对比数据库中的数据
     :return: 返回数组的脚本名称[0]和变量[1],异常返回-1
@@ -18,7 +18,8 @@ def tx_compared(tx1):
         # 把export DPLHTY="b4be"的键和值分开
         tx = re.findall('(export .*?)=(.*)', tx1)
         # 如果分成两个尝试判断数据库中是否需要跳过去重复
-        value1 = conn.selectTopone(table=conn.surface[0],
+        if value1 is None:
+            value1 = conn.selectTopone(table=conn.surface[0],
                                    where=f'jd_value1="NOT{tx[0][0]}" or jd_value1="{tx[0][0]}" '
                                          f'or jd_value2="{tx[0][0]}" '
                                          f'or jd_value3="{tx[0][0]}"')

@@ -232,6 +232,8 @@ docker build -t xgzk/qlvariable:latest .
         对 https://shop.m.jd.com/shop/lottery?shopId=585437 自动获取 venderId值
     23/1/12 10:08
         尝试修补队列任务不释放问题
+    23/1/12 12:08
+        修补wdz匹配问题
 ```
 ### 插件
 ```text
