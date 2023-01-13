@@ -85,7 +85,7 @@ def turn_url(export: str):
                 lis = []
                 ex_tx = export.split('=')
                 # 进入这里表示只需要一个值
-                points = ex_tx[1].replace("@", '&').replace("_", '&').split('&')
+                points = ex_tx[1].split(jd_va[9]) if jd_va[9] else points = ex_tx[1]
 
                 for son in set(points):
                     lis.append(str(jd_va[0]).replace('#0', re.findall('(\w+)', son)[-1]))
