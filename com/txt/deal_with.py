@@ -50,7 +50,6 @@ def https_txt(http):
         # 先查询是否存有这个链接
         li = fuzzy_query(http)
         if len(li) == 0:
-            logger.write_log("https_txt,正则表达式没有匹配到值:  " + str(http))
             return -1
         # 遍历数组
         for ink in li:

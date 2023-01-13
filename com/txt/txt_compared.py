@@ -20,9 +20,9 @@ def tx_compared(tx1, value1=None):
         # 如果分成两个尝试判断数据库中是否需要跳过去重复
         if value1 is None:
             value1 = conn.selectTopone(table=conn.surface[0],
-                                   where=f'jd_value1="NOT{tx[0][0]}" or jd_value1="{tx[0][0]}" '
-                                         f'or jd_value2="{tx[0][0]}" '
-                                         f'or jd_value3="{tx[0][0]}"')
+                                       where=f'jd_value1="NOT{tx[0][0]}" or jd_value1="{tx[0][0]}" '
+                                             f'or jd_value2="{tx[0][0]}" '
+                                             f'or jd_value3="{tx[0][0]}"')
         if value1 and value1[3] is None and value1[4] is None:
             # [脚本, 活动, 时间]
             q.put({

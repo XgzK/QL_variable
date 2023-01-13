@@ -40,7 +40,6 @@ class Main_core(Sql, QL):
     def main_while(self):
         while True:
             data = self.q.get()
-
             # 表示已经没有任务了,清理配置文件和内容
             if q.qsize() <= 4 and self.ql_cks and self.delay < time.time():
                 self.write_log("清空添加的内容")
@@ -96,7 +95,14 @@ class Main_core(Sql, QL):
             else:
                 self.q.put(self.Mark[data['jd_js']])
                 self.write_log(f"脚本 {data['jd_js']} 刚刚才出去被扔到后面排队了 号码为 {q.qsize()}")
-                time.sleep(int(data['interval']) / 2)
+                # 根据队列执行不同的时间
+                sun = q.qsize()
+                if sun < 5:
+                    time.sleep(int(data['interval']) / 2)
+                elif sun < 10:
+                    time.sleep(int(data['interval']) / 4)
+                elif sun < 15:
+                    time.sleep(2)
                 return False
 
         return True

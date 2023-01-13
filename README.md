@@ -234,6 +234,9 @@ docker build -t xgzk/qlvariable:latest .
         尝试修补队列任务不释放问题
     23/1/12 12:08
         修补wdz匹配问题
+    23/1/13 13:00
+        修补转链接BUG
+        优化用一脚本执行速度
 ```
 ### 插件
 ```text
