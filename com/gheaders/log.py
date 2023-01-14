@@ -99,11 +99,11 @@ class LoggerClass:
         """
         try:
             st = []
-            rz1 = cooyml.read_yaml(self.logFile)
+            rz1 = cooyml.read_txt(self.logFile)
             if rz1 == -1:
                 return []
             if len(rz1) > 100:
-                cooyml.delete_first_lines(self.logFile, -100)
+                cooyml.delete_first_lines(-100, self.logFile)
             sun = 0
             # 颠倒数组顺序
             rz1.reverse()
