@@ -2,33 +2,15 @@ import datetime
 import re
 
 from com.bot import tg_mes
-from com.gheaders.conn import read_yaml
+from com.gheaders.conn import ConnYml
 from com.gheaders.log import LoggerClass
 
 from com.sql import Sql
+
 conn = Sql()
 
 logger = LoggerClass('debug')
-yam = read_yaml()
-
-
-# def token_main():
-#     """
-#     主要用于调用ck
-#     :return:
-#     """
-#     try:
-#         ck = ql.ql_tk()
-#
-#         if ck != -1:
-#             str1 = 'Authorization:' + f" '{ck}'"
-#             yml_file(str1, read_yaml()['Record']['Authorization'])
-#             return 0
-#         else:
-#             return -1
-#     except Exception as e:
-#         logger.write_log("token_main败，请检查conn.yml文件，异常信息：" + str(e))
-#         return -1
+connyml = ConnYml()
 
 
 def ql_write(str12, yal, essential, tk_id):
@@ -68,13 +50,13 @@ def ql_compared(jst: str, ql_ck: tuple) -> list:
     :return: ID or -1
     """
     try:
-        jstx = read_yaml(ql_ck[5])
+        jstx = connyml.read_yaml(ql_ck[5])
         # 判断脚本时否存在,不存在直接返回
         if not (jst in jstx):
             return [-1]
         va1 = jstx[jst]
         # 判断用户时否需要优先执行特定库 task 库/脚本.js
-        ta = yam['library'] + jst
+        ta = connyml.read_yaml()['library'] + jst
         lis = list(va1.keys())
         return [va1[ta]['id'] if ta in lis else va1[lis[0]]['id']]
     except Exception as e:

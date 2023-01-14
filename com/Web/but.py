@@ -3,11 +3,12 @@ import threading
 from flask import render_template, Blueprint, request, flash, redirect, url_for
 
 from com.fo.poadd import upgrade, to_stop
-from com.gheaders.log import rz
+from com.gheaders.log import LoggerClass
 from com.sql import Sql
 
 apg = Blueprint('but', __name__)
 conn = Sql()
+logger = LoggerClass()
 
 
 @apg.route('/log', methods=['GET'])
@@ -16,7 +17,7 @@ def log():
     日志
     :return:
     """
-    return render_template('log.html', rz=rz())
+    return render_template('log.html', rz=logger.read_log())
 
 
 @apg.route('/repeat', methods=['GET'])

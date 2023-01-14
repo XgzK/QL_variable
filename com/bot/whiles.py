@@ -2,11 +2,12 @@ import time
 
 from com.bot import tg_mes
 from com.bot.information import Interact
-from com.gheaders.conn import read_yaml
+from com.gheaders.conn import ConnYml
 from com.gheaders.log import LoggerClass
-from com.txt.txt_zli import tx_revise
+from com.txt.txt_zli import Delivery
 
-yml = read_yaml()
+connyml = ConnYml()
+delivery = Delivery()
 
 
 class WhileLong:
@@ -18,6 +19,7 @@ class WhileLong:
         self.tg_mes = tg_mes
         self.logger = LoggerClass("error")
         self.interact = Interact()
+        self.read = connyml.read_yaml()
 
     def old_message(self):
         """
@@ -25,43 +27,47 @@ class WhileLong:
         :return:
         """
         while True:
-            global yml
-            yml = read_yaml()
-            if yml['Token'] and yml['Administrator']:
+            self.read = connyml.read_yaml()
+
+            if self.read['Token'] and self.read['Administrator']:
                 # 如果获取到了添加
-                tg_mes.Token = yml['Token']
-                tg_mes.url = ("https://api.telegram.org" if yml['Proxy']['TG_API_HOST'] == "" else yml['Proxy']['TG_API_HOST'])
-                tg_mes.Token = "/bot" + yml['Token']
-                tg_mes.proxies = yml['Proxy']['Proxy'] if yml['Proxy']['Proxy'] else None
-                tg_mes.Send_IDs = yml['Send_IDs']
+                tg_mes.Token = self.read['Token']
+                tg_mes.url = (
+                    "https://api.telegram.org" if self.read['Proxy']['TG_API_HOST'] == "" else self.read['Proxy'][
+                        'TG_API_HOST'])
+                tg_mes.Token = "/bot" + self.read['Token']
+                tg_mes.proxies = self.read['Proxy']['Proxy'] if self.read['Proxy']['Proxy'] else None
+                tg_mes.Send_IDs = self.read['Send_IDs']
 
                 tg_ms = self.tg_mes.get_long_link(ti=1)
+
+                chat_id = self.read['Administrator']
+
                 if tg_ms['ok'] and tg_ms['result']:
+
                     for result in tg_ms["result"]:
                         if 'message' in result:
                             if result['message']['date'] > int(time.time()) - 1200:
                                 tg_mes.data['offset'] = result['update_id'] + 1
                             else:
-                                self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
-                                                         "不定期重启项目可以获取最新的线报支持\n"
-                                                         "未经作者允许随意转发者，本项目将从github删库\n"
-                                                         "来自开发者的善意警告!!!!!!", yml['Administrator'])
-                                return
+                                return self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
+                                                                "不定期重启项目可以获取最新的线报支持\n"
+                                                                "未经作者允许随意转发者，本项目将从github删库\n"
+                                                                "来自开发者的善意警告!!!!!!", chat_id)
+
                         elif "channel_post" in result:
+
                             if result['channel_post']['date'] > int(time.time()) - 1200:
                                 tg_mes.data['offset'] = result['update_id'] + 1
                             else:
-                                self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
-                                                         "不定期重启项目可以获取最新的线报支持\n"
-                                                         "未经作者允许随意转发者，本项目将从github删库\n"
-                                                         "来自开发者的善意警告!!!!!!", yml['Administrator'])
-                                return
+                                return self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
+                                                                "不定期重启项目可以获取最新的线报支持\n"
+                                                                , chat_id)
+
                 else:
-                    self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
-                                             "不定期重启项目可以获取最新的线报支持\n"
-                                             "未经作者允许随意转发者，本项目将从github删库\n"
-                                             "来自开发者的善意警告!!!!!!", yml['Administrator'])
-                    return
+                    return self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
+                                                    "不定期重启项目可以获取最新的线报支持\n"
+                                                    , chat_id)
             else:
                 self.logger.write_log("没有提交必要参数机器人Token或自己ID,不进行下一步执行\t如果不知道怎么获取请 https://t.me/InteIJ 群回复 "
                                       "/id@KinhRoBot 查看自己ID")
@@ -87,39 +93,31 @@ class WhileLong:
                         # message 一般是 私聊 群消息 加入群组 and 是消息而非加入群组
                         if 'message' in result and "chat" in result['message']:
                             # 跳过转发频道或群
-                            if 'sender_chat' in result['message'] and yml['Send_IDs'] == \
+                            if 'sender_chat' in result['message'] and self.read['Send_IDs'] == \
                                     result['message']['sender_chat']['id']:
                                 continue
                             # 私聊消息
                             if result['message']['chat']['type'] == 'private':
                                 if 'text' in result['message']:
                                     self.logger.write_log(
-                                        "收到私聊消息内容 " + str(result['message']['text']).replace('\n', '\t'), level='warning')
+                                        "收到私聊消息内容 " + str(result['message']['text']).replace('\n', '\t'),
+                                        level='warning')
                                     self.interact.get_id(result)
-                                    tx_revise(result['message']['text'])
+                                    delivery.dispatch(result['message']['text'])
                             # 群消息 supergroup 公开群 group 非公开群 公开后再私有还是 supergroup
                             elif result['message']['chat']['type'] == 'supergroup' or result['message']['chat'][
                                 'type'] == 'group':
                                 if 'text' in result['message']:
-                                    # logger.write_log(f"收到群消息内容 {result['message']['text']}")
-                                    tx_revise(result['message']['text'])
+                                    delivery.dispatch(result['message']['text'])
                                     self.interact.group_id(result)
-                                # 加入群聊
-                                # elif 'new_chat_member' in result['message']:
-                                #     print(result['message'])
-                                #     # tg_mes.banChatMember(result, '-1001565778760',
-                                #     #                      result['message']['new_chat_member']['id'])
-                                # else:
-                                #     print(result)
+
                         # 频道消息
                         elif 'channel_post' in result:
                             if result['channel_post']['chat']['type'] == 'channel':
+
                                 if 'text' in result['channel_post']:
-                                    # logger.write_log(f"收到频道监控消息内容 {result['channel_post']['text']}")
-                                    tx_revise(result['channel_post']['text'])
-                        # elif 'chat_member' in result:
-                        #     # 加入退出群聊
-                        #     print(result)
+                                    delivery.dispatch(result['channel_post']['text'])
+
 
             except Exception as e:
                 self.logger.write_log(f"个人开发类异常: {e}", level='error')

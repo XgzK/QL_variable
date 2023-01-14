@@ -237,6 +237,8 @@ docker build -t xgzk/qlvariable:latest .
     23/1/13 13:00
         修补转链接BUG
         优化用一脚本执行速度
+    23/1/13 21:40
+        修复一些小问题
 ```
 ### 插件
 ```text

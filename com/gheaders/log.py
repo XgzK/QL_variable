@@ -9,13 +9,13 @@ import os
 from logging.handlers import RotatingFileHandler
 
 from com.Web.ws_send import send_message
-from com.gheaders.conn import read_yaml, read_txt, delete_first_lines
+from com.gheaders.conn import ConnYml
 
-yml = read_yaml()
+cooyml = ConnYml()
 
 
 class LoggerClass:
-    logFile = yml['log']  # 定义日志存储的文件夹
+    logFile = cooyml.read_yaml()['log']  # 定义日志存储的文件夹
     log_colors_config = {
         'DEBUG': 'cyan',
         'INFO': 'purple',
@@ -85,8 +85,6 @@ class LoggerClass:
         except Exception as e:
             print("日志写入权限错误：", e)
 
-
-
     def TimeStampToTime(self):
         """
         伪造日志时间
@@ -94,46 +92,41 @@ class LoggerClass:
         """
         return str("[" + datetime.now().strftime('%Y-%m-%d %H:%M:%S,%f]')[:-4] + "]")
 
-
-
-def rz():
-    """
-    读取日志文件
-    :return: 打印html格式的日志，异常返回-1
-    """
-    try:
-        st = []
-        if yml == -1:
-            return []
-        log = yml['log']
-        rz1 = read_txt(log)
-        if rz1 == -1:
-            return []
-        if len(rz1) > 100:
-            delete_first_lines(yml['log'], -100)
-        sun = 0
-        # 颠倒数组顺序
-        rz1.reverse()
-        # 遍历所有行
-        for i in rz1:
-            if sun < 100:
-                sun += 1
-            else:
-                break
-            # 如果就\n则跳过
-            if i == '\n':
-                continue
-            j = i.replace("[35m", "") \
-                .replace("[0m", "") \
-                .replace("[33m", "") \
-                .replace("[36m", "") \
-                .replace("[31m", "") \
-                .replace("\n", "")
-            if j:
-                st.append(j)
-                continue
-        # 把颠倒的顺序颠倒回来
-        st.reverse()
-        return st
-    except Exception as e:
-        return [f'日志文件异常: {e}']
+    def read_log(self):
+        """
+        读取日志文件
+        :return: 打印html格式的日志，异常返回-1
+        """
+        try:
+            st = []
+            rz1 = cooyml.read_yaml(self.logFile)
+            if rz1 == -1:
+                return []
+            if len(rz1) > 100:
+                cooyml.delete_first_lines(self.logFile, -100)
+            sun = 0
+            # 颠倒数组顺序
+            rz1.reverse()
+            # 遍历所有行
+            for i in rz1:
+                if sun < 100:
+                    sun += 1
+                else:
+                    break
+                # 如果就\n则跳过
+                if i == '\n':
+                    continue
+                j = i.replace("[35m", "") \
+                    .replace("[0m", "") \
+                    .replace("[33m", "") \
+                    .replace("[36m", "") \
+                    .replace("[31m", "") \
+                    .replace("\n", "")
+                if j:
+                    st.append(j)
+                    continue
+            # 把颠倒的顺序颠倒回来
+            st.reverse()
+            return st
+        except Exception as e:
+            return [f'日志文件异常: {e}']

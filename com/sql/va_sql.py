@@ -1,12 +1,12 @@
 import sqlite3
 from sqlite3 import IntegrityError
 
-from com.gheaders.conn import read_yaml
+from com.gheaders.conn import ConnYml
 
 """
 数据库类
 """
-yam = read_yaml()
+connyml = ConnYml()
 
 
 class Sql:
@@ -16,7 +16,7 @@ class Sql:
 
     def __init__(self):
         # 172.17.0.2 localhost
-        self.conn = sqlite3.connect(yam["repeat"], timeout=20, check_same_thread=False)
+        self.conn = sqlite3.connect(connyml.read_yaml()["repeat"], timeout=20, check_same_thread=False)
         self.cursor = self.conn.cursor()
         self.surface = ['JdQl', 'repeat', 'turn_url', 'QL', 'User']
 

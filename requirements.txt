@@ -5,7 +5,7 @@ requests > 1
 PyYAML > 1
 Flask > 1
 aiohttp >= 3.8.3
-Flask-APScheduler > 1
+APScheduler > 1
 colorlog >= 6.7.0
 httpx
 httpx[socks]

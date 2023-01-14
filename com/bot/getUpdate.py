@@ -6,16 +6,18 @@ import httpx
 from httpx import RemoteProtocolError, ConnectTimeout, ReadTimeout, ConnectError
 
 from com.gheaders.log import LoggerClass
-from com.gheaders.conn import read_yaml
+from com.gheaders.conn import ConnYml
 
 logger = LoggerClass('debug')
+connyml = ConnYml()
 
 
 class GetUpdate:
     def __init__(self):
-        self.yml = read_yaml()
-        self.url = ("https://api.telegram.org" if self.yml['Proxy']['TG_API_HOST'] == "" else self.yml['Proxy']['TG_API_HOST'])
-        self.Token = "/bot" + self.yml['Token']
+        self.read = connyml.read_yaml()
+        self.url = (
+            "https://api.telegram.org" if self.read['Proxy']['TG_API_HOST'] == "" else self.read['Proxy']['TG_API_HOST'])
+        self.Token = "/bot" + self.read['Token']
         self.headers = {"Content-Type": "application/json",
                         "Connection": "close",
                         }
@@ -23,8 +25,8 @@ class GetUpdate:
             "offset": 0,
             "timeout": 100
         }
-        self.proxies = self.yml['Proxy']['Proxy'] if self.yml['Proxy']['Proxy'] else None
-        self.Send_IDs = self.yml['Send_IDs']  # 要转发到群或者频道ID
+        self.proxies = self.read['Proxy']['Proxy'] if self.read['Proxy']['Proxy'] else None
+        self.Send_IDs = self.read['Send_IDs']  # 要转发到群或者频道ID
 
     def get_long_link(self, ti=99):
         """
@@ -100,39 +102,15 @@ class GetUpdate:
                                  data={"chat_id": chat_id})
                 js = ur.json()
                 client.close()
-                if self.yml['Administrator']:
+                if self.read['Administrator']:
                     if ur.status_code == 200 and js['ok']:
-                        self.send_message(f"退出 {chat_id} 群聊成功", self.yml['Administrator'])
+                        self.send_message(f"退出 {chat_id} 群聊成功", self.read['Administrator'])
                         return 0
                     else:
                         self.send_message(f"退出 {chat_id} 失败 {js['description'] if 'description' in js else ''}",
-                                          self.yml['Administrator'])
+                                          self.read['Administrator'])
                         return 400
                 else:
                     return 404
         except Exception as e:
             return -1
-
-    def banChatMember(self, result, chat_id, user_id):
-        """
-        踢出群聊
-        :param result:
-        :param chat_id: 群标识
-        :param user_id: 踢出标识
-        :return:
-        """
-        try:
-            with httpx.Client(base_url=self.url, proxies=self.proxies) as client:
-                ur = client.post(f"{self.Token}/banChatMember", data={"chat_id": chat_id, "user_id": user_id}).json()
-                if ur['ok']:
-                    self.send_message(
-                        f"{result['message']['new_chat_member']['first_name'] if 'first_name' in result['message']['new_chat_member'] else ''} {result['message']['new_chat_member']['last_name'] if 'last_name' in result['message']['new_chat_member'] else ''} 不在群组开放期间加入,特请出群聊",
-                        chat_id)
-            # else:
-            #     self.send_message(
-            #         f"{result['message']['new_chat_member']['first_name'] if 'first_name' in result['message']['new_chat_member'] else ''} {result['message']['new_chat_member']['last_name'] if 'last_name' in result['message']['new_chat_member'] else ''}\n"
-            #         f"{'ID是: ' + str(result['message']['from']['id'])}\n"
-            #         f"退出群聊失败",
-            #         chat_id)
-        except:
-            pass

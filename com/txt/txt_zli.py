@@ -1,84 +1,110 @@
 import re
+from urllib import parse
 
 from com.bot.information import Interact
-from com.gheaders.conn import read_yaml
+from com.gheaders.conn import ConnYml
 from com.gheaders.log import LoggerClass
-from com.txt.deal_with import https_txt
-from com.txt.inquire import turn_url
-from com.txt.txt_compared import tx_compared
+from com.txt.inquire import Conversion
 
-logger = LoggerClass()
 interact = Interact()
+connyml = ConnYml()
+conver = Conversion()
+logger = LoggerClass()
 
 
-def forward(ex_t2, yml):
-    """
-    简单的转发和执行
-    :param ex_t2:
-    :param yml:
-    :return:
-    """
-    ur = turn_url(ex_t2)
-    if not ur:
-        if yml['Send_IDs']:
-            interact.distribute(ex_t2, yml['Send_IDs'])
-        ex_t2 += 'export NOT_TYPE="no";'
-        tx_compared(ex_t2)
-    tx = ''
-    for j in ur:
-        tx += j + '\n'
-        https_txt(j)
-    if yml['Send_IDs'] and tx:
-        interact.distribute(tx, yml['Send_IDs'])
+class Delivery:
 
+    def __init__(self):
+        self.read = connyml.read_yaml()
 
-def tx_revise(tx1: str):
-    """
-    用与修改文本,只保留关键字到文本
-    :param tx1: 接收到的消息
-    :return: 正常返回200, 否则返回-1
-    """
-    yml = read_yaml()
-    try:
-        tx1 = tx1.replace("(", "").replace(")", "").replace("`", "")
-        # 如果用户发生的是内容不在正则表达式的理解范围将跳过
-        if not re.findall('([A-Za-z0-9&_/:.-]{5,})', tx1):
-            return
-        # 需要跳过的域名
-        jdht = re.findall(r'(https://u\.jd\.com/.*?)', tx1, re.S)
-        if len(jdht) > 0:
-            return
-        # 获取链接
-        ht_tx = re.findall(r'(https://.*?(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tx1)
-        if ht_tx:
+    def dispatch(self, tg_text: str):
+        """
+        把tg的消息进行分类派送到他们需要去的地方
+        :param tg_text: text文本
+        :return:
+        """
+        try:
+            self.read = connyml.read_yaml()
+
+            # 对URL进行处理去掉关键字和URL解码
+            tg_text = re.sub("[()`\"*]+", "", parse.unquote(tg_text))
+            # 直接结束
+            if re.findall(r'(https://u\.jd\.com/.*?)', tg_text, re.S):
+                return
+
+            self.url(tg_text)
+            self.export_txt(tg_text)
+        except Exception as e:
+            logger.write_log(f"com.txt.txt.zil.Delivery.dispatch 异常 {e}")
+
+    def url(self, tg_text):
+        """
+        处理URL链接
+        :return:
+        """
+        try:
+            # 获取链接
+            ht_tx = re.findall(r'(https://.*?(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tg_text)
+            if not ht_tx:
+                return
             for i in ht_tx:
-                https_txt(i)
-                if yml['Send_IDs']:
-                    interact.distribute(i, yml['Send_IDs'])
+                conver.https_txt(i)
+                interact.distribute(i) if self.read["Send_IDs"] else ""
             return
-        # 对多个参数支持
-        ex_t1 = tx1.split('\n')
-        ex_t2 = ''
-        rep = []
-        for i in ex_t1:
-            ex_tx = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.?=-]{5,})"?', i, re.S)
-            # 如果获取数组为空跳过
-            if ex_tx:
-                # 判断是不是同一任务的变量
-                if not (ex_tx[0][0] in rep):
-                    rep.append(ex_tx[0][0])
-                    ex_t2 += ex_tx[0][0] + '="' + str(ex_tx[0][1]) + '";'
-                # 如果ex_t2变量的值长度大于4执行，防止为空
-                elif ex_t2:
-                    forward(ex_t2, yml)
-                    # 清空数据库和清空
+        except Exception as e:
+            logger.write_log(f"com.txt.txt.zil.Delivery.url 异常 {e}")
+
+    def export_txt(self, tg_text: str):
+        """
+        处理关键字
+        :param tg_text:
+        :return:
+        """
+        try:
+            # 对多个参数支持
+            points = tg_text.split('\n')
+            spell = ''
+            rep = []
+
+            for poi in points:
+                re_text = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.?=-]{5,})"?', poi, re.S)
+                # 如果获取数组为空跳过
+                if not re_text or len(re_text[0]) != 2:
+                    continue
+
+                if re_text[0][0] in rep:
+                    # 如果关键字在数组中执行并且清空数组
+                    self.forward(spell)
                     rep.clear()
-                    rep.append(ex_tx[0][0])
-                    ex_t2 = ex_tx[0][0] + '="' + str(ex_tx[0][1]) + '";'
-                # 跳过本次执行
-                continue
-        # 执行后面结尾的内容
-        if len(ex_t2) > 4:
-            forward(ex_t2, yml)
-    except Exception as e:
-        logger.write_log(f"分类型异常问题: {e}")
+
+                # 如果关键字不在数组加入数组
+                rep.append(re_text[0][0])
+                spell += re_text[0][0] + '="' + str(re_text[0][1]) + '";'
+                self.forward(spell)
+            return
+        except Exception as e:
+            logger.write_log(f"com.txt.txt.zil.Delivery.export_txt 异常 {e}")
+
+    def forward(self, export_text):
+        """
+        简单的转发和执行
+        :param export_text:
+        :return:
+        """
+        try:
+            url_list = conver.turn_url(export_text)
+
+            if not url_list:
+                interact.distribute(url_list) if self.read["Send_IDs"] else ""
+                export_text += 'export NOT_TYPE="no";'
+                conver.tx_compared(export_text)
+                return
+            tx = ''
+
+            for url in url_list:
+                tx += url + '\n'
+                conver.https_txt(url)
+
+            interact.distribute(tx) if self.read["Send_IDs"] else ""
+        except Exception as e:
+            logger.write_log(f"com.txt.txt.zil.Delivery.forward 异常 {e}")

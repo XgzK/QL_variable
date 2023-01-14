@@ -5,16 +5,13 @@ import json
 
 import requests
 
-from com.gheaders.conn import read_yaml
 from com.gheaders.log import LoggerClass
 
-yam = read_yaml()
+logger = LoggerClass()
 
 
-class QL(LoggerClass):
+class QL:
     def __init__(self):
-        super().__init__()
-        LoggerClass.__init__(self)
         self.headers = [
             {
                 'Accept': 'application/json',
@@ -45,10 +42,11 @@ class QL(LoggerClass):
             if js_tk['code'] == 200:
                 return [js_tk['code'], js_tk['data']['token_type'] + " " + js_tk['data']['token']]
             else:
-                self.write_log(f"{ql_tk[0]} 获取青龙Authorization异常 状态码: {js_tk['code']} 原因: {js_tk['data']}", level='debug')
+                logger.write_log(f"{ql_tk[0]} 获取青龙Authorization异常 状态码: {js_tk['code']} 原因: {js_tk['data']}",
+                                 level='debug')
                 return [403]
         except Exception as e:
-            self.write_log(f"{ql_tk[0]} 请求青龙异常: {e}", level='debug')
+            logger.write_log(f"{ql_tk[0]} 请求青龙异常: {e}", level='debug')
             return [500]
 
     def ql_run(self, data, ql_tk: tuple):
@@ -68,10 +66,10 @@ class QL(LoggerClass):
             if status == 200:
                 return 0
             else:
-                self.write_log(f"任务执行失败: {status}", level='debug')
+                logger.write_log(f"任务执行失败: {status}", level='debug')
                 return -1
         except Exception as e:
-            self.write_log(f"执行青龙任务失败，错误信息: {e}", level='debug')
+            logger.write_log(f"执行青龙任务失败，错误信息: {e}", level='debug')
             return -1
 
     def crons(self, ql_tk: list):
@@ -88,10 +86,10 @@ class QL(LoggerClass):
             li = lis.json()
             if li['code'] == 200:
                 return [li['code'], li['data']]
-            self.write_log(f"状态码: {li['code']} 请给相应权限", level='debug')
+            logger.write_log(f"状态码: {li['code']} 请给相应权限", level='debug')
             return li['code']
         except Exception as e:
-            self.write_log(f"获取青龙任务列表失败: {e}", level='debug')
+            logger.write_log(f"获取青龙任务列表失败: {e}", level='debug')
             return [403]
 
     def configs_check(self, path, ql_tk: tuple):
@@ -112,7 +110,7 @@ class QL(LoggerClass):
                 return ss.json()
             return {'code': 404}
         except Exception as e:
-            self.write_log(f"获取配置文件内容失败: {e}", level='debug')
+            logger.write_log(f"获取配置文件内容失败: {e}", level='debug')
             return {'code': 404}
 
     def configs_revise(self, path, data, ql_tk: tuple):
@@ -135,7 +133,7 @@ class QL(LoggerClass):
                 return ss.json()
             return {'code': 404}
         except Exception as e:
-            self.write_log(f"修改配置文件内容失败: {e}", level='debug')
+            logger.write_log(f"修改配置文件内容失败: {e}", level='debug')
             return {'code': 404}
 
     def disable(self, data: list, ql_tk: tuple):
@@ -153,11 +151,11 @@ class QL(LoggerClass):
             status = ss.status_code
             # 获取返回的状态码
             if status == 200:
-                self.write_log("禁用任务成功")
+                logger.write_log("禁用任务成功")
                 return 0
             else:
-                self.write_log(f"任务禁用失败: {status}", level='debug')
+                logger.write_log(f"任务禁用失败: {status}", level='debug')
                 return -1
         except Exception as e:
-            self.write_log(f"执行青龙禁用任务失败，错误信息: {e}", level='debug')
+            logger.write_log(f"执行青龙禁用任务失败，错误信息: {e}", level='debug')
             return -1

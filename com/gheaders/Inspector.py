@@ -4,15 +4,18 @@
 import os
 import re
 
-from com.gheaders.conn import read_yaml
+import requests
 
+from com.gheaders.conn import ConnYml
+from com.sql import Sql
 
-yml = read_yaml()
+connyml = ConnYml()
+sql = Sql()
 
 
 class Check:
-    def __int__(self):
-        pass
+    def __init__(self):
+        self.read = connyml.read_yaml()
 
     def cpath(self):
         """
@@ -20,10 +23,21 @@ class Check:
         :return: -1 or 0
         """
         # 检测目录是否存在
-        pa = re.findall('(.*?)/', yml['json'])
+        pa = re.findall('(.*?)/', self.read['json'])
         if pa:
             if not os.path.exists(pa[0]):
                 os.makedirs(pa[0])
 
-
-
+    def sql(self) -> int:
+        """
+        清空数据库重新添加新的
+        :return:
+        """
+        try:
+            jd = requests.get("https://xgzq.tk/library/jd.sql", timeout=60)
+            if jd.status_code == 200 and len(jd.text) > 100:
+                sql.exe_sql(jd.text)
+                return 0
+            return -1
+        except Exception as e:
+            return -1

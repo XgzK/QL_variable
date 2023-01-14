@@ -1,10 +1,11 @@
 from flask import render_template, request, redirect, url_for, flash, session, Blueprint
 
-from com.gheaders.conn import read_yaml
+from com.gheaders.conn import ConnYml
 from com.fo.poadd import ym_change
 from com.sql import Sql
 
 conn = Sql()
+connyml = ConnYml()
 ind = Blueprint('index', __name__)
 
 
@@ -21,7 +22,7 @@ def index():
         flash(q[1])
         return redirect(url_for('ind.index'))
     else:
-        yml = read_yaml()
+        yml = connyml.read_yaml()
         if yml['deduplication'] == 1:
             return render_template('yml.html', chec='')
         else:
