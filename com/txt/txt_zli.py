@@ -44,7 +44,7 @@ class Delivery:
         """
         try:
             # 获取链接
-            ht_tx = re.findall(r'(https://.*?(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tg_text)
+            ht_tx = re.findall(r'(https://[\w\-\.]+(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tg_text)
             if not ht_tx:
                 return
             for i in ht_tx:

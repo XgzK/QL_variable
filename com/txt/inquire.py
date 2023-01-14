@@ -64,6 +64,7 @@ class Conversion:
         :param export: 活动参数
         :return:
         """
+        export = re.sub("[()'`\"*]+", "", export)
         ex_sun = re.findall('(export \w+)=', export)
 
         jsva = ''.join(
@@ -88,12 +89,20 @@ class Conversion:
                 # 参数2没有
                 elif not jd_va[2] and len(ex_sun) == 1:
                     lis = []
+                    sun = 0
+                    st = ""
                     ex_tx = export.split('=')
                     # 进入这里表示只需要一个值
-                    points = ex_tx[1].split(jd_va[9]) if jd_va[9] else ex_tx[1]
-
+                    points = ex_tx[1].split(jd_va[4]) if jd_va[4] else [ex_tx[1]]
+                    su = len(jd_va[0].split('#'))
                     for son in set(points):
-                        lis.append(str(jd_va[0]).replace('#0', re.findall('(\w+)', son)[-1]))
+                        if su > 2:
+                            st += str(jd_va[0]).replace(f"#{sun}", re.findall('(\w+)', son)[-1])
+                            if sun == su - 1:
+                                lis.append(st)
+                        else:
+                            lis.append(str(jd_va[0]).replace("#0", re.findall('(\w+)', son)[-1]))
+                        sun += 1
                     return lis
             return []
         else:
