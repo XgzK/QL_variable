@@ -62,14 +62,14 @@ class WhileLong:
                             else:
                                 return self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
                                                                 "不定期重启项目可以获取最新的线报支持\n"
-                                                                "非adm64系统请手动重启容器\n"
+                                                                "非adm64系统如果更新请手动重启容器\n"
                                                                 "机器人没有拉线报群的请群内发机器人名称"
                                                                 , chat_id)
 
                 else:
                     return self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
                                                     "不定期重启项目可以获取最新的线报支持\n"
-                                                    "非adm64系统请手动重启容器\n"
+                                                    "非adm64系统如果更新请手动重启容器\n"
                                                     "机器人没有拉线报群的请群内发机器人名称"
                                                     , chat_id)
             else:
