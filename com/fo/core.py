@@ -58,7 +58,16 @@ class Main_core:
             if ctr[0] == -1:
                 q.task_done()
                 continue
+            elif ctr[0] == 3:
+                logger.write_log(f"没有识别到关键字: {data['activities']}")
+                q.task_done()
+                continue
+            elif ctr[0] == 1:
+                logger.write_log(f"识别到关键字已经执行过了, 关键字: {ctr[1]}")
+                q.task_done()
+                continue
 
+            # 加入数组伪装队列
             data['time'] = int(time.time()) + int(data['interval'])
             self.Mark.setdefault(data['jd_js'], data)
 
@@ -112,16 +121,13 @@ class Main_core:
             if ids[0] == -1:
                 logger.write_log(f"脚本 {data['jd_js']} 没有找到, 请主人别忘记找寻缺失的一部分哦")
                 continue
-
-            judge = ql_write(data["activities"], self.yml, ctr[1], j)
-            # 返回-1表示有异常
-            if judge == -1:
-                logger.write_log(f"脚本 {data['jd_js']} 任务关键字 {ctr[1]} 已经被执行过")
-                return
+            if j == 0:
+                # 把关键字添加到数据库
+                ql_write(data["activities"], self.yml, ctr)
 
             # 向青龙配置文件添加活动
-            revise = ql.configs_revise(self.ql_js, self.bytex + '\n' + judge, self.ql_cks[j])
-            self.bytex += '\n' + judge
+            revise = ql.configs_revise(self.ql_js, self.bytex + '\n' + data["activities"], self.ql_cks[j])
+            self.bytex += '\n' + data["activities"]
 
             # 表示添加活动成功
             if revise["code"] == 200:
