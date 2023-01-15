@@ -29,7 +29,7 @@ def ql_write(str12, yal, essential: list):
             interact.distribute(f"NOT表示属于不去重复关键字(未开发功能): \n{str12}")
             return 0
         elif essential[0] == 2:
-            conn.insert(table=conn.surface[1], jd_value1=f"{essential}",
+            conn.insert(table=conn.surface[1], jd_value1=f"{essential[1]}",
                         jd_data=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             return 0
     except Exception as e:

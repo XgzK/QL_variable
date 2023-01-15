@@ -62,11 +62,15 @@ class WhileLong:
                             else:
                                 return self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
                                                                 "不定期重启项目可以获取最新的线报支持\n"
+                                                                "非adm64系统请手动重启容器\n"
+                                                                "机器人没有拉线报群的请群内发机器人名称"
                                                                 , chat_id)
 
                 else:
                     return self.tg_mes.send_message("活动监控机器人正式为你保驾护航\n"
                                                     "不定期重启项目可以获取最新的线报支持\n"
+                                                    "非adm64系统请手动重启容器\n"
+                                                    "机器人没有拉线报群的请群内发机器人名称"
                                                     , chat_id)
             else:
                 self.logger.write_log("没有提交必要参数机器人Token或自己ID,不进行下一步执行\t如果不知道怎么获取请 https://t.me/InteIJ 群回复 "
