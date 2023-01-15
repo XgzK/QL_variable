@@ -27,11 +27,13 @@ class Interact:
         self.read = connyml.read_yaml()
         chat_id = self.read['Administrator']
         try:
+
             if not chat_id or int(chat_id) != int(
                     result['message']['from']['id']):
                 logger.write_log(
                     f"没有设置 Administrator 或 不是机器人主人无法交互 ID: {result['message']['from']['id']}")
                 return
+
             # forward_from_chat 只有转发的消息才携带
             if 'forward_from_chat' in result['message']:
                 tx = f"{'你的个人ID是: ' + str(result['message']['from']['id'])}\n" \
@@ -45,12 +47,15 @@ class Interact:
                     tg_mes.send_message(tx, result['message']['from']['id'])
                     return
             else:
+                # 下面是转发群组ID
                 idfor = re.findall('/forward ([0-9-]+)', result['message']['text'])
                 if idfor:
-                    return connyml.revise_yaml(f'Send_IDs: {idfor[0]}', connyml.read_txt()['Record']['Send_IDs'])
+                    return connyml.revise_yaml(f'Send_IDs: {idfor[0]}', self.read['Record']['Send_IDs'])
+                #  下面是脚本黑名单
                 add_js = re.findall('/prohibit ([0-9a-zA-Z_.]+)', result['message']['text'])
                 if add_js:
-                    return connyml.revise_yaml(f'prohibit: {connyml.read_txt()["prohibit"] + add_js}', connyml.read_txt()['Record']['prohibit'])
+                    return connyml.revise_yaml(f'prohibit: {self.read["prohibit"] + add_js}', self.read['Record']['prohibit'])
+                # 下面是退出群聊
                 quit = re.findall('/quit (.*)', result['message']['text'])
                 # 退出群聊
                 if quit:
@@ -62,7 +67,7 @@ class Interact:
                     if st:
                         inst = sql.insert(table=sql.surface[3], name=f"{puts[0]}", ip=f"{st[0]}",
                                            Client_ID=f"{puts[2]}", Client_Secret=f"{puts[3]}", Authorization="",
-                                           json=f"{connyml.read_txt()['json']}{puts[0]}.json", state=1)
+                                           json=f"{self.read['json']}{puts[0]}.json", state=1)
                         if inst > 0:
                             return tg_mes.send_message(f"提交 {puts[0]} 成功", chat_id)
                         elif inst == -1:
