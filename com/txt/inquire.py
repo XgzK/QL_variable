@@ -39,7 +39,7 @@ class Conversion:
         """
         try:
             li1s = []
-            TYPE = re.findall("https://(\w{2})", url)[0]
+            TYPE = re.findall("https://(.{2})", url)[0]
             # 读取数据库中活动全部链接的数据
             lines = sql.selectAll(table=sql.surface[0],
                                   where=f'jd_type == "{TYPE}"') if TYPE in self.li else sql.selectAll(
@@ -52,14 +52,13 @@ class Conversion:
                         if zzbds:
                             li1s.append(i)
                     except Exception as e:
-                        logger.write_log(f"异常的数据库值是: {i}")
-                        logger.write_log(f"inquire.fuzzy_query 在对比数据库中出现异常: {e}")
+                        logger.write_log(f"com.txt.inquire.Conversion.fuzzy_query 在对比数据库中出现异常: {e} 触发异常的值是 {url} 数据库值的脚本名称是 {i[2]}")
                 if li1s:
                     return li1s
                 logger.write_log("模糊查询中: " + str(url) + " 没有找到,请添加")
             return []
         except Exception as e:
-            logger.write_log("inquire.fuzzy_query,异常问题: " + str(e) + "异常的值是: " + url)
+            logger.write_log("com.txt.inquire.Conversion.fuzzy_query,异常问题: " + str(e) + "异常的值是: " + url)
             return []
 
     def turn_url(self, export: str):
@@ -131,7 +130,7 @@ class Conversion:
             for ink in li:
                 tx = re.findall(f'{ink[7]}', http)
                 if not tx:
-                    logger.write_log(f"https_txt,匹配不到内容: {ink[7]} 链接是: {http}")
+                    logger.write_log(f"com.txt.inquire.Conversion.https_txt,匹配不到内容: {ink[7]} 链接是: {http}")
                     continue
                 st2 = ''
                 # 往后推
@@ -178,7 +177,7 @@ class Conversion:
             # 把两端重新拼接并且返回
             return str(separate[0]) + '="' + str(separate[1]) + '"'
         except Exception as e:
-            logger.write_log("export_txt，异常问题: " + str(e))
+            logger.write_log("com.txt.inquire.Conversion.export_txt，异常问题: " + str(e))
             return -1
 
     def tx_compared(self, tx1, value1=None):
@@ -207,6 +206,6 @@ class Conversion:
                 return
 
             else:
-                logger.write_log(f"在数据库中没有找到: {tx1}")
+                logger.write_log(f"com.txt.inquire.Conversion.tx_compared 在数据库中没有找到: {tx1}")
         except Exception as e:
-            logger.write_log(f"tx_compared 异常对比脚本异常信息信息: {e}")
+            logger.write_log(f"com.txt.inquire.Conversion.tx_compared 异常对比脚本异常信息信息: {e}")
