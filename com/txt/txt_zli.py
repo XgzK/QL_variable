@@ -32,8 +32,8 @@ class Delivery:
             if re.findall(r'(https://u\.jd\.com/.*?)', tg_text, re.S):
                 return
 
-            self.url(tg_text)
-            self.export_txt(tg_text)
+            if not self.url(tg_text):
+                self.export_txt(tg_text)
         except Exception as e:
             logger.write_log(f"com.txt.txt.zil.Delivery.dispatch 异常 {e}")
 
@@ -46,13 +46,14 @@ class Delivery:
             # 获取链接
             ht_tx = re.findall(r'(https://[\w\-\.]+(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tg_text)
             if not ht_tx:
-                return
+                return []
             for i in ht_tx:
                 conver.https_txt(i)
-                interact.distribute(i) if self.read["Send_IDs"] else ""
-            return
+                interact.distribute(i, self.read["Send_IDs"]) if self.read["Send_IDs"] else ""
+            return [200]
         except Exception as e:
             logger.write_log(f"com.txt.txt.zil.Delivery.url 异常 {e}")
+            return []
 
     def export_txt(self, tg_text: str):
         """
@@ -105,6 +106,6 @@ class Delivery:
                 tx += url + '\n'
                 conver.https_txt(url)
 
-            interact.distribute(tx) if self.read["Send_IDs"] else ""
+            interact.distribute(tx, self.read["Send_IDs"]) if self.read["Send_IDs"] else ""
         except Exception as e:
             logger.write_log(f"com.txt.txt.zil.Delivery.forward 异常 {e}")

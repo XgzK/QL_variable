@@ -21,10 +21,14 @@ class Conversion:
         :param url:
         :return:
         """
-        shven = re.findall("https://shop\.m\.jd\.com/shop/lottery.*?shopId=(\d+)$", url)
-        if shven:
-            return url + lottery.get_venderId(shven[0])
-        else:
+        try:
+            shven = re.findall("https://shop\.m\.jd\.com/shop/lottery.*?shopId=(\d+)$", url)
+            if shven:
+                return url + lottery.get_venderId(shven[0])
+            else:
+                return url
+        except Exception as e:
+            logger.write_log(f"com.txt.inquire.Conversion.sh_venderId异常 {e}")
             return url
 
     def fuzzy_query(self, url=None):
@@ -116,12 +120,13 @@ class Conversion:
         :return: 处理后的二维list，异常返回-1
         """
         try:
-            http = http.replace('"', "")
-            http = self.sh_venderId(http)
+            http = self.sh_venderId(http.replace('"', ""))
+
             # 先查询是否存有这个链接
             li = self.fuzzy_query(http)
-            if len(li) == 0:
+            if not li:
                 return -1
+
             # 遍历数组
             for ink in li:
                 tx = re.findall(f'{ink[7]}', http)
@@ -149,7 +154,7 @@ class Conversion:
                     self.tx_compared(st2, ink)
             return 0
         except Exception as e:
-            logger.write_log("https_txt,异常问题: " + str(e))
+            logger.write_log(f"com.txt.inquire.Conversion.https_txt,异常问题: {e} 活动链接 {http}")
             return -1
 
     def export_txt(self, extx):
