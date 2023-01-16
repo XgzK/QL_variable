@@ -73,6 +73,10 @@ class Delivery:
                 if not re_text or len(re_text[0]) != 2:
                     continue
 
+                if re.findall('(?:shopId\d?|venderId\d?|shopid\d?|venderid\d?)', re_text[0][1]):
+                    logger.write_log(f"检测到屏蔽关键字屏蔽内容是: {poi}")
+                    continue
+
                 if re_text[0][0] in rep:
                     # 如果关键字在数组中执行并且清空数组
                     self.forward(spell)
