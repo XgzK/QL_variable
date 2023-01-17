@@ -124,7 +124,7 @@ class Main_core:
             if j == 0:
                 # 把关键字添加到数据库
                 ql_write(data["activities"], self.yml, ctr)
-
+            data["activities"] = str(data["activities"]).lstrip("NOT")
             # 向青龙配置文件添加活动
             revise = ql.configs_revise(self.ql_js, self.bytex + '\n' + data["activities"], self.ql_cks[j])
             self.bytex += '\n' + data["activities"]
