@@ -27,7 +27,7 @@ class Delivery:
             self.read = connyml.read_yaml()
 
             # 对URL进行处理去掉关键字和URL解码
-            tg_text = re.sub("[()`\"*]+", "", parse.unquote(tg_text))
+            tg_text = re.sub("[()`*]*(?:export NOT_TYPE=\".*?\";)*", "", parse.unquote(tg_text))
             # 直接结束
             if re.findall(r'(https://u\.jd\.com/.*?)', tg_text, re.S):
                 return
@@ -68,24 +68,30 @@ class Delivery:
             rep = []
 
             for poi in points:
+
                 re_text = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.?=-]{5,})"?', poi, re.S)
                 # 如果获取数组为空跳过
                 if not re_text or len(re_text[0]) != 2:
                     continue
 
-                if re.findall('(?:shopId\d?|venderId\d?|shopid\d?|venderid\d?)', re_text[0][1]):
-                    logger.write_log(f"检测到屏蔽关键字屏蔽内容是: {poi}")
-                    continue
+                # 如果一行出现两个关键字
+                for text2 in re_text:
 
-                if re_text[0][0] in rep:
-                    # 如果关键字在数组中执行并且清空数组
-                    self.forward(spell)
-                    rep.clear()
+                    if re.findall('(?:shopId\d?|venderId\d?|shopid\d?|venderid\d?)', text2[-1]):
+                        logger.write_log(f"检测到屏蔽关键字屏蔽内容是: {poi}")
+                        continue
+                    if text2[0] in rep:
+                        # 如果关键字在数组中执行并且清空数组
+                        self.forward(spell)
+                        rep.clear()
 
-                # 如果关键字不在数组加入数组
-                rep.append(re_text[0][0])
-                spell += re_text[0][0] + '="' + str(re_text[0][1]) + '";'
-                self.forward(spell)
+                    # 如果关键字不在数组加入数组
+                    rep.append(text2[0])
+                    spell += text2[0] + '="' + str(text2[1]) + '";'
+
+                    # 如果值相同转发，一般是最后一个了
+                    if re_text[-1][-1] == text2[-1]:
+                        self.forward(spell)
             return
         except Exception as e:
             logger.write_log(f"com.txt.txt.zil.Delivery.export_txt 异常 {e}")

@@ -67,7 +67,7 @@ class Conversion:
         :param export: 活动参数
         :return:
         """
-        export = re.sub("[()'`\"*]+", "", export)
+        export = re.sub("[()'`\"*]+(?:export NOT_TYPE=\".*?\";)", "", export)
         ex_sun = re.findall('(export \w+)=', export)
 
         jsva = ''.join(
