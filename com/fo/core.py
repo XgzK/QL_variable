@@ -22,23 +22,13 @@ class Main_core:
         self.ql_js = 'qlva.sh'
         self.ql_cks = []
         # 添加配置文件的内容
-        self.bytex = ""
-        # 时间
-        self.delay = time.time() + 3600
         self.yml = connyml.read_yaml()
         self.Mark = {}
 
     def main_while(self):
         while True:
             data = q.get()
-            # 表示已经没有任务了,清理配置文件和内容
-            if q.qsize() <= 4 and self.ql_cks and self.delay < time.time():
-                logger.write_log("清空添加的内容")
-                self.bytex = ""
-                self.delay = int(time.time()) + 3600
-                for i in self.ql_cks:
-                    # 把原来内容添加回去
-                    ql.configs_revise(self.ql_js, '', i)
+
 
             # 检测是否需要跳过
             team = self.Team(data)
@@ -101,8 +91,6 @@ class Main_core:
                     time.sleep(int(data['interval']) / 2)
                 elif sun < 10:
                     time.sleep(int(data['interval']) / 4)
-                else:
-                    time.sleep(2)
                 return False
 
         return True
@@ -126,8 +114,7 @@ class Main_core:
                 ql_write(data["activities"], self.yml, ctr)
             data["activities"] = str(data["activities"]).lstrip("NOT")
             # 向青龙配置文件添加活动
-            revise = ql.configs_revise(self.ql_js, self.bytex + '\n' + data["activities"], self.ql_cks[j])
-            self.bytex += '\n' + data["activities"]
+            revise = ql.configs_revise(self.ql_js, data["activities"], self.ql_cks[j])
 
             # 表示添加活动成功
             if revise["code"] == 200:
@@ -136,6 +123,9 @@ class Main_core:
                 if qid == 0:
                     logger.write_log(
                         f"已经帮主人你把 {self.ql_cks[j][0]} 的小金库填充 {data['jd_js']} 脚本成功 ID {ids[0]} 执行参数: {data['activities']}")
+
+                time.sleep(2)
+                ql.configs_revise(self.ql_js, '', self.ql_cks[j])
             else:
                 logger.write_log(
                     f"{self.ql_cks[j][0]}异常问题,请主人给我进入你小金库的权限我需要 的权限有 定时任务权限 和 配置文件权限, 否则无法吧金克拉放入主人小金库",
