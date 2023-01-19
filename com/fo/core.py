@@ -40,6 +40,7 @@ class Main_core:
             if not self.ql_cks:
                 q.task_done()
                 logger.write_log("主人你好像没有对接青龙或者没有给我发送 /start")
+                time.sleep(15)
                 continue
 
             # 检测是否被执行过
@@ -47,14 +48,18 @@ class Main_core:
             # 执行过返回-1结束
             if ctr[0] == -1:
                 q.task_done()
+                logger.write_log(f"识别关键字异常: {data['activities']}")
+                time.sleep(2)
                 continue
             elif ctr[0] == 3:
                 logger.write_log(f"没有识别到关键字: {data['activities']}")
                 q.task_done()
+                time.sleep(2)
                 continue
             elif ctr[0] == 1:
                 logger.write_log(f"识别到关键字已经执行过了, 关键字: {ctr[1]}")
                 q.task_done()
+                time.sleep(2)
                 continue
 
             # 加入数组伪装队列
@@ -91,6 +96,8 @@ class Main_core:
                     time.sleep(int(data['interval']) / 2)
                 elif sun < 10:
                     time.sleep(int(data['interval']) / 4)
+                elif sun < 20:
+                    time.sleep(2)
                 return False
 
         return True

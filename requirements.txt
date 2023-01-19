@@ -19,3 +19,4 @@ Flask-SocketIO==5.2.0
 gevent-websocket
 gevent
 eventlet
+dnspython==2.2.1
