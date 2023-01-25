@@ -51,7 +51,7 @@ def ql_compared(jst: str, ql_ck: tuple) -> list:
             return [-1]
         va1 = jstx[jst]
         # 判断用户时否需要优先执行特定库 task 库/脚本.js
-        ta = father.read('library') + jst
+        ta = father.AdReg.get('library') + jst
         lis = list(va1.keys())
         return [va1[ta]['id'] if ta in lis else va1[lis[0]]['id']]
     except Exception as e:
