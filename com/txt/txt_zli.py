@@ -40,12 +40,16 @@ class Delivery:
         :return:
         """
         try:
+            mark = ""
+            mark_text = re.findall("((?:NOT|RUN)+)", tg_text)
+            if mark_text:
+                mark = mark_text[0]
             # 获取链接
-            ht_tx = re.findall(r'((?:NOThttps|RUNhttps|https)://[\w\-.]+(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tg_text)
+            ht_tx = re.findall(r'(https://[\w\-.]+(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tg_text)
             if not ht_tx:
                 return []
             for i in ht_tx:
-                conver.https_txt(i)
+                conver.https_txt(mark + i)
                 interact.distribute(i, father.AdReg.get("Send_IDs")) if father.AdReg.get("Send_IDs") else ""
             return [200]
         except Exception as e:
