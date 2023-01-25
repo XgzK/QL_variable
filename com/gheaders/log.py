@@ -10,12 +10,11 @@ from logging.handlers import RotatingFileHandler
 
 from com.Web.ws_send import send_message
 from com.gheaders.conn import ConnYml
-
-cooyml = ConnYml()
-
-
+yml = ConnYml()
+yml.creat_yml()
+read = yml.read_yaml()
 class LoggerClass:
-    logFile = cooyml.read_yaml()['log']  # 定义日志存储的文件夹
+    logFile = read['log'] # 定义日志存储的文件夹
     log_colors_config = {
         'DEBUG': 'cyan',
         'INFO': 'purple',
@@ -99,11 +98,11 @@ class LoggerClass:
         """
         try:
             st = []
-            rz1 = cooyml.read_txt(self.logFile)
+            rz1 = yml.read_txt(self.logFile)
             if rz1 == -1:
                 return []
             if len(rz1) > 100:
-                cooyml.delete_first_lines(-100, self.logFile)
+                yml.delete_first_lines(-100, self.logFile)
             sun = 0
             # 颠倒数组顺序
             rz1.reverse()

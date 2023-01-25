@@ -1,9 +1,8 @@
 import datetime
 import re
 
-from com import Markings
+from com import Markings, father
 from com.bot.information import Interact
-from com.gheaders.conn import ConnYml
 from com.gheaders.log import LoggerClass
 
 from com.sql import Sql
@@ -11,19 +10,17 @@ from com.sql import Sql
 conn = Sql()
 interact = Interact()
 logger = LoggerClass('debug')
-connyml = ConnYml()
 
 
-def ql_write(data: dict, yal, essential: list):
+def ql_write(data: dict, essential: list):
     """
     写入青龙任务配置文件
     :param data: 传入内容
-    :param yal: conn.yml配置文件内容
     :param essential: 添加进重复数据库的关键字
     :return: 如果没有执行过返回0，如果执行过返回-1
     """
     try:
-        if yal['deduplication'] == 1:
+        if father.AdReg.get('deduplication') == 1:
             return 0
         # 0表示不去重复
         elif data["marking"] == "NOT":
@@ -48,13 +45,13 @@ def ql_compared(jst: str, ql_ck: tuple) -> list:
     :return: ID or -1
     """
     try:
-        jstx = connyml.read_yaml(ql_ck[5])
+        jstx = father.read(ql_ck[5])
         # 判断脚本时否存在,不存在直接返回
         if not (jst in jstx):
             return [-1]
         va1 = jstx[jst]
         # 判断用户时否需要优先执行特定库 task 库/脚本.js
-        ta = connyml.read_yaml()['library'] + jst
+        ta = father.read('library') + jst
         lis = list(va1.keys())
         return [va1[ta]['id'] if ta in lis else va1[lis[0]]['id']]
     except Exception as e:

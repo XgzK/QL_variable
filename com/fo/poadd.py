@@ -2,11 +2,10 @@ import os
 import re
 import time
 
-from com.gheaders.conn import ConnYml
+from com import father
 from com.ql import QL
 from com.sql import Sql
 
-connyml = ConnYml()
 conn = Sql()
 ql = QL()
 
@@ -17,18 +16,17 @@ def ym_change(li: list):
     :param li: 表单返回的数组
     :return:
     """
-    revise = connyml.read_yaml()
     st = ''
     # 任务是否去重复
     if len(li) == 5:
-        connyml.revise_yaml(f"deduplication: 1", revise['Record']['deduplication'])
+        father.revise_Config("deduplication", 1)
         st += '任务不去重复'
     elif len(li) == 6:
-        connyml.revise_yaml(f"deduplication: 0", revise['Record']['deduplication'])
+        father.revise_Config("deduplication", 0)
         st += '任务去重复'
     if li[0] != '':
         if str(li[0]).isdigit():
-            connyml.revise_yaml(f'Administrator: {li[0]}', revise['Record']['Administrator'])
+            father.revise_Config("Administrator", li[0])
             st += f' 你设置机器人的管理员是: {li[0]} '
         else:
             return [0,
@@ -36,18 +34,18 @@ def ym_change(li: list):
     # 表示用户输入了自己优先执行的库了
     if li[1] != '':
         k = li[1].split('/')[0] + '/'
-        connyml.revise_yaml(f'library: {k}', revise['Record']['library'])
+        father.revise_Config("library", k)
         st += f' 你优先执行的库是: {k}'
     if li[2] != '':
-        connyml.revise_yaml(f'Token: {li[2]}', revise['Record']['Token'])
+        father.revise_Config("Token", li[2])
         st += f' 机器人密钥添加成功'
     if li[3] != '':
-        connyml.revise_yaml(f'  Proxy: {li[3]}', revise['Record']['Proxy'])
+        father.revise_Config("Proxy.Proxy", li[3])
         st += f'代理添加成功'
     if li[4] != '':
         tg_url = re.findall('^(http.*)', li[4])
         if tg_url:
-            connyml.revise_yaml(f'  TG_API_HOST: {tg_url[0]}', revise['Record']['TG_API_HOST'])
+            father.revise_Config("Proxy.TG_API_HOST", tg_url[0])
             st += f'反代添加成功'
     return [0, st]
 
@@ -83,7 +81,7 @@ def to_stop(sun: int):
             return f'没有可正常执行的青龙'
         # 循环所有青龙
         for ql_tk in value1:
-            js = connyml.read_yaml(ql_tk[5])
+            js = father.read(ql_tk[5])
             st += ql_tk[0]
             if sun == 0:
                 for i in js.keys():

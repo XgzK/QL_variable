@@ -5,32 +5,31 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from com.bot.information import Interact
 from com.bot.whiles import WhileLong
 from com.fo.core import Main_core
+from com.fo.father import Father
 from com.gheaders.Inspector import Check
 from com.gheaders.conn import ConnYml
-from com.gheaders.log import LoggerClass
 from com.ql.ql_timing import Timing
 from com.Web.htws import app, socketio
 
-logger = LoggerClass()
 timing = Timing()
-connyml = ConnYml()
-chech = Check()
 main_core = Main_core()
 whileLong = WhileLong()
 interact = Interact()
+yml = ConnYml()
 
-
-class RunMain:
+class RunMain(Father):
 
     def __init__(self):
-        pass
+        super().__init__()
+        yml.creat_yml()
+        self.chech = Check()
 
     def ti_ck(self):
         """
         定时清空数据库
         :return:
         """
-        logger.read_log()
+        self.log_object.read_log()
         st = timing.clear_list()
 
         if st:
@@ -68,7 +67,7 @@ class RunMain:
         self.timing_ck()
         self.ti_ck()
         t2.start()
-        logger.write_log("云端数据库同步成功") if chech.sql() == 0 else logger.write_log("云端数据库同步失败")
+        self.log_write("云端数据库同步成功") if self.chech.sql() == 0 else self.log_write("云端数据库同步失败")
         whileLong.old_message()
         whileLong.new_message()
 

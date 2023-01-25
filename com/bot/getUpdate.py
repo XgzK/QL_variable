@@ -5,19 +5,17 @@
 import httpx
 from httpx import RemoteProtocolError, ConnectTimeout, ReadTimeout, ConnectError
 
+from com import father
 from com.gheaders.log import LoggerClass
-from com.gheaders.conn import ConnYml
 
 logger = LoggerClass('debug')
-connyml = ConnYml()
 
 
 class GetUpdate:
     def __init__(self):
-        self.read = connyml.read_yaml()
         self.url = (
-            "https://api.telegram.org" if self.read['Proxy']['TG_API_HOST'] == "" else self.read['Proxy']['TG_API_HOST'])
-        self.Token = "/bot" + self.read['Token']
+            "https://api.telegram.org" if father.AdReg.get('Proxy')['TG_API_HOST'] == "" else father.AdReg.get('Proxy')['TG_API_HOST'])
+        self.Token = "/bot" + father.AdReg.get('Token')
         self.headers = {"Content-Type": "application/json",
                         "Connection": "close",
                         }
@@ -25,8 +23,8 @@ class GetUpdate:
             "offset": 0,
             "timeout": 100
         }
-        self.proxies = self.read['Proxy']['Proxy'] if self.read['Proxy']['Proxy'] else None
-        self.Send_IDs = self.read['Send_IDs']  # 要转发到群或者频道ID
+        self.proxies = father.AdReg.get('Proxy')['Proxy'] if father.AdReg.get('Proxy')['Proxy'] else None
+        self.Send_IDs = father.AdReg.get('Send_IDs')  # 要转发到群或者频道ID
 
     def get_long_link(self, ti=99):
         """
@@ -95,20 +93,19 @@ class GetUpdate:
         使用此方法让您的机器人离开组、超级组或频道。成功返回True
         :return:
         """
-        print(chat_id)
         try:
             with httpx.Client(base_url=self.url, proxies=self.proxies) as client:
                 ur = client.post(f'{self.Token}/sendMessage',
                                  data={"chat_id": chat_id})
                 js = ur.json()
                 client.close()
-                if self.read['Administrator']:
+                if father.AdReg.get('Administrator'):
                     if ur.status_code == 200 and js['ok']:
-                        self.send_message(f"退出 {chat_id} 群聊成功", self.read['Administrator'])
+                        self.send_message(f"退出 {chat_id} 群聊成功", father.AdReg.get('Administrator'))
                         return 0
                     else:
                         self.send_message(f"退出 {chat_id} 失败 {js['description'] if 'description' in js else ''}",
-                                          self.read['Administrator'])
+                                          father.AdReg.get('Administrator'))
                         return 400
                 else:
                     return 404

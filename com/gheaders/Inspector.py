@@ -6,16 +6,15 @@ import re
 
 import requests
 
-from com.gheaders.conn import ConnYml
+from com import father
 from com.sql import Sql
 
-connyml = ConnYml()
 sql = Sql()
 
 
 class Check:
     def __init__(self):
-        self.read = connyml.read_yaml()
+        pass
 
     def cpath(self):
         """
@@ -23,7 +22,7 @@ class Check:
         :return: -1 or 0
         """
         # 检测目录是否存在
-        pa = re.findall('(.*?)/', self.read['json'])
+        pa = re.findall('(.*?)/', father.AdReg.get('json'))
         if pa:
             if not os.path.exists(pa[0]):
                 os.makedirs(pa[0])

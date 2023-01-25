@@ -2,11 +2,10 @@ import time
 
 from com.bot import tg_mes
 from com.bot.information import Interact
-from com.gheaders.conn import ConnYml
+from com import father
 from com.gheaders.log import LoggerClass
 from com.txt.txt_zli import Delivery
 
-connyml = ConnYml()
 delivery = Delivery()
 
 
@@ -19,7 +18,6 @@ class WhileLong:
         self.tg_mes = tg_mes
         self.logger = LoggerClass("error")
         self.interact = Interact()
-        self.read = connyml.read_yaml()
 
     def old_message(self):
         """
@@ -27,21 +25,21 @@ class WhileLong:
         :return:
         """
         while True:
-            self.read = connyml.read_yaml()
 
-            if self.read['Token'] and self.read['Administrator']:
+            if father.AdReg.get('Token') and father.AdReg.get('Administrator'):
                 # 如果获取到了添加
-                tg_mes.Token = self.read['Token']
+                tg_mes.Token = father.AdReg.get('Token')
                 tg_mes.url = (
-                    "https://api.telegram.org" if self.read['Proxy']['TG_API_HOST'] == "" else self.read['Proxy'][
+                    "https://api.telegram.org" if father.AdReg.get('Proxy')['TG_API_HOST'] == "" else
+                    father.AdReg.get('Proxy')[
                         'TG_API_HOST'])
-                tg_mes.Token = "/bot" + self.read['Token']
-                tg_mes.proxies = self.read['Proxy']['Proxy'] if self.read['Proxy']['Proxy'] else None
-                tg_mes.Send_IDs = self.read['Send_IDs']
+                tg_mes.Token = "/bot" + father.AdReg.get('Token')
+                tg_mes.proxies = father.AdReg.get('Proxy')['Proxy'] if father.AdReg.get('Proxy')['Proxy'] else None
+                tg_mes.Send_IDs = father.AdReg.get('Send_IDs')
 
                 tg_ms = self.tg_mes.get_long_link(ti=1)
 
-                chat_id = self.read['Administrator']
+                chat_id = father.AdReg.get('Administrator')
 
                 if tg_ms['ok'] and tg_ms['result']:
 
@@ -97,7 +95,7 @@ class WhileLong:
                         # message 一般是 私聊 群消息 加入群组 and 是消息而非加入群组
                         if 'message' in result and "chat" in result['message']:
                             # 跳过转发频道或群
-                            if 'sender_chat' in result['message'] and self.read['Send_IDs'] == \
+                            if 'sender_chat' in result['message'] and father.AdReg.get('Send_IDs') == \
                                     result['message']['sender_chat']['id']:
                                 continue
                             # 私聊消息
@@ -109,8 +107,7 @@ class WhileLong:
                                     self.interact.get_id(result)
                                     delivery.dispatch(result['message']['text'])
                             # 群消息 supergroup 公开群 group 非公开群 公开后再私有还是 supergroup
-                            elif result['message']['chat']['type'] == 'supergroup' or result['message']['chat'][
-                                'type'] == 'group':
+                            elif result['message']['chat']['type'] == 'supergroup' or result['message']['chat']['type'] == 'group':
                                 if 'text' in result['message']:
                                     delivery.dispatch(result['message']['text'])
                                     self.interact.group_id(result)
@@ -121,7 +118,5 @@ class WhileLong:
 
                                 if 'text' in result['channel_post']:
                                     delivery.dispatch(result['channel_post']['text'])
-
-
             except Exception as e:
                 self.logger.write_log(f"个人开发类异常: {e}", level='error')

@@ -4,12 +4,11 @@
 import re
 
 from . import tg_mes
+from .. import father
 from ..gheaders.log import LoggerClass
-from ..gheaders.conn import ConnYml
 from ..ql.ql_timing import Timing
 from ..sql import Sql
 
-connyml = ConnYml()
 logger = LoggerClass()
 timing = Timing()
 sql = Sql()
@@ -17,15 +16,14 @@ sql = Sql()
 
 class Interact:
     def __init__(self):
-        self.read = connyml.read_yaml()
+        pass
 
     def get_id(self, result):
         """
         用户如果转发频道消息给机器人返回频道ID
         :return:
         """
-        self.read = connyml.read_yaml()
-        chat_id = self.read['Administrator']
+        chat_id = father.AdReg.get('Administrator')
         try:
 
             if not chat_id or int(chat_id) != int(
@@ -50,11 +48,11 @@ class Interact:
                 # 下面是转发群组ID
                 idfor = re.findall('/forward ([0-9-]+)', result['message']['text'])
                 if idfor:
-                    return connyml.revise_yaml(f'Send_IDs: {idfor[0]}', self.read['Record']['Send_IDs'])
+                    return father.revise_Config('Send_IDs', idfor[0])
                 #  下面是脚本黑名单
                 add_js = re.findall('/prohibit ([0-9a-zA-Z_.]+)', result['message']['text'])
                 if add_js:
-                    return connyml.revise_yaml(f'prohibit: {self.read["prohibit"] + add_js}', self.read['Record']['prohibit'])
+                    return father.revise_Config('prohibit', father.AdReg.get("prohibit") + add_js)
                 # 下面是退出群聊
                 quit = re.findall('/quit (.*)', result['message']['text'])
                 # 退出群聊
@@ -67,7 +65,7 @@ class Interact:
                     if st:
                         inst = sql.insert(table=sql.surface[3], name=f"{puts[0]}", ip=f"{st[0]}",
                                            Client_ID=f"{puts[2]}", Client_Secret=f"{puts[3]}", Authorization="",
-                                           json=f"{self.read['json']}{puts[0]}.json", state=1)
+                                           json=f"{father.AdReg.get('json')}{puts[0]}.json", state=1)
                         if inst > 0:
                             return tg_mes.send_message(f"提交 {puts[0]} 成功", chat_id)
                         elif inst == -1:
@@ -96,7 +94,7 @@ class Interact:
         :return:
         """
         if not ids:
-            ids = self.read['Administrator']
+            ids = father.AdReg.get('Administrator')
         for i in range(4):
             tgid = tg_mes.send_message(result, ids)
             if tgid == 0:
@@ -108,7 +106,7 @@ class Interact:
         :param result:
         :return:
         """
-        chat_id = self.read['Administrator']
+        chat_id = father.AdReg.get('Administrator')
         if not chat_id or int(chat_id) != int(result['message']['from']['id']):
             return
         if result['message']['text'] == '/id':

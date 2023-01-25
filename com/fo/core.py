@@ -1,7 +1,6 @@
 import time
 
-from com import q
-from com.gheaders.conn import ConnYml
+from com import q, father
 from com.gheaders.log import LoggerClass
 from com.ql import QL
 from com.ql.ql_token import contrast, ql_compared, ql_write
@@ -10,7 +9,6 @@ from com.sql import Sql
 conn = Sql()
 ql = QL()
 logger = LoggerClass()
-connyml = ConnYml()
 
 
 class Main_core:
@@ -22,7 +20,6 @@ class Main_core:
         self.ql_js = 'qlva.sh'
         self.ql_cks = []
         # 添加配置文件的内容
-        self.yml = connyml.read_yaml()
         self.Mark = {}
 
     def main_while(self):
@@ -74,9 +71,8 @@ class Main_core:
         伪造队列，如果不在规定时间会让任务重新排队
         :return:
         """
-        self.yml = connyml.read_yaml()
         # 检测是否值1小黑屋
-        if data['jd_js'] in self.yml['prohibit']:
+        if data['jd_js'] in father.AdReg.get('prohibit'):
             logger.write_log(f'脚本 {data["jd_js"]} 被你的主人狠心的拖进小黑屋关了永久禁闭')
             return False
 
@@ -118,7 +114,7 @@ class Main_core:
                 continue
             if j == 0:
                 # 把关键字添加到数据库
-                ql_write(data, self.yml, ctr)
+                ql_write(data, ctr)
             # 向青龙配置文件添加活动
             revise = ql.configs_revise(self.ql_js, data["activities"], self.ql_cks[j])
 

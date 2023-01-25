@@ -2,7 +2,7 @@
 
 # 其他库
 requests > 1
-PyYAML > 1
+ruamel.yaml
 Flask > 1
 aiohttp >= 3.8.3
 APScheduler > 1
