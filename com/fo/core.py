@@ -44,7 +44,7 @@ class Main_core:
                 continue
 
             # 检测是否被执行过
-            ctr = contrast(data["activities"])
+            ctr = contrast(data)
             # 执行过返回-1结束
             if ctr[0] == -1:
                 q.task_done()
@@ -118,8 +118,7 @@ class Main_core:
                 continue
             if j == 0:
                 # 把关键字添加到数据库
-                ql_write(data["activities"], self.yml, ctr)
-            data["activities"] = str(data["activities"]).lstrip("NOT")
+                ql_write(data, self.yml, ctr)
             # 向青龙配置文件添加活动
             revise = ql.configs_revise(self.ql_js, data["activities"], self.ql_cks[j])
 

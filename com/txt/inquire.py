@@ -1,6 +1,6 @@
 import re
 
-from com import q
+from com import q, Markings
 from com.Plugin.lottery import Lottery
 from com.gheaders.log import LoggerClass
 from com.sql import Sql
@@ -52,7 +52,8 @@ class Conversion:
                         if zzbds:
                             li1s.append(i)
                     except Exception as e:
-                        logger.write_log(f"com.txt.inquire.Conversion.fuzzy_query 在对比数据库中出现异常: {e} 触发异常的值是 {url} 数据库值的脚本名称是 {i[2]}")
+                        logger.write_log(
+                            f"com.txt.inquire.Conversion.fuzzy_query 在对比数据库中出现异常: {e} 触发异常的值是 {url} 数据库值的脚本名称是 {i[2]}")
                 if li1s:
                     return li1s
                 logger.write_log("模糊查询中: " + str(url) + " 没有找到,请添加")
@@ -119,7 +120,10 @@ class Conversion:
         :return: 处理后的二维list，异常返回-1
         """
         try:
+            marking = None
             http = self.sh_venderId(http.replace('"', ""))
+            if http[0:3:] in Markings:
+                marking = http[0:3:]
 
             # 先查询是否存有这个链接
             li = self.fuzzy_query(http)
@@ -150,7 +154,7 @@ class Conversion:
                 if st2:
                     TYPE = re.findall("https://(\w{2})", http)[0]
                     st2 += f'export NOT_TYPE="{TYPE}";'
-                    self.tx_compared(st2, ink)
+                    self.tx_compared([marking, st2], ink)
             return 0
         except Exception as e:
             logger.write_log(f"com.txt.inquire.Conversion.https_txt,异常问题: {e} 活动链接 {http}")
@@ -180,14 +184,14 @@ class Conversion:
             logger.write_log("com.txt.inquire.Conversion.export_txt，异常问题: " + str(e))
             return -1
 
-    def tx_compared(self, tx1, value1=None):
+    def tx_compared(self, tx1: list, value1=None):
         """
         用于对比数据，由TG获取的文本对比数据库中的数据
         :return: 返回数组的脚本名称[0]和变量[1],异常返回-1
         """
         try:
             # 把export DPLHTY="b4be"的键和值分开
-            tx = re.findall('(export .*?)=(.*)', tx1)
+            tx = re.findall('(export .*?)=(.*)', tx1[1])
             # 如果分成两个尝试判断数据库中是否需要跳过去重复
             if value1 is None:
                 value1 = sql.selectTopone(table=sql.surface[0],
@@ -199,8 +203,9 @@ class Conversion:
                 # [脚本, 活动, 时间]
                 q.put({
                     "jd_js": value1[2],
-                    "activities": value1[3] + '=' + tx[0][1],
-                    "interval": value1[10]
+                    "activities": tx1[1],
+                    "interval": value1[10],
+                    "marking": value1[3][0:3:] if value1[3][0:3:] in Markings else tx1[0]
                 })
                 logger.write_log(f"脚本名称 {value1[1]} 脚本 {value1[2]} 加入队列任务, 当前队列任务剩余 {q.qsize()} 个")
                 return

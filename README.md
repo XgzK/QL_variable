@@ -242,6 +242,10 @@ docker build -t xgzk/qlvariable:latest .
     23/1/15 18:00
         优化去重复关键字提取问题
         优化去重复关键字垃圾代码可读性优化
+    23/1/25 15/00
+        对链接前面添加NOT或者RUN都会跳过重复执行脚本
+        RUNhttps://shop.m.jd.com/shop/lottery?shopId=645139&venderId=648822&channel=406&venderType=0
+        RUNexport jd_zdjr_activityId="90552d49457d4572a1d66fd3b04b9150"
 ```
 ### 插件
 ```text

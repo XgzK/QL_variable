@@ -1,6 +1,7 @@
 import re
 from urllib import parse
 
+from com import Markings
 from com.bot.information import Interact
 from com.gheaders.conn import ConnYml
 from com.gheaders.log import LoggerClass
@@ -44,7 +45,7 @@ class Delivery:
         """
         try:
             # 获取链接
-            ht_tx = re.findall(r'(https://[\w\-\.]+(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tg_text)
+            ht_tx = re.findall(r'((?:NOT|RUN)https://[\w\-\.]+(?:isv|jd).*?\.com/[a-zA-Z0-9&?=_/-].*)"?', tg_text)
             if not ht_tx:
                 return []
             for i in ht_tx:
@@ -69,7 +70,7 @@ class Delivery:
 
             for poi in points:
 
-                re_text = re.findall(r'(export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.?=-]{5,})"?', poi, re.S)
+                re_text = re.findall(r'((?:NOT|RUN)?export [0-9a-zA-Z_]+)="?([A-Za-z0-9&_/:.?=-]{5,})"?', poi, re.S)
                 # 如果获取数组为空跳过
                 if not re_text or len(re_text[0]) != 2:
                     continue
@@ -103,17 +104,21 @@ class Delivery:
         :return:
         """
         try:
+            marking = None
+            if export_text[0:3:] in Markings:
+                marking = export_text[0:3:]
             url_list = conver.turn_url(export_text)
 
             if not url_list:
                 interact.distribute(url_list) if self.read["Send_IDs"] else ""
                 export_text += 'export NOT_TYPE="no";'
-                conver.tx_compared(export_text)
+                conver.tx_compared([marking, export_text])
                 return
             tx = ''
 
             for url in url_list:
                 tx += url + '\n'
+                url = marking + url if marking else url
                 conver.https_txt(url)
 
             interact.distribute(tx, self.read["Send_IDs"]) if self.read["Send_IDs"] else ""
