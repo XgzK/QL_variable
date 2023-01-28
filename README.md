@@ -246,8 +246,26 @@ docker build -t xgzk/qlvariable:latest .
         对链接前面添加NOT或者RUN都会跳过重复执行脚本
         RUNhttps://shop.m.jd.com/shop/lottery?shopId=645139&venderId=648822&channel=406&venderType=0
         RUNexport jd_zdjr_activityId="90552d49457d4572a1d66fd3b04b9150"
+3.4重写版本(开发中)
+        对代码进行逻辑方面重写，修补上面版本各种BUG问题
+        对垃圾代码进行逻辑的升华
+        减少时间上执行上损耗
+    
 ```
 ### 插件
 ```text
 添加解析 店铺抽豆 解析插件 com.Plugin.lottery
+```
+
+### 活动逻辑改变
+```text
+把活动分成纯链接和活动变量
+获取任务的脚本
+传递去队列
+    如果有
+        执行
+    如果无
+        转换成链接
+        再把链接转换成多变量
+        一个个尝试如果有立刻停止
 ```

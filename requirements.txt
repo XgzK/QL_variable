@@ -7,12 +7,12 @@ Flask > 1
 aiohttp >= 3.8.3
 APScheduler > 1
 colorlog >= 6.7.0
-httpx
-httpx[socks]
+
 socksio >= 1.0.0
 Flask-Cors
 pyinstaller
-
+requests[socks]
+pysocks
 # ws需要插件
 simple-websocket
 Flask-SocketIO==5.2.0
