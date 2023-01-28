@@ -2,6 +2,8 @@
 长链接请求,后期处理
 """
 import json
+import re
+
 import requests
 
 from conn.Template.ancestors import Father
@@ -35,6 +37,8 @@ class GetUpdate(Father):
         :return:
         """
         try:
+            if not re.findall('(/bot\w+)', self.Token):
+                self.Update()
             resp = requests.post(
                 url=self.url + self.Token + url,
                 headers=self.headers,
@@ -45,6 +49,7 @@ class GetUpdate(Father):
             if resp.status_code == 200:
                 return [resp.status_code, resp.json()]
             else:
+                print(resp.url)
                 return [resp.status_code, resp.json()]
         except Exception as e:
             return [0, {'ok': False, 'result': [e]}]

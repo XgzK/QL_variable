@@ -63,3 +63,5 @@ class Father:
             self.flash_Config()
             self.Marking_time = int(os.environ.get('marking_time', 0))
             print("配置文件发生改变重新获取新的内容")
+            return True
+        return Father
