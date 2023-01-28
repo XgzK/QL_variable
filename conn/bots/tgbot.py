@@ -67,6 +67,7 @@ class Filter:
         """
         tf = True
         while tf:
+            self.getdata.marking_time()
             if self.getdata.AdReg.get('Token'):
                 self.getdata.Update()
                 tf = False
