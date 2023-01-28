@@ -112,5 +112,5 @@ class Interaction(GetUpdate):
         初始化主动获取列表
         :return:
         """
-        self.timing.check_ct()
+        self.timing.check_ct(state=1)
         self.timing.clear_list()
