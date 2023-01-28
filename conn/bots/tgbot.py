@@ -73,7 +73,7 @@ class Filter:
                 tf = False
             else:
                 print('没有填写到机器人Token')
-                time.sleep(30)
+                time.sleep(15)
         while True:
             self.getdata.marking_time()
             tg_list = self.getdata.get_long_link(allowed_updates=util.update_types, timeout=100)

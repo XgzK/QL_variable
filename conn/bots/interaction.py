@@ -42,21 +42,21 @@ class Interaction(GetUpdate):
             else:
                 return
 
-    def for_message(self, text: str, tf: bool = True, chat_id: str = ''):
+    def for_message(self, texts: str, tf: bool = True, chat_id: str = None):
         """
         转发消息
-        :param text:
+        :param texts:
         :param tf: 默认转发到频道
         :param chat_id:
         :return:
         """
         self.marking_time()
         if chat_id:
-            self.send_message(text=text, chat_id=chat_id)
+            self.send_message(text=texts, chat_id=chat_id)
         elif tf and self.AdReg.get('Send_IDs'):
-            self.send_message(text=text, chat_id=self.AdReg.get('Send_IDs'))
+            self.send_message(text=texts, chat_id=self.AdReg.get('Send_IDs'))
         elif not tf and self.AdReg.get('Administrator'):
-            self.send_message(text=text, chat_id=self.AdReg.get('Administrator'))
+            self.send_message(text=texts, chat_id=self.AdReg.get('Administrator'))
 
     def from_forward(self, param):
         """
