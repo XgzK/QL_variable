@@ -99,7 +99,7 @@ class Sorting:
 
                     if text2[0] in rep.keys():
                         # 如果关键字在数组中执行并且清空字典
-                        ex_name = self.sundries.looking(re_text[0][0])
+                        ex_name = self.sundries.looking(rep.get(text2[0])["expport"])
                         if ex_name:
                             # 发送去队列了
                             spell += 'export NOT_TYPE="no";'
@@ -111,12 +111,13 @@ class Sorting:
 
                     # 如果关键字不在数组加入数组
                     rep.setdefault(text2[0], {
-                        "mark": mark
+                        "mark": mark,
+                        "expport": re_text[0][0]
                     })
                     spell += text2[0] + '="' + str(text2[1]) + '";'
             if spell:
                 # 如果值相同转发，一般是最后一个了,可能有BUG
-                ex_name = self.sundries.looking(re_text[0][0])
+                ex_name = self.sundries.looking(rep.get(list(rep.keys())[0])["expport"])
                 if not ex_name:
                     self.logger.write_log(f"没有查询到 {poi}")
                 # 发送去队列了
