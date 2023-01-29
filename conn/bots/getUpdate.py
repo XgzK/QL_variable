@@ -48,8 +48,12 @@ class GetUpdate(Father):
             )
             if resp.status_code == 200:
                 return [resp.status_code, resp.json()]
+            # 502 和409表示没有消息
+            elif resp.status_code in [502, 409]:
+                return [200, {"ok": True, "result": []}]
+            elif resp.status_code == 404:
+                return [resp.status_code, {"ok": False, "result": [f'404: {resp.text}']}]
             else:
-                print(resp.url)
                 return [resp.status_code, resp.json()]
         except Exception as e:
             return [0, {'ok': False, 'result': [e]}]
@@ -79,7 +83,9 @@ class GetUpdate(Father):
                     self.offset = getUp[1]['result'][len(getUp[1]['result']) - 1]['update_id'] + 1
                 return getUp[1]['result']
             else:
-                self.log_write(f'状态码: {getUp[0]} 发生异常事件: {getUp[1]["result"][0]}', level='error')
+                self.log_write(
+                    f'conn.bots.getUpdate.GetUpdate.get_long_link状态码: {getUp[0]} 发生异常事件: {getUp[1]["result"][0]}',
+                    level='error')
                 return []
         #     with httpx.Client(base_url=self.url, proxies=self.proxies) as client:
         #         ur = client.get(
@@ -131,7 +137,7 @@ class GetUpdate(Father):
         #                 logger.write_log(f"转发消息失败\n状态码{js['error_code']}\n失败原因{js['description']}")
         #             return -1
         except Exception as e:
-            self.log_write(f"发送消息异常: {e}", level='error')
+            self.log_write(f"conn.bots.getUpdate.GetUpdate.get_long_link 异常: {e}", level='error')
             return -1
 
     def send_message(self, chat_id: str, text: str):
@@ -146,15 +152,20 @@ class GetUpdate(Father):
             if send[0] == 200:
                 return 0
             elif send[0] == 403:
-                self.log_write(f"转发消息失败，机器人不在你转发的频道或者群组\n状态码{send[0]}\n失败原因{send[1]}",
-                               level='error')
+                self.log_write(
+                    f"conn.bots.getUpdate.GetUpdate.send_message转发消息失败，机器人不在你转发的频道或者群组\n状态码{send[0]}\n失败原因{send[1]}",
+                    level='error')
             elif send[0] == 400:
-                self.log_write(f"转发消息失败，可能问题权限不足\n状态码{send[0]}\n失败原因{send[1]}", level='error')
+                self.log_write(
+                    f"conn.bots.getUpdate.GetUpdate.send_message转发消息失败，可能问题权限不足\n状态码{send[0]}\n失败原因{send[1]}",
+                    level='error')
             else:
-                self.log_write(f"转发消息失败\n状态码{send[0]}\n失败原因{send[1]}", level='error')
+                self.log_write(
+                    f"conn.bots.getUpdate.GetUpdate.send_message转发消息失败\n状态码{send[0]}\n失败原因{send[1]}",
+                    level='error')
             return []
         except Exception as e:
-            self.log_write(f"发送消息异常: {e}", level='error')
+            self.log_write(f"conn.bots.getUpdate.GetUpdate.send_message发送消息异常: {e}", level='error')
             return []
 
     def banChatMember(self, chat_id, user_id):

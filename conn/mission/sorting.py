@@ -69,6 +69,7 @@ class Sorting:
         :param text_str:
         :return:
         """
+        global re_text, poi, mark
         try:
             # 对多个参数支持
             points = text_str.split('\n')
