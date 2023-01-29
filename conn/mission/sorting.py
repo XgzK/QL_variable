@@ -29,10 +29,10 @@ class Sorting:
             if re.findall(r'(https://u\.jd\.com/.*?)', tg_text, re.S):
                 return
 
-            if not re.findall('(?:NOTexport|RUNexport|export)\s+[0-9a-zA-Z_]+="?https://', tg_text):
-                self.finishing_url(tg_text)
+            if re.findall('(?:NOTexport|RUNexport|export)\s+[0-9a-zA-Z_]+=', tg_text):
+                self.finishing_text(tg_text)
                 return
-            self.finishing_text(tg_text)
+            self.finishing_url(tg_text)
         except Exception as e:
             self.logger.write_log(f"com.txt.txt.zil.Delivery.dispatch 异常 {e}")
 
