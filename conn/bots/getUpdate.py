@@ -46,6 +46,7 @@ class GetUpdate(Father):
                 data=json.dumps(data),
                 timeout=2000
             )
+            resp.close()
             if resp.status_code == 200:
                 return [resp.status_code, resp.json()]
             # 502 和409表示没有消息

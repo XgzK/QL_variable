@@ -50,7 +50,6 @@ class Interaction(GetUpdate):
         :param chat_id:
         :return:
         """
-        print('进入转发')
         self.marking_time()
         if chat_id:
             self.send_message(text=texts, chat_id=chat_id)
