@@ -23,7 +23,7 @@ class Interaction(GetUpdate):
         """
         self.marking_time()
         # 把用户指令分为两种一种只有指令
-        res = re.findall("^(/\w+) ([0-9a-zA-z_@:/.]+)", text)
+        res = re.findall("^(/\w+)\s+([0-9a-zA-z_@:/.—-]+)", text)
         if res:
             if res[0][0] == "/forward":
                 return self.from_forward(res[0][1])
@@ -50,6 +50,7 @@ class Interaction(GetUpdate):
         :param chat_id:
         :return:
         """
+        print('进入转发')
         self.marking_time()
         if chat_id:
             self.send_message(text=texts, chat_id=chat_id)

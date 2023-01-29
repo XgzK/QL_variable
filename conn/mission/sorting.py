@@ -113,17 +113,15 @@ class Sorting:
                         "mark": mark
                     })
                     spell += text2[0] + '="' + str(text2[1]) + '";'
-
-                    # 如果值相同转发，一般是最后一个了,可能有BUG
-                    if re_text[-1][-1] == text2[-1]:
-                        ex_name = self.sundries.looking(re_text[0][0])
-                        if not ex_name:
-                            self.logger.write_log(f"没有查询到 {poi}")
-                            continue
-                        # 发送去队列了
-                        spell += 'export NOT_TYPE="no";'
-                        self.sundries.tx_compared([mark, ex_name, spell])
-                    return [0]
+            if spell:
+                # 如果值相同转发，一般是最后一个了,可能有BUG
+                ex_name = self.sundries.looking(re_text[0][0])
+                if not ex_name:
+                    self.logger.write_log(f"没有查询到 {poi}")
+                # 发送去队列了
+                spell += 'export NOT_TYPE="no";'
+                self.sundries.tx_compared([mark, ex_name, spell])
+                return [0]
             return []
         except Exception as e:
             self.logger.write_log(f"conn.mission.sorting.Sorting.finishing_text 异常 {e}")
