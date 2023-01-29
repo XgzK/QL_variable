@@ -18,7 +18,9 @@ class RunMain(Father):
         self.yml.creat_yml()
         self.chech = Check()
         self.timing = Timing()
+        self.filter = Filter()
         os.environ['marking_time'] = '0'
+        self.core = Main_core()
 
     def ti_ck(self):
         """
@@ -43,11 +45,11 @@ class RunMain(Father):
                      port=5008)
 
     def bot_main(self):
-        Check().cpath()
+        self.chech.cpath()
         scheduler = BackgroundScheduler()
         # 使用多线程防止任务阻塞
         t1 = threading.Thread(target=self.run_web)
-        t2 = threading.Thread(target=Main_core().main_while)
+        t2 = threading.Thread(target=self.core.main_while)
 
         t1.start()
 
@@ -59,7 +61,7 @@ class RunMain(Father):
         self.ti_ck()
         t2.start()
         self.log_write("云端数据库同步成功") if self.chech.sql() == 0 else self.log_write("云端数据库同步失败")
-        Filter().main_bots()
+        self.filter.main_bots()
 
 
 if __name__ == '__main__':

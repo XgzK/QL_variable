@@ -73,7 +73,8 @@ class Interaction(GetUpdate):
         :param param:
         :return:
         """
-        self.revise_Config('prohibit', self.AdReg.get("prohibit").append(param))
+        li = self.AdReg.get("prohibit") + [param] if self.AdReg.get("prohibit") is not None else [param]
+        self.revise_Config('prohibit', li)
         os.environ['marking_time'] = str(int(time.time()))
 
     def from_quit(self, param):

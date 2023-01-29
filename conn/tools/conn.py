@@ -16,7 +16,7 @@ class ConnYml:
             "Administrator": "",
             "Token": "",
             "Send_IDs": "",
-            "prohibit": [],
+            "prohibit": [' '],
             "Proxy": {
                 "Proxy": "",
                 "TG_API_HOST": "https://api.telegram.org",
