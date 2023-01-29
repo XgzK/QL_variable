@@ -50,17 +50,20 @@ class Interaction(GetUpdate):
         :param chat_id:
         :return:
         """
-        self.marking_time()
-        for i in range(5):
-            send = [0]
-            if chat_id:
-                send = self.send_message(text=texts, chat_id=chat_id)
-            elif tf and self.AdReg.get('Send_IDs'):
-                send = self.send_message(text=texts, chat_id=self.AdReg.get('Send_IDs'))
-            elif not tf and self.AdReg.get('Administrator'):
-                send = self.send_message(text=texts, chat_id=self.AdReg.get('Administrator'))
-            if send[0] == 200:
-                return
+        try:
+            self.marking_time()
+            send = 0
+            for i in range(5):
+                if chat_id:
+                    send = self.send_message(text=texts, chat_id=chat_id)
+                elif tf and self.AdReg.get('Send_IDs'):
+                    send = self.send_message(text=texts, chat_id=self.AdReg.get('Send_IDs'))
+                elif not tf and self.AdReg.get('Administrator'):
+                    send = self.send_message(text=texts, chat_id=self.AdReg.get('Administrator'))
+                if send == 200:
+                    return
+        except Exception as e:
+            print(e)
 
     def from_forward(self, param):
         """
