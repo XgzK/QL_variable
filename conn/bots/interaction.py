@@ -51,12 +51,16 @@ class Interaction(GetUpdate):
         :return:
         """
         self.marking_time()
-        if chat_id:
-            self.send_message(text=texts, chat_id=chat_id)
-        elif tf and self.AdReg.get('Send_IDs'):
-            self.send_message(text=texts, chat_id=self.AdReg.get('Send_IDs'))
-        elif not tf and self.AdReg.get('Administrator'):
-            self.send_message(text=texts, chat_id=self.AdReg.get('Administrator'))
+        for i in range(5):
+            send = [0]
+            if chat_id:
+                send = self.send_message(text=texts, chat_id=chat_id)
+            elif tf and self.AdReg.get('Send_IDs'):
+                send = self.send_message(text=texts, chat_id=self.AdReg.get('Send_IDs'))
+            elif not tf and self.AdReg.get('Administrator'):
+                send = self.send_message(text=texts, chat_id=self.AdReg.get('Administrator'))
+            if send[0] == 200:
+                return
 
     def from_forward(self, param):
         """

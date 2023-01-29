@@ -151,23 +151,25 @@ class GetUpdate(Father):
         try:
             send = self.http_post('/sendMessage', {"chat_id": chat_id, "text": text})
             if send[0] == 200:
-                return 0
+                return send[0]
             elif send[0] == 403:
                 self.log_write(
                     f"conn.bots.getUpdate.GetUpdate.send_message转发消息失败，机器人不在你转发的频道或者群组\n状态码{send[0]}\n失败原因{send[1]}",
                     level='error')
+                return send[0]
             elif send[0] == 400:
                 self.log_write(
                     f"conn.bots.getUpdate.GetUpdate.send_message转发消息失败，可能问题权限不足\n状态码{send[0]}\n失败原因{send[1]}",
                     level='error')
+                return send[0]
             else:
                 self.log_write(
                     f"conn.bots.getUpdate.GetUpdate.send_message转发消息失败\n状态码{send[0]}\n失败原因{send[1]}",
                     level='error')
-            return []
+                return send[0]
         except Exception as e:
             self.log_write(f"conn.bots.getUpdate.GetUpdate.send_message发送消息异常: {e}", level='error')
-            return []
+            return [0]
 
     def banChatMember(self, chat_id, user_id):
         """
