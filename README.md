@@ -246,13 +246,13 @@ docker build -t xgzk/qlvariable:latest .
         对链接前面添加NOT或者RUN都会跳过重复执行脚本
         RUNhttps://shop.m.jd.com/shop/lottery?shopId=645139&venderId=648822&channel=406&venderType=0
         RUNexport jd_zdjr_activityId="90552d49457d4572a1d66fd3b04b9150"
-3.4重写版本(开发中)
+3.4重写版本
         对代码进行逻辑方面重写，修补上面版本各种BUG问题
         对垃圾代码进行逻辑的升华
         减少时间上执行上损耗
     23/1/30 12/00
         尝试修复转发问题429问题
-    23/1/30 19/00
+    23/1/30 19/00(稳定版本)
         HTTPSConnectionPool异常问题修复
         对转发进行去重复进行调整
 ```
