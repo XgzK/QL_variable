@@ -27,6 +27,7 @@ class GetUpdate(Father):
             "http": self.AdReg.get('Proxy')['Proxy']
         }
         self.offset = None
+        self.verify = None if self.AdReg.get('Proxy')["TG_API_HOST"] == "https://api.telegram.org" else False
         self.status = ["left", "member", "administrator", "creator"]
 
     def http_post(self, url, data):
@@ -44,6 +45,7 @@ class GetUpdate(Father):
                 headers=self.headers,
                 proxies=self.proxies,
                 data=json.dumps(data),
+                verify=self.verify,
                 timeout=2000
             )
             resp.close()
@@ -249,4 +251,5 @@ class GetUpdate(Father):
             "http": self.AdReg.get('Proxy')['Proxy']
         }
         self.offset = None
+        self.verify = None if self.AdReg.get('Proxy')["TG_API_HOST"] == "https://api.telegram.org" else False
         self.status = ["left", "member", "administrator", "creator"]
