@@ -1,4 +1,5 @@
 import os
+import random
 import re
 import time
 
@@ -62,6 +63,7 @@ class Interaction(GetUpdate):
                     send = self.send_message(text=texts, chat_id=self.AdReg.get('Administrator'))
                 if send == 200:
                     return
+                time.sleep(random.randint(1, 10))
         except Exception as e:
             print(e)
 

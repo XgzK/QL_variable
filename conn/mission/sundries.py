@@ -274,8 +274,6 @@ class Sundries(Father):
         :return: 返回数组的脚本名称[0]和变量[1],异常返回-1
         """
         try:
-            # 转发
-            self.interaction.for_message(value1[2])
             # [脚本, 活动, 时间, 关键字]
             q.put({
                 "jd_js": value1[1].jd_js,
