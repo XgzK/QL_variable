@@ -120,6 +120,7 @@ class Sorting:
                 ex_name = self.sundries.looking(rep.get(list(rep.keys())[0])["expport"])
                 if not ex_name:
                     self.logger.write_log(f"没有查询到 {poi}")
+                    return []
                 # 发送去队列了
                 spell += 'export NOT_TYPE="no";'
                 self.sundries.tx_compared([mark, ex_name, spell])
