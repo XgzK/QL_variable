@@ -52,7 +52,6 @@ class Sorting:
             if not ht_tx:
                 return []
             for i in ht_tx:
-                self.sundries.interaction.for_message(i)
                 text_list = self.sundries.https_txt(i)
                 if not text_list:
                     continue
@@ -99,7 +98,6 @@ class Sorting:
                         continue
 
                     if text2[0] in rep.keys():
-                        self.sundries.interaction.for_message(spell)
                         # 如果关键字在数组中执行并且清空字典
                         ex_name = self.sundries.looking(rep.get(text2[0])["expport"])
                         if ex_name:
@@ -122,7 +120,6 @@ class Sorting:
                 ex_name = self.sundries.looking(rep.get(list(rep.keys())[0])["expport"])
                 if not ex_name:
                     self.logger.write_log(f"没有查询到 {poi}")
-                self.sundries.interaction.for_message(spell)
                 # 发送去队列了
                 spell += 'export NOT_TYPE="no";'
                 self.sundries.tx_compared([mark, ex_name, spell])

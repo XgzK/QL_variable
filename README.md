@@ -252,6 +252,9 @@ docker build -t xgzk/qlvariable:latest .
         减少时间上执行上损耗
     23/1/30 12/00
         尝试修复转发问题429问题
+    23/1/30 19/00
+        HTTPSConnectionPool异常问题修复
+        对转发进行去重复进行调整
 ```
 ### 插件
 ```text

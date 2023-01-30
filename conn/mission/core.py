@@ -33,13 +33,6 @@ class Main_core():
                 q.task_done()
                 continue
 
-            self.ql_cks = self.conn.selectAll(table=self.conn.surface[3], where="state=0")
-            if not self.ql_cks:
-                q.task_done()
-                self.logger.write_log("主人你好像没有对接青龙或者没有给我发送 /start")
-                time.sleep(15)
-                continue
-
             # 检测是否被执行过
             ctr = self.sundries.contrast(data)
             # 执行过返回-1结束
@@ -57,6 +50,16 @@ class Main_core():
                 self.logger.write_log(f"识别到关键字已经执行过了, 关键字: {ctr[1]}")
                 q.task_done()
                 time.sleep(2)
+                continue
+
+            # 转发
+            self.sundries.interaction.for_message(data['activities'])
+
+            self.ql_cks = self.conn.selectAll(table=self.conn.surface[3], where="state=0")
+            if not self.ql_cks:
+                q.task_done()
+                self.logger.write_log("主人你好像没有对接青龙或者没有给我发送 /start")
+                time.sleep(15)
                 continue
 
             # 加入数组伪装队列
