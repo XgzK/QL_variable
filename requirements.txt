@@ -1,18 +1,19 @@
 # pip3 install -r requirements.txt
 
 # 其他库
+httpx
+httpx[socks]
 requests
+requests[socks]
+pysocks
 ruamel.yaml == 0.17.21
 Flask > 1
 aiohttp >= 3.8.3
 APScheduler > 1
 colorlog >= 6.7.0
-
 socksio >= 1.0.0
 Flask-Cors
 pyinstaller
-requests[socks]
-pysocks
 # ws需要插件
 simple-websocket
 Flask-SocketIO==5.2.0

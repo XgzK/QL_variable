@@ -96,7 +96,9 @@ class Main_core():
                 elif sun < 10:
                     time.sleep(int(data['interval']) / 4)
                 elif sun < 20:
-                    time.sleep(2)
+                    time.sleep(3)
+                else:
+                    time.sleep(1)
                 return False
 
         return True

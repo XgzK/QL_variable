@@ -86,14 +86,15 @@ class Sorting:
 
                 # 如果一行出现两个关键字
                 for text2 in re_text:
-
+                    text2 = list(text2)
                     mark = ""
                     mark_text = re.findall("((?:NOT|RUN)+)", text2[0])
                     if mark_text:
                         mark = mark_text[0]
+                        text2[0] = text2[0][3::]
 
                     # 如果值存在关键字跳过执行
-                    if re.findall('(?:shopId\d?|venderId\d?|shopid\d?|venderid\d?)', text2[-1]):
+                    if re.findall('(?:shopId\d|venderId\d|shopid\d|venderid\d)', text2[-1]):
                         self.logger.write_log(f"检测到屏蔽关键字屏蔽内容是: {poi}")
                         continue
 
@@ -101,8 +102,12 @@ class Sorting:
                         # 如果关键字在数组中执行并且清空字典
                         ex_name = self.sundries.looking(rep.get(text2[0])["expport"])
                         if ex_name:
+                            TYPE = re.findall("https://(\w{2})", spell)
+                            if TYPE:
+                                spell += f'export NOT_TYPE="{TYPE[0]}";'
+                            else:
+                                spell += 'export NOT_TYPE="no";'
                             # 发送去队列了
-                            spell += 'export NOT_TYPE="no";'
                             self.sundries.tx_compared([rep.get(text2[0])['mark'], ex_name, spell])
                         else:
                             spell = ''
@@ -112,7 +117,7 @@ class Sorting:
                     # 如果关键字不在数组加入数组
                     rep.setdefault(text2[0], {
                         "mark": mark,
-                        "expport": re_text[0][0]
+                        "expport": text2[0]
                     })
                     spell += text2[0] + '="' + str(text2[1]) + '";'
             if spell:
@@ -121,8 +126,13 @@ class Sorting:
                 if not ex_name:
                     self.logger.write_log(f"没有查询到 {poi}")
                     return []
+                # 尝试获取活动类型
+                TYPE = re.findall("https://(\w{2})", spell)
+                if TYPE:
+                    spell += f'export NOT_TYPE="{TYPE[0]}";'
+                else:
+                    spell += 'export NOT_TYPE="no";'
                 # 发送去队列了
-                spell += 'export NOT_TYPE="no";'
                 self.sundries.tx_compared([mark, ex_name, spell])
                 return [0]
             return []

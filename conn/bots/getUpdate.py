@@ -4,7 +4,7 @@
 import json
 import re
 
-import requests
+import httpx
 
 from conn.Template.ancestors import Father
 
@@ -22,12 +22,8 @@ class GetUpdate(Father):
             "offset": 0,
             "timeout": 100
         }
-        self.proxies = {
-            "https": self.AdReg.get('Proxy')['Proxy'],
-            "http": self.AdReg.get('Proxy')['Proxy']
-        }
+        self.proxies = self.AdReg.get('Proxy')['Proxy'] if self.AdReg.get('Proxy')['Proxy'] else None
         self.offset = None
-        self.verify = None if self.AdReg.get('Proxy')["TG_API_HOST"] == "https://api.telegram.org" else False
         self.status = ["left", "member", "administrator", "creator"]
 
     def http_post(self, url, data):
@@ -40,24 +36,18 @@ class GetUpdate(Father):
         try:
             if not re.findall('(/bot\w+)', self.Token):
                 self.Update()
-            resp = requests.post(
-                url=self.url + self.Token + url,
-                headers=self.headers,
-                proxies=self.proxies,
-                data=json.dumps(data),
-                verify=self.verify,
-                timeout=2000
-            )
-            resp.close()
-            if resp.status_code == 200:
-                return [resp.status_code, resp.json()]
-            # 502 和409表示没有消息
-            elif resp.status_code in [502, 409]:
-                return [200, {"ok": True, "result": []}]
-            elif resp.status_code == 404:
-                return [resp.status_code, {"ok": False, "result": [f'404: {resp.text}']}]
-            else:
-                return [resp.status_code, resp.json()]
+            with httpx.Client(proxies=self.proxies, timeout=200, headers=self.headers) as client:
+                resp = client.post(url=self.url + self.Token + url, data=json.dumps(data))
+                resp.close()
+                if resp.status_code == 200:
+                    return [resp.status_code, resp.json()]
+                # 502 和409表示没有消息
+                elif resp.status_code in [502, 409]:
+                    return [200, {"ok": True, "result": []}]
+                elif resp.status_code == 404:
+                    return [resp.status_code, {"ok": False, "result": [f'404: {resp.text}']}]
+                else:
+                    return [resp.status_code, resp.json()]
         except Exception as e:
             return [0, {'ok': False, 'result': [e]}]
 
@@ -75,7 +65,7 @@ class GetUpdate(Father):
         """
         try:
             data = {
-                'offset': f"{offset if offset else self.offset}",
+                'offset': self.offset,
                 'limit': limit,
                 'timeout': timeout,
                 'allowed_updates': allowed_updates
@@ -236,20 +226,7 @@ class GetUpdate(Father):
         更新GetUpdate和父类
         :return:
         """
-        self.marking_time()
+        self.flash_Config()
         self.url = self.AdReg.get('Proxy')["TG_API_HOST"]
         self.Token = "/bot" + self.AdReg.get('Token')
-        self.headers = {"Content-Type": "application/json",
-                        "Connection": "close",
-                        }
-        self.data = {
-            "offset": 0,
-            "timeout": 100
-        }
-        self.proxies = {
-            "https": self.AdReg.get('Proxy')['Proxy'],
-            "http": self.AdReg.get('Proxy')['Proxy']
-        }
-        self.offset = None
-        self.verify = None if self.AdReg.get('Proxy')["TG_API_HOST"] == "https://api.telegram.org" else False
-        self.status = ["left", "member", "administrator", "creator"]
+        self.proxies = self.AdReg.get('Proxy')['Proxy']
