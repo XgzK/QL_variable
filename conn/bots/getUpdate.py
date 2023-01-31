@@ -229,4 +229,4 @@ class GetUpdate(Father):
         self.flash_Config()
         self.url = self.AdReg.get('Proxy')["TG_API_HOST"]
         self.Token = "/bot" + self.AdReg.get('Token')
-        self.proxies = self.AdReg.get('Proxy')['Proxy']
+        self.proxies = self.AdReg.get('Proxy')['Proxy'] if self.AdReg.get('Proxy')['Proxy'] else None

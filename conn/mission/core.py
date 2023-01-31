@@ -120,7 +120,8 @@ class Main_core():
                 url = self.sundries.turn_url(data["activities"])
                 # 没有获取到
                 if not url:
-                    self.logger.write_log(f"脚本 {data['jd_js']} 没有找到, 请主人别忘记找寻缺失的一部分哦")
+                    self.logger.write_log(f"脚本 {data['jd_js']} 活动参数 {data['activities']} 没有找到, 开始进行系列脚本匹配")
+                    continue
                 # 记录是否被执行
                 tf1 = True
                 for va in url:
@@ -140,6 +141,7 @@ class Main_core():
                         break
                     if tf1:
                         self.logger.write_log(f"系列脚本缺失提醒: {url[0]}")
+                        continue
             else:
                 # 如果有这个任务就执行
                 self.for_ql(j, data, ctr, ids)
