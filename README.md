@@ -50,6 +50,7 @@ touch /ql/data/config/qlva.sh
     /putk 别名@青龙URL@Client_ID@Client_Secret 提交青龙相关执行参数 别名不能相同否则无法提交成功(提交的无法被执行)
     /start 启动提交的青龙，如果任务异常会被删除,也可以同步青龙任务
 机器人交互设置
+    /delay 秒 脚本执行结束多少秒执行下一个脚本(23/2/1 18/00版本添加指令)
     找 https://t.me/BotFather 发送 /setprivacy 选择自己使用的机器人名称 选择D开头的
     怎么申请机器人自己百度
 没有代理的把下面连接填写反代里 (反代不能转发，会乱码)
@@ -255,6 +256,8 @@ docker build -t xgzk/qlvariable:latest .
     23/1/30 19/00(稳定版本)
         HTTPSConnectionPool异常问题修复
         对转发进行去重复进行调整
+    23/2/1 18/00
+        添加delay指令脚本执行后延迟秒数
 ```
 ### 插件
 ```text

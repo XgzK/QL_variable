@@ -34,6 +34,8 @@ class Interaction(GetUpdate):
                 return self.from_quit(res[0][1])
             elif res[0][0] == "/putk":
                 return self.from_putk(res[0][1])
+            elif res[0][0] == "/delay":
+                return self.from_delay(res[0][1])
             else:
                 return
         res = re.findall("^(/\w+)$", text)
@@ -124,3 +126,15 @@ class Interaction(GetUpdate):
         """
         self.timing.check_ct(state=1)
         self.timing.clear_list()
+
+    def from_delay(self, param):
+        """
+        对脚本添加延迟
+        :param param:
+        :return:
+        """
+        if param.isdigit():
+            self.revise_Config('Delay', int(param))
+            os.environ['marking_time'] = str(int(time.time()))
+        else:
+            self.for_message('请输入类型为数字', False)
