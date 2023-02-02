@@ -38,16 +38,18 @@ class GetUpdate(Father):
                 self.Update()
             with httpx.Client(proxies=self.proxies, timeout=200, headers=self.headers) as client:
                 resp = client.post(url=self.url + self.Token + url, data=json.dumps(data))
-                resp.close()
-                if resp.status_code == 200:
-                    return [resp.status_code, resp.json()]
+                code = resp.status_code
                 # 502 和409表示没有消息
-                elif resp.status_code in [502, 409]:
+                if code in [502, 409]:
                     return [200, {"ok": True, "result": []}]
-                elif resp.status_code == 404:
-                    return [resp.status_code, {"ok": False, "result": [f'404: {resp.text}']}]
+                elif code == 404:
+                    return [code, {"ok": False, "result": [f'404: {resp.text}']}]
+                resp_js = resp.json()
+                resp.close()
+                if code == 200:
+                    return [code, resp_js]
                 else:
-                    return [resp.status_code, resp.json()]
+                    return [code, resp_js]
         except Exception as e:
             return [0, {'ok': False, 'result': [e]}]
 

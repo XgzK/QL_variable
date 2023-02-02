@@ -23,8 +23,11 @@ class Message(Father):
         """
         # 判断消息来源
         if message['chat']['type'] == 'private':
+            if not 'text' in message:
+                return
             # 私聊消息
-            print(
+
+            self.log_write(
                 f"{datetime.datetime.now()} ID: {message['chat']['id']} {'用户: @' + message['chat']['username'] if 'username' in message['chat'] else ''} 用户名: {message['chat']['first_name'] if 'first_name' in message['chat'] else ''} {message['chat']['last_name'] if 'last_name' in message['chat'] else ''} 发送内容: {message['text']}")
             if message['text'].startswith('/'):
                 if message['chat']['id'] == self.AdReg.get('Administrator'):
