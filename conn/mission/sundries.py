@@ -1,13 +1,15 @@
 import datetime
 import re
+from queue import Queue
 
-from conn import q
 from conn.Plugin.lottery import Lottery
 from conn.Template.ancestors import Father
 from conn.Template.jdql import JdQl
 from conn.bots.interaction import Interaction
 from conn.tools.log import LoggerClass
 from conn.tools.sql import Sql
+
+q = Queue()
 
 
 class Sundries(Father):
@@ -17,6 +19,7 @@ class Sundries(Father):
         处理杂物的类
         """
         super().__init__()
+        self.q = q
         self.flash_Config()
         self.sql = Sql()
         self.lottery = Lottery()
@@ -275,7 +278,7 @@ class Sundries(Father):
         """
         try:
             # [脚本, 活动, 时间, 关键字]
-            q.put({
+            self.q.put({
                 "jd_js": value1[1].jd_js,
                 "activities": value1[2],
                 "interval": value1[1].interval,

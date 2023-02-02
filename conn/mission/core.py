@@ -1,19 +1,17 @@
 import time
 
-from conn import q
 from conn.ql.ql import QL
 from conn.tools.log import LoggerClass
 from conn.tools.sql import Sql
 from .sundries import Sundries
 
 
-class Main_core():
+class Main_core:
     """
     执行类
     """
 
     def __init__(self):
-        super().__init__()
         self.ql_js = 'qlva.sh'
         self.ql_cks = []
         # 添加配置文件的内容
@@ -25,30 +23,30 @@ class Main_core():
 
     def main_while(self):
         while True:
-            data = q.get()
+            data = self.sundries.q.get()
             self.sundries.marking_time()
             # 检测是否需要跳过
             team = self.Team(data)
             if not team:
-                q.task_done()
+                self.sundries.q.task_done()
                 continue
 
             # 检测是否被执行过
             ctr = self.sundries.contrast(data)
             # 执行过返回-1结束
             if ctr[0] == -1:
-                q.task_done()
-                self.logger.write_log(f"识别关键字异常: {data['activities']}")
+                self.sundries.q.task_done()
+                self.logger.write_log(f"识别关键字异常: {data['activities']} 后面还有排队数量 {self.sundries.q.qsize()}")
                 time.sleep(2)
                 continue
             elif ctr[0] == 3:
-                self.logger.write_log(f"没有识别到关键字: {data['activities']}")
-                q.task_done()
+                self.logger.write_log(f"没有识别到关键字: {data['activities']} 后面还有排队数量 {self.sundries.q.qsize()}")
+                self.sundries.q.task_done()
                 time.sleep(2)
                 continue
             elif ctr[0] == 1:
-                self.logger.write_log(f"识别到关键字已经执行过了, 关键字: {ctr[1]}")
-                q.task_done()
+                self.logger.write_log(f"识别到关键字已经执行过了, 关键字: {ctr[1]} 后面还有排队数量 {self.sundries.q.qsize()}")
+                self.sundries.q.task_done()
                 time.sleep(2)
                 continue
 
@@ -57,7 +55,7 @@ class Main_core():
 
             self.ql_cks = self.conn.selectAll(table=self.conn.surface[3], where="state=0")
             if not self.ql_cks:
-                q.task_done()
+                self.sundries.q.task_done()
                 self.logger.write_log("主人你好像没有对接青龙或者没有给我发送 /start")
                 time.sleep(15)
                 continue
@@ -67,7 +65,7 @@ class Main_core():
             self.Mark.setdefault(data['jd_js'], data)
 
             self.execution_ql(data, ctr)
-            q.task_done()
+            self.sundries.q.task_done()
 
     def Team(self, data):
         """
@@ -84,13 +82,13 @@ class Main_core():
             if int(self.Mark[data['jd_js']]['time']) < int(time.time()):
                 # 删除这个值
                 self.Mark.pop(data['jd_js'])
-                self.logger.write_log(f"脚本 {data['jd_js']} 的时间到了出去玩耍吧, 后面排队的还有 {q.qsize()}")
+                self.logger.write_log(f"脚本 {data['jd_js']} 的时间到了出去玩耍吧, 后面排队的还有 {self.sundries.q.qsize()}")
                 return True
             else:
-                q.put(self.Mark[data['jd_js']])
-                self.logger.write_log(f"脚本 {data['jd_js']} 刚刚才出去被扔到后面排队了 号码为 {q.qsize()}")
+                self.sundries.q.put(self.Mark[data['jd_js']])
+                self.logger.write_log(f"脚本 {data['jd_js']} 刚刚才出去被扔到后面排队了 号码为 {self.sundries.q.qsize()}")
                 # 根据队列执行不同的时间
-                sun = q.qsize()
+                sun = self.sundries.q.qsize()
                 if sun < 5:
                     time.sleep(int(data['interval']) / 2)
                 elif sun < 10:
