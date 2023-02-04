@@ -5,7 +5,7 @@ import os
 
 from ruamel.yaml import YAML
 
-yaml = YAML(typ='rt')
+yaml = YAML(typ='safe')
 
 
 class ConnYml:
@@ -29,7 +29,8 @@ class ConnYml:
             "kill": [
                 "kill -9 $(netstat -nlp | grep fsbot | awk '{print $7}' | awk -F'/' '{ print $1 }')",
                 "kill -9 $(netstat -nlp | grep :5008 | awk '{print $7}' | awk -F'/' '{ print $1 }')"
-            ]
+            ],
+            "Delay": 0
         }
 
     def creat_yml(self, file_name="") -> int:
@@ -39,6 +40,7 @@ class ConnYml:
         file_name = file_name if file_name else self.file_name
         _remake_when_replenish_list = ["kill"]  # 当补充值时，重置此list中的key对应的template
         _remake_flag = False
+        # 检测文件是否存在
         if not os.path.exists(file_name):
             with open(file_name, mode='w+', encoding="utf-8") as file:
                 yaml.dump(self.template, file)
@@ -52,13 +54,31 @@ class ConnYml:
                 with open(file_name, 'w', encoding='utf-8') as f:
                     _tmp_dict = dict(data)
                     for _key in _tmp_dict:
+                        # 把多余的删除
                         if _key not in self.template:
                             data.pop(_key)
+                        # 获取第二阶级
+                        elif type(self.template.get(_key)) == dict:
+
+                            if type(self.template.get(_key).keys()) not in type(data.get(_key).keys()):
+                                # 第二层检测
+                                for j in _tmp_dict.get(_key).keys():
+                                    if j not in self.template.get(_key).keys():
+                                        data.get(_key).pop(j)
 
                     for key in self.template:
                         if key not in data:
                             data.setdefault(key, self.template.get(key))
                             _remake_flag = True
+                            continue
+                        elif type(self.template.get(key)) == dict:
+
+                            if type(self.template.get(key).keys()) in type(data.get(key).keys()):
+                                # 第二层检测
+                                for j in self.template.get(key).keys():
+                                    if j not in data.keys():
+                                        data.get(key).setdefault(j, self.template.get(key).get(j))
+                                        _remake_flag = True
 
                     if _remake_flag:
                         for key in _remake_when_replenish_list:
