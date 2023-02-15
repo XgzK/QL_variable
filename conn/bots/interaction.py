@@ -138,3 +138,4 @@ class Interaction(GetUpdate):
             os.environ['marking_time'] = str(int(time.time()))
         else:
             self.for_message('请输入类型为数字', False)
+

@@ -144,7 +144,7 @@ class Main_core:
                 # 如果有这个任务就执行
                 self.for_ql(j, data, ctr, ids)
         # 脚本结束自定义延迟时间
-        time.sleep(self.sundries.AdReg.get('Delay') if 'Delay' in self.sundries.AdReg.keys() else 0)
+        time.sleep(self.sundries.AdReg.get('Delay'))
 
     def for_ql(self, j, data, ctr, ids) -> bool:
         """

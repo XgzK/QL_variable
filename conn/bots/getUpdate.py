@@ -223,6 +223,24 @@ class GetUpdate(Father):
         except Exception as e:
             return -1
 
+    def getChat(self, chat_id) -> dict:
+        """
+        使用此方法根据ID获取群信息
+        :return:
+        """
+        try:
+            ur = self.http_post(url='/getChat', data={"chat_id": chat_id})
+            if ur[0] == 200 and ur[0]['ok']:
+                return ur[0]
+            else:
+                return ur[0]
+        except Exception as e:
+            return {
+                "ok": False,
+                "error_code": 500,
+                "description": e
+            }
+
     def Update(self):
         """
         更新GetUpdate和父类
