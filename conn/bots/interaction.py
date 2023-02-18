@@ -102,22 +102,28 @@ class Interaction(GetUpdate):
         :param param:
         :return:
         """
-        puts = param.split('@')
-        if len(puts) != 4:
-            return self.for_message("提交青龙参数不合法", False)
-        st = re.findall('^(http.*:\d+)', puts[1])
-        if st:
-            inst = self.sql.insert(table=self.sql.surface[3], name=f"{puts[0]}", ip=f"{st[0]}",
-                                   Client_ID=f"{puts[2]}", Client_Secret=f"{puts[3]}", Authorization="",
-                                   json=f"{self.AdReg.get('json')}{puts[0]}.json", state=1)
-            if inst > 0:
-                return self.for_message(f"提交 {puts[0]} 成功", False)
-            elif inst == -1:
-                return self.for_message(f"提交 {puts[0]} 失败,提交的内容和之前提交的内容冲突",
-                                        False)
+        try:
+            puts = param.split('@')
+            if len(puts) != 4:
+                return self.for_message("提交青龙参数不合法", False)
+            st = re.findall('^(http.*:\d+)', puts[1])
+            if st:
+                inst = self.sql.insert(table=self.sql.surface[3], name=f"{puts[0]}", ip=f"{st[0]}",
+                                       Client_ID=f"{puts[2]}", Client_Secret=f"{puts[3]}", Authorization="",
+                                       json=f"{self.AdReg.get('json')}{puts[0]}.json", state=1)
+                if inst > 0:
+                    return self.for_message(f"提交 {puts[0]} 成功", False)
+                elif inst == -1:
+                    return self.for_message(f"提交 {puts[0]} 失败,提交的内容和之前提交的内容冲突",
+                                            False)
+                else:
+                    return self.for_message(f"提交 {puts[0]} 失败,失败原因: {inst}",
+                                            False)
             else:
-                return self.for_message(f"提交 {puts[0]} 失败,失败原因: {inst}",
-                                        False)
+                return self.for_message(f"获取到的青龙链接地址是: {puts[1]}，不合法", False)
+        except Exception as e:
+            print("conn.bots.interaction.Interaction.from_putk 发生异常", e)
+            return self.for_message(f"添加青龙获取异常: {e}", False)
 
     def start(self):
         """
