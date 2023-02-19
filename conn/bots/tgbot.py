@@ -23,6 +23,8 @@ class Filter:
         :return:
         """
         for i in tg_list:
+            if i[list(i.keys())[-1]]['date'] < int(time.time()) - 3600:
+                continue
             if type(i) == int:
                 continue
             elif type(i) == dict:

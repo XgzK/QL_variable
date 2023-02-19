@@ -102,13 +102,14 @@ class Sorting:
                         # 如果关键字在数组中执行并且清空字典
                         ex_name = self.sundries.looking(rep.get(text2[0])["expport"])
                         if ex_name:
-                            TYPE = re.findall("https://(\w{2})", spell)
-                            if TYPE:
-                                spell += f'export NOT_TYPE="{TYPE[0]}";'
-                            else:
-                                spell += 'export NOT_TYPE="no";'
-                            # 发送去队列了
-                            self.sundries.tx_compared([rep.get(text2[0])['mark'], ex_name, spell])
+                            for ex_list in ex_name:
+                                TYPE = re.findall("https://(\w{2})", spell)
+                                if TYPE:
+                                    spell += f'export NOT_TYPE="{TYPE[0]}";'
+                                else:
+                                    spell += 'export NOT_TYPE="no";'
+                                # 发送去队列了
+                                self.sundries.tx_compared([rep.get(text2[0])['mark'], ex_list, spell])
                         else:
                             spell = ''
                             self.logger.write_log(f"没有查询到 {poi}")

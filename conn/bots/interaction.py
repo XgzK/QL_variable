@@ -106,7 +106,7 @@ class Interaction(GetUpdate):
             puts = param.split('@')
             if len(puts) != 4:
                 return self.for_message("提交青龙参数不合法", False)
-            st = re.findall('^(http.*:\d+)', puts[1])
+            st = re.findall('^(https?://[\w.:]+)', puts[1])
             if st:
                 inst = self.sql.insert(table=self.sql.surface[3], name=f"{puts[0]}", ip=f"{st[0]}",
                                        Client_ID=f"{puts[2]}", Client_Secret=f"{puts[3]}", Authorization="",

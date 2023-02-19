@@ -1,6 +1,7 @@
 import datetime
 import re
 from queue import Queue
+from typing import Any
 
 from conn.Plugin.lottery import Lottery
 from conn.Template.ancestors import Father
@@ -28,17 +29,23 @@ class Sundries(Father):
         self.Markings = ["RUN", "NOT"]
         self.interaction = Interaction()
 
-    def looking(self, text_str: str) -> JdQl:
+    def looking(self, text_str: str) -> list[JdQl] | list[Any]:
         """
         用户传入变量返回脚本库
         :param text_str:
         :return: JdQl类或None
         """
-        value1 = self.sql.selectTopone(table=self.sql.surface[0],
-                                       where=f'jd_value1="NOT{text_str}" or jd_value1="{text_str}" '
-                                             f'or jd_value2="{text_str}" '
-                                             f'or jd_value3="{text_str}"')
-        return JdQl(value1) if value1 else None
+        value1 = self.sql.selectAll(table=self.sql.surface[0],
+                                    where=f'jd_value1="NOT{text_str}" or jd_value1="{text_str}" '
+                                          f'or jd_value2="{text_str}" '
+                                          f'or jd_value3="{text_str}"')
+        if type(value1) == list:
+            vale_list = []
+            for vl in value1:
+                vale_list.append(JdQl(vl))
+            return vale_list
+        else:
+            return []
 
     def https_txt(self, http) -> list[[str, JdQl]]:
         """
@@ -122,8 +129,8 @@ class Sundries(Father):
                 for i in lines:
                     i = JdQl(i)
                     try:
-                        zzbds = re.findall(i.jd_url, url)
-                        if zzbds:
+                        zbds = re.findall(i.jd_url, url)
+                        if zbds:
                             li1s.append(i)
                         else:
                             # 如果没有就清理
@@ -277,6 +284,7 @@ class Sundries(Father):
         :return: 返回数组的脚本名称[0]和变量[1],异常返回-1
         """
         try:
+            # value1[1].toString()
             # [脚本, 活动, 时间, 关键字]
             self.q.put({
                 "jd_js": value1[1].jd_js,
