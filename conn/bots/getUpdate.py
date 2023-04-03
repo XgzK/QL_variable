@@ -4,7 +4,8 @@
 import json
 import re
 
-import httpx
+import requests
+from requests import ConnectTimeout
 
 from conn.Template.ancestors import Father
 
@@ -36,25 +37,24 @@ class GetUpdate(Father):
         try:
             if not re.findall('(/bot\w+)', self.Token):
                 self.Update()
-            with httpx.Client(proxies=self.proxies, timeout=200, headers=self.headers) as client:
-                resp = client.post(url=self.url + self.Token + url, data=json.dumps(data))
-                code = resp.status_code
-                # 502 和409表示没有消息
-                if code in [502, 409]:
-                    return [200, {"ok": True, "result": []}]
-                elif code == 404:
-                    return [code, {"ok": False, "result": [f'404: {resp.text}']}]
-                resp_js = resp.json()
-                resp.close()
-                if code == 200:
-                    return [code, resp_js]
-                else:
-                    return [code, resp_js]
+            resp = requests.post(url=self.url + self.Token + url, data=json.dumps(data), timeout=200, headers=self.headers, proxies={"https": self.proxies, "http": self.proxies})
+            code = resp.status_code
+            # 502 和409表示没有消息
+            if code in [502, 409]:
+                return [200, {"ok": True, "result": []}]
+            elif code == 404:
+                return [code, {"ok": False, "result": [f'404: {resp.text}']}]
+            resp_js = resp.json()
+            resp.close()
+            if code == 200:
+                return [code, resp_js]
+            else:
+                return [code, resp_js]
         except Exception as e:
             return [0, {'ok': False, 'result': [e]}]
 
-    def get_long_link(self, offset: int = None, limit: int = 100, timeout: int = 0,
-                      allowed_updates: list = None):
+    async def get_long_link(self, offset: int = None, limit: int = 100, timeout: int = 0,
+                            allowed_updates: list = None):
         """
         长链接
         :param offset: Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.
@@ -72,68 +72,37 @@ class GetUpdate(Father):
                 'timeout': timeout,
                 'allowed_updates': allowed_updates
             }
-            getUp = self.http_post(url='/getUpdates', data=data)
-            if getUp[1]['ok'] and getUp[0] == 200:
-                if len(getUp[1]['result']) > 0:
-                    self.offset = getUp[1]['result'][len(getUp[1]['result']) - 1]['update_id'] + 1
-                return getUp[1]['result']
+            resp = requests.post(url=self.url + self.Token + '/getUpdates', data=json.dumps(data),
+                                 proxies={"https": self.proxies, "http": self.proxies}, headers=self.headers)
+            code = resp.status_code
+            # 502 和409表示没有消息
+            if code in [502, 409]:
+                return [200, {"ok": True, "result": []}]
+            elif code == 404:
+                return [code, {"ok": False, "result": [f'404: {resp.text}']}]
+            resp_js = resp.json()
+            resp.close()
+            if code == 200:
+                # return [code, resp_js]
+                if resp_js['ok']:
+                    if len(resp_js['result']) > 0:
+                        self.offset = resp_js['result'][len(resp_js['result']) - 1]['update_id'] + 1
+                    return resp_js['result']
+                else:
+                    self.log_write(
+                        f'conn.bots.getUpdate.GetUpdate.get_long_link状态码: {code} 发生异常事件: {resp_js["result"][0]}',
+                        level='error')
+                    return []
             else:
-                self.log_write(
-                    f'conn.bots.getUpdate.GetUpdate.get_long_link状态码: {getUp[0]} 发生异常事件: {getUp[1]["result"][0]}',
-                    level='error')
                 return []
-        #     with httpx.Client(base_url=self.url, proxies=self.proxies) as client:
-        #         ur = client.get(
-        #             f"{self.Token}/getUpdates?offset={self.data['offset']}&timeout={ti}&allowed_updates=['callback_query']",
-        #             timeout=ti)
-        #         ur.close()
-        #         # 如果是200表示收到消息
-        #         if ur.status_code == 200:
-        #             js = ur.json()
-        #             if 'ok' in js:
-        #                 return js
-        #         # 502 和409表示没有消息
-        #         elif ur.status_code == 502 or ur.status_code == 409:
-        #             return {"ok": True, "result": []}
-        #         elif ur.status_code == 404:
-        #             return {"ok": False, "result": [f'404: {ur.text}']}
-        #         else:
-        #             # 遇到其他未知状态码打印出来
-        #             return {"ok": False, "result": [ur.status_code]}
-        # except RemoteProtocolError:
-        #     return {"ok": True, "result": []}
-        # except ConnectTimeout as e:
-        #     return {"ok": False,
-        #             "result": [f"链接网络异常请确保服务器网络可以访问https://api.telegram.org 官方异常信息: {e}"]}
-        # except ReadTimeout:
-        #     return {"ok": True, "result": []}
-        # except ConnectError:
-        #     return {"ok": True, "result": []}
-        # except Exception as e:
-        #     return {"ok": False, "result": [e]}
-
-        # def send_message(self, text, chat_id=None):
-        #     """
-        #     发送消息
-        #     :return:
-        #     """
-        #     try:
-        #         with httpx.Client(base_url=self.url, proxies=self.proxies) as client:
-        #             ur = client.post(f'{self.Token}/sendMessage',
-        #                              data={"chat_id": chat_id, "text": text})
-        #             js = ur.json()
-        #             if ur.status_code == 200:
-        #                 return 0
-        #             elif ur.status_code == 403:
-        #                 logger.write_log(f"转发消息失败，机器人不在你转发的频道或者群组\n失败原因{js['description']}")
-        #             elif ur.status_code == 400:
-        #                 logger.write_log(f"转发消息失败，可能问题权限不足\n失败原因{js['description']}")
-        #             else:
-        #                 logger.write_log(f"转发消息失败\n状态码{js['error_code']}\n失败原因{js['description']}")
-        #             return -1
+        except ConnectTimeout as e:
+            self.log_write(
+                f"conn.bots.getUpdate.GetUpdate.get_long_link 异常: {e}, 连接超时请确保能使用代理或者反代或直连 进行使用",
+                level='error')
+            return []
         except Exception as e:
             self.log_write(f"conn.bots.getUpdate.GetUpdate.get_long_link 异常: {e}", level='error')
-            return -1
+            return []
 
     def send_message(self, chat_id: str, text: str):
         """

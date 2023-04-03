@@ -16,14 +16,14 @@ class Filter:
         self.message = Message()
         self.channel = Channel_post()
 
-    def _points(self, tg_list: list):
+    def _points(self, tg_list: list, tf: bool = False):
         """
         对TG消息进行分类处理
         :param tg_list: 接收到的TG小时数组
         :return:
         """
         for i in tg_list:
-            if i[list(i.keys())[-1]]['date'] < int(time.time()) - 3600:
+            if tf and i[list(i.keys())[-1]]['date'] < int(time.time()) - 3600:
                 continue
             if type(i) == int:
                 continue
@@ -37,7 +37,7 @@ class Filter:
                     self.channel.channel_main(i['channel_post'])
                 # elif 'chat_member' in i:
                 #     print('加入请求', i)
-                    # return chatmember.filter_chatmessage(i['chat_member']
+                # return chatmember.filter_chatmessage(i['chat_member']
                 # elif 'edited_message' in i:
                 #     print('消息被编辑  ', i)
                 # elif 'edited_channel_post' in i:
@@ -65,21 +65,23 @@ class Filter:
                 # else:
                 #     print(i)
 
-    def main_bots(self):
+    async def main_bots(self):
         """
         循环请求TG获取消息
         :return:
         """
-        tf = True
-        while tf:
+        tf = False
+        while not tf:
             self.getdata.marking_time()
             if self.getdata.AdReg.get('Token'):
                 self.getdata.Update()
-                tf = False
+                tf = True
             else:
                 print('没有填写到机器人Token')
                 time.sleep(15)
         while True:
             self.getdata.marking_time()
-            tg_list = self.getdata.get_long_link(allowed_updates=util.update_types, timeout=100)
-            self._points(tg_list)
+            tg_list = await self.getdata.get_long_link(allowed_updates=util.update_types, timeout=100)
+            self._points(tg_list, tf)
+            if tf:
+                tf = False

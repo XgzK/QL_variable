@@ -1,3 +1,4 @@
+import asyncio
 import os
 import threading
 
@@ -61,7 +62,7 @@ class RunMain(Father):
         self.ti_ck()
         t2.start()
         self.log_write("云端数据库同步成功") if self.chech.sql() == 0 else self.log_write("云端数据库同步失败")
-        self.filter.main_bots()
+        asyncio.run(self.filter.main_bots())
 
 
 if __name__ == '__main__':
