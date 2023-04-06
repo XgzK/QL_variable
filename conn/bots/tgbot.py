@@ -15,6 +15,7 @@ class Filter:
         self.getdata = GetUpdate()
         self.message = Message()
         self.channel = Channel_post()
+        self.filtration = {"message", "channel_post"}
 
     def _points(self, tg_list: list, tf: bool = False):
         """
@@ -23,8 +24,10 @@ class Filter:
         :return:
         """
         for i in tg_list:
-            if tf and i[list(i.keys())[-1]]['date'] < int(time.time()) - 3600:
-                continue
+            if tf:
+                tgkey = list(self.filtration & i.keys())
+                if tgkey and i[tgkey[0]]['date'] < int(time.time()) - 3600:
+                    continue
             if type(i) == int:
                 continue
             elif type(i) == dict:
