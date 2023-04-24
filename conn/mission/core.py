@@ -114,8 +114,12 @@ class Main_core:
             # 判断是否有脚本
             if ids[0] == -1:
                 # 如果没有这个任务就去转换多适配
-                # 把参数传递进去
-                url = self.sundries.turn_url(data["activities"])
+                # 分链接和参数转换
+                if data["activities"].contains("https://"):
+                    url = self.sundries.https_txt(data["activities"])
+                else:
+                    # 把参数传递进去
+                    url = self.sundries.turn_url(data["activities"])
                 # 没有获取到
                 if not url:
                     self.logger.write_log(f"脚本 {data['jd_js']} 活动参数 {data['activities']} 没有找到, 开始进行系列脚本匹配")
