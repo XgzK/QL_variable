@@ -125,25 +125,15 @@ class Main_core:
                     self.logger.write_log(f"脚本 {data['jd_js']} 活动参数 {data['activities']} 没有找到, 开始进行系列脚本匹配")
                     continue
                 # 记录是否被执行
-                tf1 = True
                 for va in url:
-                    text_list = self.sundries.https_txt(va)
-                    if not text_list:
+                    # 把原来的data部分内容替换
+                    data["jd_js"] = va[1].jd_js
+                    data['activities'] = va[0]
+                    ids = self.sundries.ql_compared(data["jd_js"], self.ql_cks[j])
+                    if ids[0] == -1:
                         continue
-                    for ji in text_list:
-                        # 把原来的data部分内容替换
-                        data["jd_js"] = ji[1].jd_js
-                        data['activities'] = ji[0]
-                        ids = self.sundries.ql_compared(data["jd_js"], self.ql_cks[j])
-                        if ids[0] == -1:
-                            continue
-                        self.for_ql(j, data, ctr, ids)
-                        tf1 = False
-                        # 结束这个方法
-                        break
-                    if tf1:
-                        self.logger.write_log(f"系列脚本缺失提醒: {url[0]}")
-                        continue
+                    self.for_ql(j, data, ctr, ids)
+                    break
             else:
                 # 如果有这个任务就执行
                 self.for_ql(j, data, ctr, ids)
