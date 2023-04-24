@@ -115,7 +115,7 @@ class Main_core:
             if ids[0] == -1:
                 # 如果没有这个任务就去转换多适配
                 # 分链接和参数转换
-                if data["activities"].contains("https://"):
+                if "https://" in data["activities"]:
                     url = self.sundries.https_txt(data["activities"])
                 else:
                     # 把参数传递进去
