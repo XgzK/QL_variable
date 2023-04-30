@@ -113,16 +113,24 @@ class Main_core:
             ids = self.sundries.ql_compared(data["jd_js"], self.ql_cks[j])
             # 判断是否有脚本
             if ids[0] == -1:
+                # 没有匹配到进入匹配
+                self.logger.write_log(
+                    f"脚本 {data['jd_js']} 活动参数 {data['activities']} 没有找到, 开始进行系列脚本匹配")
                 # 如果没有这个任务就去转换多适配
                 # 分链接和参数转换
-                if "https://" in data["activities"]:
-                    url = self.sundries.https_txt(data["activities"])
-                else:
-                    # 把参数传递进去
+                if "https://" not in data["activities"]:
                     url = self.sundries.turn_url(data["activities"])
+                    # 没有获取到
+                    if not url:
+                        self.logger.write_log(f" {data['activities']} 没有找到匹配出来的脚本跳过本次活动执行，请拉取脚本 {data['jd_js']} 执行")
+                        continue
+                    url = self.sundries.https_txt(url[0])
+                else:
+                    url = self.sundries.https_txt(data["activities"])
                 # 没有获取到
                 if not url:
-                    self.logger.write_log(f"脚本 {data['jd_js']} 活动参数 {data['activities']} 没有找到, 开始进行系列脚本匹配")
+                    self.logger.write_log(
+                        f" {data['activities']} 没有找到匹配出来的脚本跳过本次活动执行，请拉取脚本 {data['jd_js']} 执行")
                     continue
                 # 记录是否被执行
                 for va in url:
