@@ -37,6 +37,9 @@ def ym_change(li: list):
         father.revise_Config("Token", li[1])
         st += f' 机器人密钥添加成功'
     if li[2] != '':
+        # 由于使用的是requests库对socks5改成socks5h
+        if li[2].startswith('socks5://'):
+            li[2] = li[2].replace('socks5://', 'socks5h://')
         father.revise_Config("Proxy.Proxy", li[2])
         st += f'代理添加成功'
     if li[3] != '':
