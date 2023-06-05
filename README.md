@@ -1,5 +1,7 @@
 #### 根据变量运行自动运行对应任务
 没有代理的填写下面反代
+# 本项目由于逻辑混乱和bug太多停止维护
+请跳转新的监控机器人 [aigramBot](https://github.com/XgzK/aigramBot)
 ## 特别声明
 ```text
 有问题可以加InteIJ外部群 https://t.me/InteIJ (已经在封群的InteIJ的请不要加入,外部群只能使用活动参数的权限)
